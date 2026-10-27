@@ -1,8 +1,9 @@
 <?php
 $is_en = (($main_data->en_bn_type ?? 1) == 2);
-$up_name = $is_en ? (!empty($ins_info->ins_name_en) ? $ins_info->ins_name_en : (!empty($ins_info->ins_name) ? $ins_info->ins_name : 'Union Parishad')) : (!empty($ins_info->ins_name) ? $ins_info->ins_name : 'ইউনিয়ন পরিষদ');
-$upazila_name = $is_en ? (!empty($ins_info->up_name) ? $ins_info->up_name : '') : (!empty($ins_info->up_bn_name) ? $ins_info->up_bn_name : '');
-$dist_name = $is_en ? (!empty($ins_info->dist_name) ? $ins_info->dist_name : '') : (!empty($ins_info->dist_bn_name) ? $ins_info->dist_bn_name : '');
+$up_name = !empty($main_data->union_name) ? $main_data->union_name : ($is_en ? (!empty($ins_info->ins_name_en) ? $ins_info->ins_name_en : (!empty($ins_info->ins_name) ? $ins_info->ins_name : 'Union Parishad')) : (!empty($ins_info->ins_name) ? $ins_info->ins_name : 'ইউনিয়ন পরিষদ'));
+$upazila_name = !empty($main_data->upazila_name) ? $main_data->upazila_name : ($is_en ? (!empty($ins_info->up_name) ? $ins_info->up_name : '') : (!empty($ins_info->up_bn_name) ? $ins_info->up_bn_name : ''));
+$dist_name = !empty($main_data->district_name) ? $main_data->district_name : ($is_en ? (!empty($ins_info->dist_name) ? $ins_info->dist_name : '') : (!empty($ins_info->dist_bn_name) ? $ins_info->dist_bn_name : ''));
+$c_post_office = !empty($main_data->post_office) ? $main_data->post_office : '';
 
 $sonod_num = (string)($main_data->cgp_pr_idiidid_pr ?? ($main_data->sonod_uniqs ?? ''));
 $sonod_title = !empty($main_data->certificate_title_head_text) ? $main_data->certificate_title_head_text : ($is_en ? 'Inheritance Certificate' : 'ওয়ারিশ সনদপত্র');
@@ -271,11 +272,11 @@ $photo_pos = 'right';
                     ?>
                     <?php if ($is_en): ?>
                         Late <strong><?= htmlspecialchars($d_name); ?></strong><?= !empty($d_fname) ? (', Father/Husband: <strong>' . htmlspecialchars($d_fname) . '</strong>') : ''; ?><?= !empty($d_mname) ? (', Mother: <strong>' . htmlspecialchars($d_mname) . '</strong>') : ''; ?>, 
-                        Address: <?= !empty($d_vill) ? ('Village: ' . htmlspecialchars($d_vill) . ', ') : ''; ?><?= !empty($d_ward) ? ('Ward No: ' . BanglaConverter::bn2en($d_ward) . ', ') : ''; ?>Union: <?= htmlspecialchars($up_name); ?>, Upazila: <?= htmlspecialchars($upazila_name); ?>, District: <?= htmlspecialchars($dist_name); ?>. 
+                        Address: <?= !empty($d_vill) ? ('Village: ' . htmlspecialchars($d_vill) . ', ') : ''; ?><?= !empty($d_ward) ? ('Ward No: ' . BanglaConverter::bn2en($d_ward) . ', ') : ''; ?><?= !empty($c_post_office) ? ('Post Office: ' . htmlspecialchars($c_post_office) . ', ') : ''; ?>Union: <?= htmlspecialchars($up_name); ?>, Upazila: <?= htmlspecialchars($upazila_name); ?>, District: <?= htmlspecialchars($dist_name); ?>. 
                         He/She was a permanent resident of this Union. <?= !empty($d_death_cert) ? ('(Death Reg. No: ' . BanglaConverter::bn2en($d_death_cert) . '). ') : ''; ?>At the time of demise, the deceased left behind the following legal heir(s):
                     <?php else: ?>
                         মরহুম/মরহুমা <strong><?= htmlspecialchars($d_name); ?></strong><?= !empty($d_fname) ? (', পিতা/স্বামীর নাম: <strong>' . htmlspecialchars($d_fname) . '</strong>') : ''; ?><?= !empty($d_mname) ? (', মাতা: <strong>' . htmlspecialchars($d_mname) . '</strong>') : ''; ?>, 
-                        ঠিকানা: <?= !empty($d_vill) ? ('গ্রাম: ' . htmlspecialchars($d_vill) . ', ') : ''; ?><?= !empty($d_ward) ? ('ওয়ার্ড নং: ' . BanglaConverter::en2bn($d_ward) . ', ') : ''; ?>ইউনিয়ন: <?= htmlspecialchars($up_name); ?>, উপজেলা: <?= htmlspecialchars($upazila_name); ?>, জেলা: <?= htmlspecialchars($dist_name); ?>। 
+                        ঠিকানা: <?= !empty($d_vill) ? ('গ্রাম: ' . htmlspecialchars($d_vill) . ', ') : ''; ?><?= !empty($d_ward) ? ('ওয়ার্ড নং: ' . BanglaConverter::en2bn($d_ward) . ', ') : ''; ?><?= !empty($c_post_office) ? ('ডাকঘর: ' . htmlspecialchars($c_post_office) . ', ') : ''; ?>ইউনিয়ন: <?= htmlspecialchars($up_name); ?>, উপজেলা: <?= htmlspecialchars($upazila_name); ?>, জেলা: <?= htmlspecialchars($dist_name); ?>। 
                         তিনি অত্র ইউনিয়নের একজন স্থায়ী বাসিন্দা ছিলেন। <?= !empty($d_death_cert) ? ('(তাঁহার মৃত্যু নিবন্ধন নং- ' . BanglaConverter::en2bn($d_death_cert) . ')। ') : ''; ?>মৃত্যুকালে তিনি নিম্নলিখিত ওয়ারিশগণ কে রেখে মৃত্যুবরণ করেন:
                     <?php endif; ?>
                 </div>

@@ -387,6 +387,60 @@ $is_trade  = !empty($trade_data) || (int)($sonod->deft_cer_aididid ?? 0) === 3 |
                         />
                     </div>
                 </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 pt-2 border-t border-neutral-100">
+                    <div>
+                        <label class="block text-xs font-bold text-neutral-700 mb-1.5">ডাকঘর / পোস্ট অফিস</label>
+                        <input 
+                            type="text" 
+                            name="post_office" 
+                            id="inputPostOffice"
+                            value="<?= htmlspecialchars((string)($sonod->post_office ?? ''), ENT_QUOTES, 'UTF-8'); ?>"
+                            class="w-full px-3.5 py-2.5 rounded-xl border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs sm:text-sm text-neutral-900"
+                            placeholder="ডাকঘরের নাম"
+                            <?= !$can_edit ? 'disabled' : ''; ?>
+                        />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-neutral-700 mb-1.5">ইউনিয়ন পরিষদ</label>
+                        <input 
+                            type="text" 
+                            name="union_name" 
+                            id="inputUnionName"
+                            value="<?= htmlspecialchars((string)($sonod->union_name ?? ''), ENT_QUOTES, 'UTF-8'); ?>"
+                            class="w-full px-3.5 py-2.5 rounded-xl border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs sm:text-sm text-neutral-900"
+                            placeholder="ইউনিয়নের নাম"
+                            <?= !$can_edit ? 'disabled' : ''; ?>
+                        />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-neutral-700 mb-1.5">উপজেলা / থানা</label>
+                        <input 
+                            type="text" 
+                            name="upazila_name" 
+                            id="inputUpazilaName"
+                            value="<?= htmlspecialchars((string)($sonod->upazila_name ?? ''), ENT_QUOTES, 'UTF-8'); ?>"
+                            class="w-full px-3.5 py-2.5 rounded-xl border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs sm:text-sm text-neutral-900"
+                            placeholder="উপজেলার নাম"
+                            <?= !$can_edit ? 'disabled' : ''; ?>
+                        />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-neutral-700 mb-1.5">জেলা</label>
+                        <input 
+                            type="text" 
+                            name="district_name" 
+                            id="inputDistrictName"
+                            value="<?= htmlspecialchars((string)($sonod->district_name ?? ''), ENT_QUOTES, 'UTF-8'); ?>"
+                            class="w-full px-3.5 py-2.5 rounded-xl border border-neutral-200 bg-neutral-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-xs sm:text-sm text-neutral-900"
+                            placeholder="জেলার নাম"
+                            <?= !$can_edit ? 'disabled' : ''; ?>
+                        />
+                    </div>
+                </div>
             </div>
         </div>
 

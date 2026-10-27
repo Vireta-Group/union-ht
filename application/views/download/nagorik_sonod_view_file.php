@@ -1,8 +1,9 @@
 <?php
 $is_en = (($main_data->en_bn_type ?? 1) == 2);
-$up_name = $is_en ? (!empty($ins_info->ins_name_en) ? $ins_info->ins_name_en : (!empty($ins_info->ins_name) ? $ins_info->ins_name : 'Union Parishad')) : (!empty($ins_info->ins_name) ? $ins_info->ins_name : 'ইউনিয়ন পরিষদ');
-$upazila_name = $is_en ? (!empty($ins_info->up_name) ? $ins_info->up_name : '') : (!empty($ins_info->up_bn_name) ? $ins_info->up_bn_name : '');
-$dist_name = $is_en ? (!empty($ins_info->dist_name) ? $ins_info->dist_name : '') : (!empty($ins_info->dist_bn_name) ? $ins_info->dist_bn_name : '');
+$up_name = !empty($main_data->union_name) ? $main_data->union_name : ($is_en ? (!empty($ins_info->ins_name_en) ? $ins_info->ins_name_en : (!empty($ins_info->ins_name) ? $ins_info->ins_name : 'Union Parishad')) : (!empty($ins_info->ins_name) ? $ins_info->ins_name : 'ইউনিয়ন পরিষদ'));
+$upazila_name = !empty($main_data->upazila_name) ? $main_data->upazila_name : ($is_en ? (!empty($ins_info->up_name) ? $ins_info->up_name : '') : (!empty($ins_info->up_bn_name) ? $ins_info->up_bn_name : ''));
+$dist_name = !empty($main_data->district_name) ? $main_data->district_name : ($is_en ? (!empty($ins_info->dist_name) ? $ins_info->dist_name : '') : (!empty($ins_info->dist_bn_name) ? $ins_info->dist_bn_name : ''));
+$c_post_office = !empty($main_data->post_office) ? $main_data->post_office : '';
 
 $sonod_num = (string)($main_data->cgp_pr_idiidid_pr ?? ($main_data->sonod_uniqs ?? ''));
 $sonod_title = !empty($main_data->certificate_title_head_text) ? $main_data->certificate_title_head_text : ($is_en ? 'Citizenship Certificate' : 'নাগরিকত্ব সনদপত্র');
@@ -328,14 +329,14 @@ $photo_pos = 'right';
                         <td style="padding-right: 15px;">
                             <div class="address-block-title"><?= $is_en ? 'Present Address' : 'বর্তমান ঠিকানা'; ?></div>
                             <div><?= $is_en ? 'Holding No: ' : 'হোল্ডিং নং: '; ?><strong><?= !empty($c_holding) ? ($is_en ? htmlspecialchars($c_holding) : BanglaConverter::en2bn($c_holding)) : '—'; ?></strong>, <?= $is_en ? 'Village: ' : 'গ্রাম: '; ?><strong><?= htmlspecialchars($c_vill ?: '—'); ?></strong></div>
-                            <div><?= $is_en ? 'Ward No: ' : 'ওয়ার্ড নং: '; ?><strong><?= !empty($c_ward) ? ($is_en ? htmlspecialchars($c_ward) : BanglaConverter::en2bn($c_ward)) : '—'; ?></strong>, <?= $is_en ? 'Union: ' : 'ইউনিয়ন: '; ?><strong><?= htmlspecialchars($up_name); ?></strong></div>
-                            <div><?= $is_en ? 'Upazila: ' : 'উপজেলা: '; ?><strong><?= htmlspecialchars($upazila_name ?: '—'); ?></strong>, <?= $is_en ? 'District: ' : 'জেলা: '; ?><strong><?= htmlspecialchars($dist_name ?: '—'); ?></strong></div>
+                            <div><?= $is_en ? 'Ward No: ' : 'ওয়ার্ড নং: '; ?><strong><?= !empty($c_ward) ? ($is_en ? htmlspecialchars($c_ward) : BanglaConverter::en2bn($c_ward)) : '—'; ?></strong><?= !empty($c_post_office) ? (', ' . ($is_en ? 'Post Office: ' : 'ডাকঘর: ') . '<strong>' . htmlspecialchars($c_post_office) . '</strong>') : ''; ?></div>
+                            <div><?= $is_en ? 'Union: ' : 'ইউনিয়ন: '; ?><strong><?= htmlspecialchars($up_name); ?></strong>, <?= $is_en ? 'Upazila: ' : 'উপজেলা: '; ?><strong><?= htmlspecialchars($upazila_name ?: '—'); ?></strong>, <?= $is_en ? 'District: ' : 'জেলা: '; ?><strong><?= htmlspecialchars($dist_name ?: '—'); ?></strong></div>
                         </td>
                         <td style="padding-left: 15px; border-left: 1px dashed #cbd5e1;">
                             <div class="address-block-title"><?= $is_en ? 'Permanent Address' : 'স্থায়ী ঠিকানা'; ?></div>
                             <div><?= $is_en ? 'Holding No: ' : 'হোল্ডিং নং: '; ?><strong><?= !empty($c_holding) ? ($is_en ? htmlspecialchars($c_holding) : BanglaConverter::en2bn($c_holding)) : '—'; ?></strong>, <?= $is_en ? 'Village: ' : 'গ্রাম: '; ?><strong><?= htmlspecialchars($c_vill ?: '—'); ?></strong></div>
-                            <div><?= $is_en ? 'Ward No: ' : 'ওয়ার্ড নং: '; ?><strong><?= !empty($c_ward) ? ($is_en ? htmlspecialchars($c_ward) : BanglaConverter::en2bn($c_ward)) : '—'; ?></strong>, <?= $is_en ? 'Union: ' : 'ইউনিয়ন: '; ?><strong><?= htmlspecialchars($up_name); ?></strong></div>
-                            <div><?= $is_en ? 'Upazila: ' : 'উপজেলা: '; ?><strong><?= htmlspecialchars($upazila_name ?: '—'); ?></strong>, <?= $is_en ? 'District: ' : 'জেলা: '; ?><strong><?= htmlspecialchars($dist_name ?: '—'); ?></strong></div>
+                            <div><?= $is_en ? 'Ward No: ' : 'ওয়ার্ড নং: '; ?><strong><?= !empty($c_ward) ? ($is_en ? htmlspecialchars($c_ward) : BanglaConverter::en2bn($c_ward)) : '—'; ?></strong><?= !empty($c_post_office) ? (', ' . ($is_en ? 'Post Office: ' : 'ডাকঘর: ') . '<strong>' . htmlspecialchars($c_post_office) . '</strong>') : ''; ?></div>
+                            <div><?= $is_en ? 'Union: ' : 'ইউনিয়ন: '; ?><strong><?= htmlspecialchars($up_name); ?></strong>, <?= $is_en ? 'Upazila: ' : 'উপজেলা: '; ?><strong><?= htmlspecialchars($upazila_name ?: '—'); ?></strong>, <?= $is_en ? 'District: ' : 'জেলা: '; ?><strong><?= htmlspecialchars($dist_name ?: '—'); ?></strong></div>
                         </td>
                     </tr>
                 </table>

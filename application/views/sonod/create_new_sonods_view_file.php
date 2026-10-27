@@ -558,6 +558,10 @@
 <script src="inc/assets/js/select2.js"></script>
 
 <script>
+    var tenantDefaultDistrict = <?= json_encode((string)($loggedUser['disBn'] ?? ($loggedUser['disEn'] ?? ''))); ?>;
+    var tenantDefaultUpazila  = <?= json_encode((string)($loggedUser['upBn'] ?? ($loggedUser['upEN'] ?? ''))); ?>;
+    var tenantDefaultUnion    = <?= json_encode((string)($loggedUser['unBn'] ?? ($loggedUser['unEn'] ?? ($setting_info->ins_name ?? '')))); ?>;
+
     /*
      * NID / BRN INPUT RULES
      * ---------------------
@@ -695,10 +699,16 @@
                 var ward = $('.selectingWard_no option:selected').val();
                 var vilVal = $('.selectingVillage option:selected').val();
                 var vil = (vilVal === 'other') ? ($('.customVillageInput').val() || 'অন্যান্য গ্রাম') : $('.selectingVillage option:selected').text();
+                var po = $('.postOfficeInput').val();
+                var up = $('.upazilaNameInput').val();
+                var dis = $('.districtNameInput').val();
                 var bits = [];
                 if (nm) bits.push(nm);
                 if (ward) bits.push('ওয়ার্ড ' + ward);
                 if (vil && vil.trim() && vil !== 'গ্রাম সিলেক্ট করুন') bits.push(vil.trim());
+                if (po && po.trim()) bits.push('ডাকঘর: ' + po.trim());
+                if (up && up.trim()) bits.push(up.trim());
+                if (dis && dis.trim()) bits.push(dis.trim());
                 return bits.join(', ');
             }
             if (n === 3) {
@@ -987,6 +997,25 @@
                             <input type="text" class="w-full text-xs px-3 py-2 bg-white border border-indigo-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition customHouseInput" placeholder="ম্যানুয়াল বাড়ির নাম লিখুন...">
                             <span class="text-[10px] text-neutral-400 mt-0.5 block">এই সনদে নির্দিষ্ট কাস্টম বাড়ি হিসেবে যুক্ত হবে</span>
                         </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 pt-2">
+                    <div>
+                        <label class="block text-xs font-semibold text-neutral-700 mb-1">ডাকঘর / পোস্ট অফিস</label>
+                        <input type="text" class="w-full text-xs px-3 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition postOfficeInput" placeholder="ডাকঘরের নাম..." value="${data.postOffice || ''}">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-neutral-700 mb-1">ইউনিয়ন পরিষদ</label>
+                        <input type="text" class="w-full text-xs px-3 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition unionNameInput" placeholder="ইউনিয়নের নাম..." value="${data.unionName || tenantDefaultUnion || ''}">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-neutral-700 mb-1">উপজেলা / থানা</label>
+                        <input type="text" class="w-full text-xs px-3 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition upazilaNameInput" placeholder="উপজেলার নাম..." value="${data.upazilaName || tenantDefaultUpazila || ''}">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-neutral-700 mb-1">জেলা</label>
+                        <input type="text" class="w-full text-xs px-3 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition districtNameInput" placeholder="জেলার নাম..." value="${data.districtName || tenantDefaultDistrict || ''}">
                     </div>
                 </div>
 
@@ -1388,7 +1417,7 @@
     });
 
     $(document).on('click', '.editThisForm', function () {
-        $('.nameBN, .nameEN, .motherName_s_en, .fatherName_en_s, .motherNameBn_s, .fatherName_s_bn, .selectingWard_no, .selectingVillage, .selectingHouse, .customVillageInput, .customHouseInput').removeAttr('readonly');
+        $('.nameBN, .nameEN, .motherName_s_en, .fatherName_en_s, .motherNameBn_s, .fatherName_s_bn, .selectingWard_no, .selectingVillage, .selectingHouse, .customVillageInput, .customHouseInput, .postOfficeInput, .unionNameInput, .upazilaNameInput, .districtNameInput').removeAttr('readonly');
         $('.click_nextBtn').html('<span>পরবর্তী ধাপ</span> <i class="ph-bold ph-arrow-right text-xs"></i>').addClass('afterVerifyBtnNext').removeClass('editThisForm');
         tinymce.get("rich_editor").setContent('');
         $('.sonodDetailsTexBox').css('display', 'none');
@@ -1814,6 +1843,10 @@
                 'homeid':         ($(".selectingHouse option:selected").val() === 'other' ? 0 : ($(".selectingHouse option:selected").val() || 0)),
                 'custom_village': ($(".selectingVillage option:selected").val() === 'other' ? $.trim($('.customVillageInput').val()) : ''),
                 'custom_house':   ($(".selectingHouse option:selected").val() === 'other' ? $.trim($('.customHouseInput').val()) : ''),
+                'post_office':    $.trim($('.postOfficeInput').val()),
+                'union_name':     $.trim($('.unionNameInput').val()),
+                'upazila_name':   $.trim($('.upazilaNameInput').val()),
+                'district_name':  $.trim($('.districtNameInput').val()),
                 'vID':            ($(".vSysBtn").attr('vid') || $('.nid_verify').attr('vid') || 1),
                 'vType':          ($(".vSysBtn").attr('vtype') || $('input[name="verifyOptionSelect"]:checked').val() || 'nid'),
                 'id_number':      ($('.nid_number').val() || $('.birthNumber').val() || ''),
@@ -1903,6 +1936,10 @@
                 'homeid':               ($(".selectingHouse option:selected").val() === 'other' ? 0 : ($(".selectingHouse option:selected").val() || 0)),
                 'custom_village':       ($(".selectingVillage option:selected").val() === 'other' ? $.trim($('.customVillageInput').val()) : ''),
                 'custom_house':         ($(".selectingHouse option:selected").val() === 'other' ? $.trim($('.customHouseInput').val()) : ''),
+                'post_office':          $.trim($('.postOfficeInput').val()),
+                'union_name':           $.trim($('.unionNameInput').val()),
+                'upazila_name':         $.trim($('.upazilaNameInput').val()),
+                'district_name':        $.trim($('.districtNameInput').val()),
                 'vID':                  ($(".vSysBtn").attr('vid') || $('.nid_verify').attr('vid') || 1),
                 'vType':                ($(".vSysBtn").attr('vtype') || $('input[name="verifyOptionSelect"]:checked').val() || 'nid'),
                 'id_number':            ($('.nid_number').val() || $('.birthNumber').val() || ''),
@@ -2068,6 +2105,10 @@
                 homeid:         ($(".selectingHouse option:selected").val() === 'other' ? 0 : ($(".selectingHouse option:selected").val() || 0)),
                 custom_village: ($(".selectingVillage option:selected").val() === 'other' ? $.trim($('.customVillageInput').val()) : ''),
                 custom_house:   ($(".selectingHouse option:selected").val() === 'other' ? $.trim($('.customHouseInput').val()) : ''),
+                post_office:    $.trim($('.postOfficeInput').val()),
+                union_name:     $.trim($('.unionNameInput').val()),
+                upazila_name:   $.trim($('.upazilaNameInput').val()),
+                district_name:  $.trim($('.districtNameInput').val()),
                 vID:            ($(".vSysBtn").attr('vid') || $('.nid_verify').attr('vid') || 1),
                 vType:          ($(".vSysBtn").attr('vtype') || $('input[name="verifyOptionSelect"]:checked').val() || 'nid'),
                 id_number:      ($('.nid_number').val() || $('.birthNumber').val() || ''),
@@ -2165,7 +2206,11 @@
                     village: $('.selectingVillage').val() || '',
                     customVillage: $('.customVillageInput').val() || '',
                     house: $('.selectingHouse').val() || '',
-                    customHouse: $('.customHouseInput').val() || ''
+                    customHouse: $('.customHouseInput').val() || '',
+                    postOffice: $('.postOfficeInput').val() || '',
+                    unionName: $('.unionNameInput').val() || '',
+                    upazilaName: $('.upazilaNameInput').val() || '',
+                    districtName: $('.districtNameInput').val() || ''
                 },
                 sonod: {
                     lang: $('.englishSonodBtnEN').hasClass('bg-white') ? 2 : 1,
@@ -2306,6 +2351,10 @@
                     if (data.person.fatherEn) $('.fatherName_en_s').val(data.person.fatherEn);
                     if (data.person.motherBn) $('.motherNameBn_s').val(data.person.motherBn);
                     if (data.person.motherEn) $('.motherName_s_en').val(data.person.motherEn);
+                    if (data.person.postOffice) $('.postOfficeInput').val(data.person.postOffice);
+                    if (data.person.unionName) $('.unionNameInput').val(data.person.unionName);
+                    if (data.person.upazilaName) $('.upazilaNameInput').val(data.person.upazilaName);
+                    if (data.person.districtName) $('.districtNameInput').val(data.person.districtName);
 
                     if (data.person.ward) {
                         $('.selectingWard_no').val(data.person.ward);
@@ -2467,7 +2516,7 @@
         };
     })();
 
-    $(document).on('input change', '.nameBN, .nameEN, .fatherName_s_bn, .fatherName_en_s, .motherNameBn_s, .motherName_s_en, .selectingWard_no, .selectingVillage, .customVillageInput, .selectingHouse, .customHouseInput, .sonodTitle, .sonod_selecting_s', function () {
+    $(document).on('input change', '.nameBN, .nameEN, .fatherName_s_bn, .fatherName_en_s, .motherNameBn_s, .motherName_s_en, .selectingWard_no, .selectingVillage, .customVillageInput, .selectingHouse, .customHouseInput, .postOfficeInput, .unionNameInput, .upazilaNameInput, .districtNameInput, .sonodTitle, .sonod_selecting_s', function () {
         if (typeof SNW_DRAFT !== 'undefined') {
             SNW_DRAFT.scheduleSave();
         }

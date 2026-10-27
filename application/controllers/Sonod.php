@@ -474,6 +474,10 @@ class Sonod extends CI_Controller {
 			"ver_per_info_verify_type"			=> $vType,
 			"custom_village_name"               => $this->input->post('custom_village') ?: null,
 			"custom_house_name"                 => $this->input->post('custom_house') ?: null,
+			"post_office"                       => $this->input->post('post_office') ? trim((string)$this->input->post('post_office')) : null,
+			"union_name"                        => $this->input->post('union_name') ? trim((string)$this->input->post('union_name')) : null,
+			"upazila_name"                      => $this->input->post('upazila_name') ? trim((string)$this->input->post('upazila_name')) : null,
+			"district_name"                     => $this->input->post('district_name') ? trim((string)$this->input->post('district_name')) : null,
 		));
 
 		$custom_id = (int)$this->input->post('custom_id');
@@ -639,6 +643,10 @@ class Sonod extends CI_Controller {
 			"ver_per_info_verify_type"			=> $vType,
 			"custom_village_name"               => $this->input->post('custom_village') ?: null,
 			"custom_house_name"                 => $this->input->post('custom_house') ?: null,
+			"post_office"                       => $this->input->post('post_office') ? trim((string)$this->input->post('post_office')) : null,
+			"union_name"                        => $this->input->post('union_name') ? trim((string)$this->input->post('union_name')) : null,
+			"upazila_name"                      => $this->input->post('upazila_name') ? trim((string)$this->input->post('upazila_name')) : null,
+			"district_name"                     => $this->input->post('district_name') ? trim((string)$this->input->post('district_name')) : null,
 		));
 		$last_insert_no = $this->sonodM->insert_new_sonod_gen(array(
 			"cgp_pr_idiidid_pr" 				=> $sonod_id,
@@ -812,6 +820,10 @@ class Sonod extends CI_Controller {
 			"ver_per_info_verify_type"          => $vType,
 			"custom_village_name"               => $this->input->post('custom_village') ?: null,
 			"custom_house_name"                 => $this->input->post('custom_house') ?: null,
+			"post_office"                       => $this->input->post('post_office') ? trim((string)$this->input->post('post_office')) : null,
+			"union_name"                        => $this->input->post('union_name') ? trim((string)$this->input->post('union_name')) : null,
+			"upazila_name"                      => $this->input->post('upazila_name') ? trim((string)$this->input->post('upazila_name')) : null,
+			"district_name"                     => $this->input->post('district_name') ? trim((string)$this->input->post('district_name')) : null,
 		));
 
 		// 4. Insert into sonod_genarates
@@ -1226,6 +1238,10 @@ class Sonod extends CI_Controller {
 			'ver_per_info_ward_no'        => (int)$this->input->post('ver_per_info_ward_no'),
 			'custom_village_name'         => trim((string)$this->input->post('custom_village_name')),
 			'custom_house_name'           => trim((string)$this->input->post('custom_house_name')),
+			'post_office'                 => trim((string)$this->input->post('post_office')),
+			'union_name'                  => trim((string)$this->input->post('union_name')),
+			'upazila_name'                => trim((string)$this->input->post('upazila_name')),
+			'district_name'               => trim((string)$this->input->post('district_name')),
 		);
 		$this->sonodM->update_issued_sonod_person_info($sonod->sonod_uniqs, $person_data);
 

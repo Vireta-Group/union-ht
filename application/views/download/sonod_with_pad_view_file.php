@@ -1,11 +1,12 @@
 <?php
-$up_name = !empty($ins_info->ins_name) ? $ins_info->ins_name : (!empty($ins_info->un_bn_name) ? ($ins_info->un_bn_name . ' ইউনিয়ন পরিষদ') : 'ইউনিয়ন পরিষদ');
-$upazila_bn = !empty($ins_info->up_bn_name) ? $ins_info->up_bn_name : '';
-$dist_bn = !empty($ins_info->dist_bn_name) ? $ins_info->dist_bn_name : '';
+$up_name = !empty($get_data->union_name) ? $get_data->union_name : (!empty($ins_info->ins_name) ? $ins_info->ins_name : (!empty($ins_info->un_bn_name) ? ($ins_info->un_bn_name . ' ইউনিয়ন পরিষদ') : 'ইউনিয়ন পরিষদ'));
+$upazila_bn = !empty($get_data->upazila_name) ? $get_data->upazila_name : (!empty($ins_info->up_bn_name) ? $ins_info->up_bn_name : '');
+$dist_bn = !empty($get_data->district_name) ? $get_data->district_name : (!empty($ins_info->dist_bn_name) ? $ins_info->dist_bn_name : '');
 
-$up_en_name = !empty($ins_info->ins_name_en) ? $ins_info->ins_name_en : (!empty($ins_info->ins_en_name) ? $ins_info->ins_en_name : (!empty($ins_info->un_name) ? ($ins_info->un_name . ' Union Parishad') : 'Union Parishad'));
-$upazila_en = !empty($ins_info->up_name) ? $ins_info->up_name : (!empty($ins_info->upazilla_name) ? $ins_info->upazilla_name : '');
-$dist_en = !empty($ins_info->dist_name) ? $ins_info->dist_name : (!empty($ins_info->district_name) ? $ins_info->district_name : '');
+$up_en_name = !empty($get_data->union_name) ? $get_data->union_name : (!empty($ins_info->ins_name_en) ? $ins_info->ins_name_en : (!empty($ins_info->ins_en_name) ? $ins_info->ins_en_name : (!empty($ins_info->un_name) ? ($ins_info->un_name . ' Union Parishad') : 'Union Parishad')));
+$upazila_en = !empty($get_data->upazila_name) ? $get_data->upazila_name : (!empty($ins_info->up_name) ? $ins_info->up_name : (!empty($ins_info->upazilla_name) ? $ins_info->upazilla_name : ''));
+$dist_en = !empty($get_data->district_name) ? $get_data->district_name : (!empty($ins_info->dist_name) ? $ins_info->dist_name : (!empty($ins_info->district_name) ? $ins_info->district_name : ''));
+$post_office_val = !empty($get_data->post_office) ? $get_data->post_office : '';
 
 $is_en = (($get_data->en_bn_type ?? 1) == 2);
 $sonod_num = $get_data->cgp_pr_idiidid_pr ?? '';
@@ -841,7 +842,7 @@ $is_1_person_mode = ($signatory_mode === '1_person');
                             <div>
                                 <?= $is_en ? 'Holding No:' : 'হোল্ডিং নং:'; ?> <strong><?= !empty($holding_no) ? ($is_en ? htmlspecialchars($holding_no) : BanglaConverter::en2bn($holding_no)) : '-'; ?></strong>, 
                                 <?= $is_en ? 'Village:' : 'গ্রাম:'; ?> <strong><?= htmlspecialchars($village ?: '-'); ?></strong><br>
-                                <?= $is_en ? 'Ward No:' : 'ওয়ার্ড নং:'; ?> <strong><?= !empty($clean_ward) ? ($is_en ? htmlspecialchars($clean_ward) : BanglaConverter::en2bn($clean_ward)) : '-'; ?></strong>, 
+                                <?= $is_en ? 'Ward No:' : 'ওয়ার্ড নং:'; ?> <strong><?= !empty($clean_ward) ? ($is_en ? htmlspecialchars($clean_ward) : BanglaConverter::en2bn($clean_ward)) : '-'; ?></strong><?= !empty($post_office_val) ? (', ' . ($is_en ? 'Post Office: ' : 'ডাকঘর: ') . '<strong>' . htmlspecialchars($post_office_val) . '</strong>') : ''; ?>, 
                                 <?= $is_en ? 'Union:' : 'ইউনিয়ন:'; ?> <strong><?= htmlspecialchars($is_en ? $up_en_name : $up_name); ?></strong><br>
                                 <?= $is_en ? 'Upazila:' : 'উপজেলা:'; ?> <strong><?= htmlspecialchars($is_en ? $upazila_en : $upazila_bn); ?></strong>, 
                                 <?= $is_en ? 'District:' : 'জেলা:'; ?> <strong><?= htmlspecialchars($is_en ? $dist_en : $dist_bn); ?></strong>
@@ -852,7 +853,7 @@ $is_1_person_mode = ($signatory_mode === '1_person');
                             <div>
                                 <?= $is_en ? 'Holding No:' : 'হোল্ডিং নং:'; ?> <strong><?= !empty($holding_no) ? ($is_en ? htmlspecialchars($holding_no) : BanglaConverter::en2bn($holding_no)) : '-'; ?></strong>, 
                                 <?= $is_en ? 'Village:' : 'গ্রাম:'; ?> <strong><?= htmlspecialchars($village ?: '-'); ?></strong><br>
-                                <?= $is_en ? 'Ward No:' : 'ওয়ার্ড নং:'; ?> <strong><?= !empty($clean_ward) ? ($is_en ? htmlspecialchars($clean_ward) : BanglaConverter::en2bn($clean_ward)) : '-'; ?></strong>, 
+                                <?= $is_en ? 'Ward No:' : 'ওয়ার্ড নং:'; ?> <strong><?= !empty($clean_ward) ? ($is_en ? htmlspecialchars($clean_ward) : BanglaConverter::en2bn($clean_ward)) : '-'; ?></strong><?= !empty($post_office_val) ? (', ' . ($is_en ? 'Post Office: ' : 'ডাকঘর: ') . '<strong>' . htmlspecialchars($post_office_val) . '</strong>') : ''; ?>, 
                                 <?= $is_en ? 'Union:' : 'ইউনিয়ন:'; ?> <strong><?= htmlspecialchars($is_en ? $up_en_name : $up_name); ?></strong><br>
                                 <?= $is_en ? 'Upazila:' : 'উপজেলা:'; ?> <strong><?= htmlspecialchars($is_en ? $upazila_en : $upazila_bn); ?></strong>, 
                                 <?= $is_en ? 'District:' : 'জেলা:'; ?> <strong><?= htmlspecialchars($is_en ? $dist_en : $dist_bn); ?></strong>
