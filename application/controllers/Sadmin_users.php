@@ -515,6 +515,16 @@ class Sadmin_users extends CI_Controller
 		}
 
 		$this->load->model('ion_auth_model');
+
+		// Disallow reusing the current (old) password
+		if (!empty($user->password) && $this->ion_auth_model->verify_password($new_password, $user->password, $user->email)) {
+			echo json_encode([
+				'success' => false,
+				'message' => 'নতুন পাসওয়ার্ডটি বর্তমান পুরোনো পাসওয়ার্ডের মতো একই হতে পারবে না। অনুগ্রহ করে ভিন্ন একটি নতুন পাসওয়ার্ড ব্যবহার করুন।'
+			]);
+			return;
+		}
+
 		$hashed = $this->ion_auth_model->hash_password($new_password);
 
 		$update_data = [

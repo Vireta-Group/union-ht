@@ -1180,6 +1180,15 @@ class Dashboard extends CI_Controller {
 
 		if (password_verify($old_pass, $this->ion_auth->user()->row()->password)) 
 		{
+			if ($new_pass === $old_pass) {
+				$js_on = array(
+					'msg'	=> 'নতুন পাসওয়ার্ড পুরোনো পাসওয়ার্ডের মতো একই হতে পারবে না। ভিন্ন পাসওয়ার্ড দিন।',
+					'icon'	=> 'warning'
+				);
+				$this->output->set_content_type('application/json')->set_output(json_encode($js_on));
+				return;
+			}
+
 			if ($new_pass == $confirm_pass) {
 				$usrArr = array(
 					'password' 				=> $this->ion_auth_model->hash_password($new_pass),
