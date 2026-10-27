@@ -671,170 +671,177 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 
 <!-- Modal: Temporary Delegated Support Admin (1 to 72 Hours) -->
-<div id="tempAdminModal" class="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-xl w-full p-4 sm:p-6 md:p-8 shadow-2xl max-h-[92vh] overflow-y-auto border border-neutral-200">
-        <div class="flex items-center justify-between pb-4 border-b border-neutral-200">
+<div id="tempAdminModal" class="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs hidden overflow-y-auto p-3 sm:p-6 justify-center items-start sm:items-center">
+    <div class="relative bg-white rounded-3xl max-w-2xl w-full my-auto shadow-2xl border border-neutral-200 flex flex-col max-h-[90vh] overflow-hidden">
+        
+        <!-- Fixed Header (Always visible, never cut off) -->
+        <div class="px-5 sm:px-8 py-4 sm:py-5 border-b border-neutral-200 flex items-center justify-between shrink-0 bg-white z-20">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center text-xl shadow-xs">
                     <i class="ph-bold ph-shield-check"></i>
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold text-neutral-900 leading-tight">সাময়িক সহায়তা এক্সেস</h3>
+                    <h3 class="text-base sm:text-lg font-bold text-neutral-900 leading-tight">সাময়িক সহায়তা এক্সেস</h3>
                     <p class="text-[11px] text-neutral-500 font-medium">Temporary Support Admin Delegation (১–৭২ ঘণ্টা)</p>
                 </div>
             </div>
-            <button onclick="closeTempAdminModal()" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-800 flex items-center justify-center text-lg transition-colors cursor-pointer">
+            <button type="button" onclick="closeTempAdminModal()" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-800 flex items-center justify-center text-lg transition-colors cursor-pointer" aria-label="বন্ধ করুন">
                 <i class="ph ph-x"></i>
             </button>
         </div>
 
-        <!-- Tenant Identification Badge -->
-        <div class="mt-4 p-3 rounded-2xl bg-neutral-50 border border-neutral-200/80 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="text-xs font-bold text-neutral-800" id="tempModalTenantName">ইউনিয়ন পরিষদ</span>
-            </div>
-            <span class="font-mono text-[11px] font-bold px-2 py-0.5 rounded-md bg-white border border-neutral-300 text-neutral-700" id="tempModalTenantId">#0</span>
-        </div>
-
-        <!-- Privacy & Isolation Notice -->
-        <div class="mt-3 p-3 rounded-2xl bg-amber-50/70 border border-amber-200 text-[11px] text-amber-900 leading-relaxed flex items-start gap-2.5">
-            <i class="ph-fill ph-warning-circle text-amber-600 text-base shrink-0 mt-0.5"></i>
-            <div>
-                <strong>আইসোলেশন ও নিরাপত্তা নীতি:</strong> সুপার অ্যাডমিন হিসেবে আপনি সরাসরি কোনো টেন্যান্টের ড্যাশবোর্ডে প্রবেশ করতে পারেন না। কারিগরি সহায়তার জন্য এই সাময়িক এক্সেস তৈরি করা হচ্ছে। নির্দিষ্ট মেয়াদ শেষ হওয়ার সাথে সাথে একাউন্ট ও পাসওয়ার্ড <strong>স্বয়ংক্রিয়ভাবে পার্মানেন্ট ডিলিট</strong> হয়ে যাবে।
-            </div>
-        </div>
-
-        <!-- Form: Create Temp Admin -->
-        <form id="tempAdminForm" onsubmit="submitCreateTempAdmin(event)" class="mt-5 space-y-4 text-xs">
-            <input type="hidden" id="temp_tenant_id">
-
-            <!-- Role Selection -->
-            <div>
-                <label class="block font-bold text-neutral-700 mb-1.5">
-                    অস্থায়ী রোল নির্বাচন করুন <span class="text-[10px] font-normal text-neutral-400">/ Delegated Role</span>
-                </label>
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="relative flex items-center gap-2.5 p-3 rounded-xl border border-neutral-300 bg-white hover:border-indigo-600 cursor-pointer transition-all has-checked:border-indigo-600 has-checked:bg-indigo-50/50 has-checked:text-indigo-900 shadow-2xs">
-                        <input type="radio" name="temp_role" value="uphead" checked class="text-indigo-600 focus:ring-indigo-500">
-                        <div>
-                            <div class="font-bold text-xs text-neutral-800">ইউপি চেয়ারম্যান</div>
-                            <div class="text-[10px] text-neutral-500">পূর্ণ প্রশাসনিক ও সনদ স্বাক্ষর ক্ষমতা</div>
-                        </div>
-                    </label>
-                    <label class="relative flex items-center gap-2.5 p-3 rounded-xl border border-neutral-300 bg-white hover:border-indigo-600 cursor-pointer transition-all has-checked:border-indigo-600 has-checked:bg-indigo-50/50 has-checked:text-indigo-900 shadow-2xs">
-                        <input type="radio" name="temp_role" value="upsocib" class="text-indigo-600 focus:ring-indigo-500">
-                        <div>
-                            <div class="font-bold text-xs text-neutral-800">ইউপি সচিব</div>
-                            <div class="text-[10px] text-neutral-500">দাপ্তরিক, হোল্ডিং ও ক্যাশ ব্যবস্থাপনা</div>
-                        </div>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Duration Selector (1h to 72h) -->
-            <div>
-                <div class="flex items-center justify-between mb-1.5">
-                    <label class="block font-bold text-neutral-700">
-                        সময়সীমা / মেয়াদকাল (১ থেকে ৭২ ঘণ্টা) <span class="text-[10px] font-normal text-neutral-400">/ Access Duration</span>
-                    </label>
-                    <span id="tempDurationLabel" class="text-[11px] font-bold text-indigo-700 font-mono">২৪ ঘণ্টা</span>
-                </div>
-                <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5" id="temp_duration_presets">
-                    <button type="button" onclick="setTempDuration(1, this)" class="temp-dur-btn py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-neutral-700 transition-all">১ ঘণ্টা</button>
-                    <button type="button" onclick="setTempDuration(4, this)" class="temp-dur-btn py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-neutral-700 transition-all">৪ ঘণ্টা</button>
-                    <button type="button" onclick="setTempDuration(12, this)" class="temp-dur-btn py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-neutral-700 transition-all">১২ ঘণ্টা</button>
-                    <button type="button" onclick="setTempDuration(24, this)" class="temp-dur-btn active py-1.5 rounded-lg border border-indigo-600 bg-indigo-50 text-indigo-700 font-bold transition-all">২৪ ঘণ্টা</button>
-                    <button type="button" onclick="setTempDuration(48, this)" class="temp-dur-btn py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-neutral-700 transition-all">৪৮ ঘণ্টা</button>
-                    <button type="button" onclick="setTempDuration(72, this)" class="temp-dur-btn py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-neutral-700 transition-all">৭২ ঘণ্টা</button>
-                </div>
-                <input type="hidden" id="temp_duration_hours" value="24">
-            </div>
-
-            <!-- Reason / Note -->
-            <div>
-                <label class="block font-bold text-neutral-700 mb-1">
-                    সহায়তার কারণ / সাপোর্ট রেফারেন্স <span class="text-[10px] font-normal text-neutral-400">/ Purpose or Ticket Note</span>
-                </label>
-                <input type="text" id="temp_reason" required placeholder="যেমন: হোল্ডিং ট্যাক্স ডাটা সংশোধন ও ইউজার ট্রাবলশুটিং" class="w-full p-2.5 rounded-xl border border-neutral-300 text-xs focus:border-indigo-600 focus:outline-none">
-            </div>
-
-            <div id="tempAdminError" class="p-3 rounded-xl bg-red-50 text-red-700 border border-red-200 hidden"></div>
-
-            <div class="flex justify-end gap-2 pt-2">
-                <button type="button" onclick="closeTempAdminModal()" class="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold cursor-pointer transition-colors">
-                    বন্ধ করুন
-                </button>
-                <button type="submit" id="tempCreateBtn" class="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white font-bold cursor-pointer shadow-xs transition-colors">
-                    <i class="ph-bold ph-key"></i>
-                    <span>অস্থায়ী এক্সেস তৈরি করুন</span>
-                </button>
-            </div>
-        </form>
-
-        <!-- Result Box: Newly Created Credentials -->
-        <div id="tempResultBox" class="mt-5 p-4 rounded-2xl bg-emerald-50/70 border border-emerald-300 hidden space-y-3">
-            <div class="flex items-center justify-between border-b border-emerald-200/80 pb-2">
-                <div class="flex items-center gap-1.5 text-emerald-800 font-bold text-xs">
-                    <i class="ph-fill ph-check-circle text-emerald-600 text-sm"></i>
-                    <span>অস্থায়ী ক্রেডেনশিয়াল প্রস্তুত হয়েছে!</span>
-                </div>
-                <span class="text-[10px] text-emerald-700 font-mono bg-emerald-100 px-2 py-0.5 rounded font-bold" id="resDurationBadge">২৪ ঘণ্টা বৈধ</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                <!-- Username -->
-                <div class="p-2.5 bg-white rounded-xl border border-emerald-200 flex items-center justify-between">
-                    <div>
-                        <div class="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">ইউজারনেম</div>
-                        <div class="font-mono font-bold text-neutral-900 select-all" id="resUsername">-</div>
-                    </div>
-                    <button type="button" onclick="copyValue('resUsername', this)" class="p-1.5 text-neutral-500 hover:text-emerald-700 rounded hover:bg-emerald-50 cursor-pointer" title="কপি করুন">
-                        <i class="ph ph-copy text-sm"></i>
-                    </button>
-                </div>
-
-                <!-- Password -->
-                <div class="p-2.5 bg-white rounded-xl border border-emerald-200 flex items-center justify-between">
-                    <div>
-                        <div class="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">পাসওয়ার্ড</div>
-                        <div class="font-mono font-bold text-neutral-900 select-all" id="resPassword">-</div>
-                    </div>
-                    <button type="button" onclick="copyValue('resPassword', this)" class="p-1.5 text-neutral-500 hover:text-emerald-700 rounded hover:bg-emerald-50 cursor-pointer" title="কপি করুন">
-                        <i class="ph ph-copy text-sm"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between text-[11px] text-neutral-600 pt-1">
-                <div>মেয়াদ শেষ: <strong class="font-mono text-neutral-900" id="resExpiresAt">-</strong></div>
+        <!-- Scrollable Content Body -->
+        <div class="p-5 sm:p-8 overflow-y-auto flex-1 space-y-4 text-xs">
+            
+            <!-- Tenant Identification Badge -->
+            <div class="p-3 rounded-2xl bg-neutral-50 border border-neutral-200/80 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <button type="button" onclick="copyAllCreds()" class="text-indigo-700 hover:underline font-bold cursor-pointer">
-                        উভয় তথ্য কপি করুন
-                    </button>
-                    <a id="resLoginLink" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-2xs transition-colors">
-                        <span>লগইন পেজে যান</span>
-                        <i class="ph ph-arrow-square-out text-xs"></i>
-                    </a>
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-bold text-neutral-800" id="tempModalTenantName">ইউনিয়ন পরিষদ</span>
+                </div>
+                <span class="font-mono text-[11px] font-bold px-2 py-0.5 rounded-md bg-white border border-neutral-300 text-neutral-700" id="tempModalTenantId">#0</span>
+            </div>
+
+            <!-- Privacy & Isolation Notice -->
+            <div class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200 text-[11px] text-amber-900 leading-relaxed flex items-start gap-2.5">
+                <i class="ph-fill ph-warning-circle text-amber-600 text-base shrink-0 mt-0.5"></i>
+                <div>
+                    <strong>আইসোলেশন ও নিরাপত্তা নীতি:</strong> সুপার অ্যাডমিন হিসেবে আপনি সরাসরি কোনো টেন্যান্টের ড্যাশবোর্ডে প্রবেশ করতে পারেন না। কারিগরি সহায়তার জন্য এই সাময়িক এক্সেস তৈরি করা হচ্ছে। নির্দিষ্ট মেয়াদ শেষ হওয়ার সাথে সাথে একাউন্ট ও পাসওয়ার্ড <strong>স্বয়ংক্রিয়ভাবে পার্মানেন্ট ডিলিট</strong> হয়ে যাবে।
                 </div>
             </div>
-        </div>
 
-        <!-- Active Sessions Section -->
-        <div class="mt-6 pt-4 border-t border-neutral-200">
-            <div class="flex items-center justify-between mb-3">
-                <h4 class="font-bold text-neutral-800 text-xs flex items-center gap-1.5">
-                    <i class="ph-bold ph-hourglass-high text-indigo-600"></i>
-                    <span>চলমান অস্থায়ী সাপোর্ট সেশনসমূহ</span>
-                </h4>
-                <button type="button" onclick="refreshTempSessions()" class="text-[11px] text-indigo-700 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
-                    <i class="ph ph-arrows-clockwise text-xs"></i> রিফ্রেশ
-                </button>
+            <!-- Form: Create Temp Admin -->
+            <form id="tempAdminForm" onsubmit="submitCreateTempAdmin(event)" class="space-y-4 text-xs">
+                <input type="hidden" id="temp_tenant_id">
+
+                <!-- Role Selection -->
+                <div>
+                    <label class="block font-bold text-neutral-700 mb-1.5">
+                        অস্থায়ী রোল নির্বাচন করুন <span class="text-[10px] font-normal text-neutral-400">/ Delegated Role</span>
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="relative flex items-center gap-2.5 p-3 rounded-xl border border-neutral-300 bg-white hover:border-indigo-600 cursor-pointer transition-all has-checked:border-indigo-600 has-checked:bg-indigo-50/50 has-checked:text-indigo-900 shadow-2xs">
+                            <input type="radio" name="temp_role" value="uphead" checked class="text-indigo-600 focus:ring-indigo-500">
+                            <div>
+                                <div class="font-bold text-xs text-neutral-800">ইউপি চেয়ারম্যান</div>
+                                <div class="text-[10px] text-neutral-500">পূর্ণ প্রশাসনিক ও সনদ স্বাক্ষর ক্ষমতা</div>
+                            </div>
+                        </label>
+                        <label class="relative flex items-center gap-2.5 p-3 rounded-xl border border-neutral-300 bg-white hover:border-indigo-600 cursor-pointer transition-all has-checked:border-indigo-600 has-checked:bg-indigo-50/50 has-checked:text-indigo-900 shadow-2xs">
+                            <input type="radio" name="temp_role" value="upsocib" class="text-indigo-600 focus:ring-indigo-500">
+                            <div>
+                                <div class="font-bold text-xs text-neutral-800">ইউপি সচিব</div>
+                                <div class="text-[10px] text-neutral-500">দাপ্তরিক, হোল্ডিং ও ক্যাশ ব্যবস্থাপনা</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Duration Selector (1h to 72h) -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="block font-bold text-neutral-700">
+                            সময়সীমা / মেয়াদকাল (১ থেকে ৭২ ঘণ্টা) <span class="text-[10px] font-normal text-neutral-400">/ Access Duration</span>
+                        </label>
+                        <span id="tempDurationLabel" class="text-[11px] font-bold text-indigo-700 font-mono">২৪ ঘণ্টা</span>
+                    </div>
+                    <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5" id="temp_duration_presets">
+                        <button type="button" onclick="setTempDuration(1, this)" class="temp-dur-btn py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-neutral-700 transition-all">১ ঘণ্টা</button>
+                        <button type="button" onclick="setTempDuration(4, this)" class="temp-dur-btn py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-neutral-700 transition-all">৪ ঘণ্টা</button>
+                        <button type="button" onclick="setTempDuration(12, this)" class="temp-dur-btn py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-neutral-700 transition-all">১২ ঘণ্টা</button>
+                        <button type="button" onclick="setTempDuration(24, this)" class="temp-dur-btn active py-1.5 rounded-lg border border-indigo-600 bg-indigo-50 text-indigo-700 font-bold transition-all">২৪ ঘণ্টা</button>
+                        <button type="button" onclick="setTempDuration(48, this)" class="temp-dur-btn py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-neutral-700 transition-all">৪৮ ঘণ্টা</button>
+                        <button type="button" onclick="setTempDuration(72, this)" class="temp-dur-btn py-1.5 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-indigo-50 hover:border-indigo-300 font-bold text-neutral-700 transition-all">৭২ ঘণ্টা</button>
+                    </div>
+                    <input type="hidden" id="temp_duration_hours" value="24">
+                </div>
+
+                <!-- Reason / Note -->
+                <div>
+                    <label class="block font-bold text-neutral-700 mb-1">
+                        সহায়তার কারণ / সাপোর্ট রেফারেন্স <span class="text-[10px] font-normal text-neutral-400">/ Purpose or Ticket Note</span>
+                    </label>
+                    <input type="text" id="temp_reason" required placeholder="যেমন: হোল্ডিং ট্যাক্স ডাটা সংশোধন ও ইউজার ট্রাবলশুটিং" class="w-full p-2.5 rounded-xl border border-neutral-300 text-xs focus:border-indigo-600 focus:outline-none">
+                </div>
+
+                <div id="tempAdminError" class="p-3 rounded-xl bg-red-50 text-red-700 border border-red-200 hidden"></div>
+
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeTempAdminModal()" class="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold cursor-pointer transition-colors">
+                        বন্ধ করুন
+                    </button>
+                    <button type="submit" id="tempCreateBtn" class="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white font-bold cursor-pointer shadow-xs transition-colors">
+                        <i class="ph-bold ph-key"></i>
+                        <span>অস্থায়ী এক্সেস তৈরি করুন</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Result Box: Newly Created Credentials -->
+            <div id="tempResultBox" class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-300 hidden space-y-3">
+                <div class="flex items-center justify-between border-b border-emerald-200/80 pb-2">
+                    <div class="flex items-center gap-1.5 text-emerald-800 font-bold text-xs">
+                        <i class="ph-fill ph-check-circle text-emerald-600 text-sm"></i>
+                        <span>অস্থায়ী ক্রেডেনশিয়াল প্রস্তুত হয়েছে!</span>
+                    </div>
+                    <span class="text-[10px] text-emerald-700 font-mono bg-emerald-100 px-2 py-0.5 rounded font-bold" id="resDurationBadge">২৪ ঘণ্টা বৈধ</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <!-- Username -->
+                    <div class="p-2.5 bg-white rounded-xl border border-emerald-200 flex items-center justify-between">
+                        <div>
+                            <div class="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">ইউজারনেম</div>
+                            <div class="font-mono font-bold text-neutral-900 select-all" id="resUsername">-</div>
+                        </div>
+                        <button type="button" onclick="copyValue('resUsername', this)" class="p-1.5 text-neutral-500 hover:text-emerald-700 rounded hover:bg-emerald-50 cursor-pointer" title="কপি করুন">
+                            <i class="ph ph-copy text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="p-2.5 bg-white rounded-xl border border-emerald-200 flex items-center justify-between">
+                        <div>
+                            <div class="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">পাসওয়ার্ড</div>
+                            <div class="font-mono font-bold text-neutral-900 select-all" id="resPassword">-</div>
+                        </div>
+                        <button type="button" onclick="copyValue('resPassword', this)" class="p-1.5 text-neutral-500 hover:text-emerald-700 rounded hover:bg-emerald-50 cursor-pointer" title="কপি করুন">
+                            <i class="ph ph-copy text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-neutral-600 pt-1">
+                    <div>মেয়াদ শেষ: <strong class="font-mono text-neutral-900" id="resExpiresAt">-</strong></div>
+                    <div class="flex items-center gap-2">
+                        <button type="button" onclick="copyAllCreds()" class="text-indigo-700 hover:underline font-bold cursor-pointer">
+                            উভয় তথ্য কপি করুন
+                        </button>
+                        <a id="resLoginLink" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-2xs transition-colors">
+                            <span>লগইন পেজে যান</span>
+                            <i class="ph ph-arrow-square-out text-xs"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <div id="activeSessionsContainer" class="space-y-2 text-xs">
-                <div class="text-neutral-400 text-center py-3 text-[11px]">লোড হচ্ছে...</div>
+            <!-- Active Sessions Section -->
+            <div class="pt-4 border-t border-neutral-200">
+                <div class="flex items-center justify-between mb-3">
+                    <h4 class="font-bold text-neutral-800 text-xs flex items-center gap-1.5">
+                        <i class="ph-bold ph-hourglass-high text-indigo-600"></i>
+                        <span>চলমান অস্থায়ী সাপোর্ট সেশনসমূহ</span>
+                    </h4>
+                    <button type="button" onclick="refreshTempSessions()" class="text-[11px] text-indigo-700 hover:underline font-semibold flex items-center gap-1 cursor-pointer">
+                        <i class="ph ph-arrows-clockwise text-xs"></i> রিফ্রেশ
+                    </button>
+                </div>
+
+                <div id="activeSessionsContainer" class="space-y-2 text-xs">
+                    <div class="text-neutral-400 text-center py-3 text-[11px]">লোড হচ্ছে...</div>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
