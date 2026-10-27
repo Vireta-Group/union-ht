@@ -393,24 +393,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 <!-- Modal: Onboard New Tenant -->
-<div id="onboardModal" class="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-xl w-full p-4 sm:p-6 md:p-8 shadow-xl max-h-[90vh] overflow-y-auto">
-        <div class="flex items-center justify-between pb-4 border-b border-neutral-200">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+<div id="onboardModal" class="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs hidden overflow-y-auto p-3 sm:p-6 justify-center items-start sm:items-center">
+    <div class="relative bg-white rounded-3xl max-w-xl w-full my-auto shadow-2xl border border-neutral-200 flex flex-col max-h-[90vh] overflow-hidden">
+        
+        <!-- Pinned Header -->
+        <div class="px-5 sm:px-7 py-4 border-b border-neutral-200 flex items-center justify-between shrink-0 bg-white z-20">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center font-bold text-lg shadow-xs">
                     <i class="ph ph-buildings"></i>
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold text-neutral-900 leading-tight">নতুন ইউনিয়ন পরিষদ অনবোর্ডিং</h3>
-                    <p class="text-[11px] text-neutral-500">Onboard New Tenant / Parishad Portal</p>
+                    <h3 class="text-base sm:text-lg font-bold text-neutral-900 leading-tight">নতুন ইউনিয়ন পরিষদ অনবোর্ডিং</h3>
+                    <p class="text-[11px] text-neutral-500 font-medium">Onboard New Tenant / Parishad Portal</p>
                 </div>
             </div>
-            <button onclick="closeOnboardModal()" class="text-neutral-400 hover:text-neutral-700 text-lg cursor-pointer">
+            <button type="button" onclick="closeOnboardModal()" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-800 flex items-center justify-center text-lg transition-colors cursor-pointer" aria-label="বন্ধ করুন">
                 <i class="ph ph-x"></i>
             </button>
         </div>
 
-        <form id="onboardForm" onsubmit="submitOnboard(event)" class="mt-5 space-y-4 text-xs">
+        <form id="onboardForm" onsubmit="submitOnboard(event)" class="flex flex-col flex-1 overflow-hidden min-h-0 m-0">
+            <div class="p-5 sm:p-7 overflow-y-auto flex-1 space-y-4 text-xs">
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -548,38 +551,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             <div id="onboardError" class="p-3 rounded-xl bg-red-50 text-red-700 border border-red-200 hidden"></div>
             <div id="onboardSuccess" class="p-3 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 hidden"></div>
+        </div>
 
-            <div class="flex justify-end gap-2 pt-3 border-t border-neutral-200">
-                <button type="button" onclick="closeOnboardModal()" class="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold cursor-pointer">
-                    বাতিল / Cancel
-                </button>
-                <button type="submit" id="onboardSubmitBtn" class="px-5 py-2 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white font-bold cursor-pointer">
-                    অনবোর্ড সম্পন্ন করুন / Onboard Tenant
-                </button>
-            </div>
-        </form>
-    </div>
+        <!-- Pinned Footer -->
+        <div class="px-5 sm:px-7 py-3.5 border-t border-neutral-200 flex justify-end gap-2 shrink-0 bg-neutral-50/90 z-20">
+            <button type="button" onclick="closeOnboardModal()" class="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold cursor-pointer transition-colors">
+                বাতিল / Cancel
+            </button>
+            <button type="submit" id="onboardSubmitBtn" class="px-5 py-2 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white font-bold cursor-pointer shadow-xs transition-colors">
+                অনবোর্ড সম্পন্ন করুন / Onboard Tenant
+            </button>
+        </div>
+    </form>
+</div>
 </div>
 
 <!-- Modal: Edit Tenant Info & Domain -->
-<div id="editModal" class="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-4 sm:p-6 md:p-8 shadow-xl max-h-[90vh] overflow-y-auto">
-        <div class="flex items-center justify-between pb-4 border-b border-neutral-200">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+<div id="editModal" class="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs hidden overflow-y-auto p-3 sm:p-6 justify-center items-start sm:items-center">
+    <div class="relative bg-white rounded-3xl max-w-lg w-full my-auto shadow-2xl border border-neutral-200 flex flex-col max-h-[90vh] overflow-hidden">
+        
+        <!-- Pinned Header -->
+        <div class="px-5 sm:px-7 py-4 border-b border-neutral-200 flex items-center justify-between shrink-0 bg-white z-20">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 flex items-center justify-center font-bold text-lg shadow-xs">
                     <i class="ph ph-pencil-simple"></i>
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold text-neutral-900 leading-tight">ইউনিয়ন তথ্য ও ডোমেন সম্পাদনা</h3>
-                    <p class="text-[11px] text-neutral-500">Edit Tenant Details & Subscriptions</p>
+                    <h3 class="text-base sm:text-lg font-bold text-neutral-900 leading-tight">ইউনিয়ন তথ্য ও ডোমেন সম্পাদনা</h3>
+                    <p class="text-[11px] text-neutral-500 font-medium">Edit Tenant Details & Subscriptions</p>
                 </div>
             </div>
-            <button onclick="closeEditModal()" class="text-neutral-400 hover:text-neutral-700 text-lg cursor-pointer">
+            <button type="button" onclick="closeEditModal()" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-800 flex items-center justify-center text-lg transition-colors cursor-pointer" aria-label="বন্ধ করুন">
                 <i class="ph ph-x"></i>
             </button>
         </div>
 
-        <form id="editForm" onsubmit="submitEdit(event)" class="mt-5 space-y-4 text-xs">
+        <form id="editForm" onsubmit="submitEdit(event)" class="flex flex-col flex-1 overflow-hidden min-h-0 m-0">
+            <div class="p-5 sm:p-7 overflow-y-auto flex-1 space-y-4 text-xs">
             <input type="hidden" id="ed_tenant_id">
 
             <div>
@@ -657,17 +665,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             <div id="editError" class="p-3 rounded-xl bg-red-50 text-red-700 border border-red-200 hidden"></div>
             <div id="editSuccess" class="p-3 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 hidden"></div>
+        </div>
 
-            <div class="flex justify-end gap-2 pt-3 border-t border-neutral-200">
-                <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold cursor-pointer">
-                    বাতিল / Cancel
-                </button>
-                <button type="submit" id="editSubmitBtn" class="px-5 py-2 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white font-bold cursor-pointer">
-                    পরিবর্তন সংরক্ষণ করুন / Save Changes
-                </button>
-            </div>
-        </form>
-    </div>
+        <!-- Pinned Footer -->
+        <div class="px-5 sm:px-7 py-3.5 border-t border-neutral-200 flex justify-end gap-2 shrink-0 bg-neutral-50/90 z-20">
+            <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-bold cursor-pointer transition-colors">
+                বাতিল / Cancel
+            </button>
+            <button type="submit" id="editSubmitBtn" class="px-5 py-2 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white font-bold cursor-pointer shadow-xs transition-colors">
+                পরিবর্তন সংরক্ষণ করুন / Save Changes
+            </button>
+        </div>
+    </form>
+</div>
 </div>
 
 <!-- Modal: Temporary Delegated Support Admin (1 to 72 Hours) -->

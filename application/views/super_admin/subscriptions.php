@@ -369,16 +369,18 @@ $summary = [
 </section>
 
 <!-- ===================== Modals ===================== -->
-<div id="saModal" class="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-4 sm:p-6 shadow-xl max-h-[90vh] overflow-y-auto">
-        <div class="flex items-center justify-between pb-3 border-b border-neutral-200">
-            <h3 id="saModalTitle" class="text-base font-bold text-neutral-900"></h3>
-            <button type="button" onclick="saCloseModal()" class="text-neutral-400 hover:text-neutral-700 cursor-pointer">
-                <i class="ph ph-x text-lg"></i>
+<div id="saModal" class="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs hidden overflow-y-auto p-3 sm:p-6 justify-center items-start sm:items-center">
+    <div class="relative bg-white rounded-3xl max-w-lg w-full my-auto shadow-2xl border border-neutral-200 flex flex-col max-h-[90vh] overflow-hidden">
+        <div class="px-5 sm:px-7 py-4 border-b border-neutral-200 flex items-center justify-between shrink-0 bg-white z-20">
+            <h3 id="saModalTitle" class="text-base font-bold text-neutral-900 leading-tight"></h3>
+            <button type="button" onclick="saCloseModal()" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-neutral-800 flex items-center justify-center text-lg transition-colors cursor-pointer" aria-label="বন্ধ করুন">
+                <i class="ph ph-x"></i>
             </button>
         </div>
-        <div id="saModalBody" class="mt-4 text-xs"></div>
-        <div id="saModalMsg" class="mt-3 hidden"></div>
+        <div class="p-5 sm:p-7 overflow-y-auto flex-1 text-xs">
+            <div id="saModalBody"></div>
+            <div id="saModalMsg" class="mt-3 hidden"></div>
+        </div>
     </div>
 </div>
 

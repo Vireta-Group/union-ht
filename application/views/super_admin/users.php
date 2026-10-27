@@ -549,9 +549,8 @@ function sa_group_chip($name)
     gets confused about why a disabled account can still log in.
 -->
 
-<!-- ===================== Reset Password Modal ===================== -->
-<div id="resetPasswordModal" class="fixed inset-0 z-50 overflow-y-auto bg-neutral-900/60 backdrop-blur-xs flex items-center justify-center p-4" style="display:none">
-    <div class="bg-white rounded-3xl border border-neutral-200 shadow-2xl max-w-md w-full overflow-hidden transition-all transform animate-in fade-in zoom-in-95 duration-200">
+<div id="resetPasswordModal" class="fixed inset-0 z-50 overflow-y-auto bg-neutral-900/60 backdrop-blur-xs p-3 sm:p-6 justify-center items-start sm:items-center" style="display:none">
+    <div class="relative bg-white rounded-3xl border border-neutral-200 shadow-2xl max-w-md w-full my-auto overflow-hidden transition-all transform">
         
         <!-- Header -->
         <div class="px-6 py-5 border-b border-neutral-100 flex items-center justify-between">

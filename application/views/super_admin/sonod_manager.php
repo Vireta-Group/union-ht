@@ -720,17 +720,17 @@ $up_logo    = !empty($selected_tenant->ins_logo_path) ? media_url($selected_tena
     </div> <!-- /#panel-mode-texts -->
 
     <!-- Modal: Edit Certificate Text (Global Master or Tenant Override) -->
-    <div id="sonodTextEditModal" class="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs items-center justify-center p-4 overflow-y-auto" style="display: none;">
-        <div class="bg-white rounded-3xl border border-neutral-200 shadow-2xl max-w-2xl w-full p-6 space-y-5 my-8 transform transition-all">
+    <div id="sonodTextEditModal" class="fixed inset-0 z-50 bg-neutral-900/60 backdrop-blur-xs overflow-y-auto p-3 sm:p-6 justify-center items-start sm:items-center" style="display: none;">
+        <div class="relative bg-white rounded-3xl border border-neutral-200 shadow-2xl max-w-2xl w-full my-auto flex flex-col max-h-[90vh] overflow-hidden">
 
-            <!-- Modal Header -->
-            <div class="flex items-start justify-between gap-4 border-b border-neutral-100 pb-4">
+            <!-- Pinned Modal Header -->
+            <div class="px-6 py-4.5 border-b border-neutral-200 flex items-start justify-between gap-4 shrink-0 bg-white z-20">
                 <div class="flex items-center gap-3">
                     <span id="modalIconContainer" class="w-10 h-10 rounded-2xl flex items-center justify-center text-xl shrink-0 bg-indigo-50 text-indigo-700">
                         <i id="modalIcon" class="ph ph-globe"></i>
                     </span>
                     <div>
-                        <h3 id="modalTitle" class="text-base font-bold text-neutral-900">
+                        <h3 id="modalTitle" class="text-base font-bold text-neutral-900 leading-tight">
                             সনদ টেক্সট ও বয়ান সম্পাদনা
                         </h3>
                         <p id="modalSubtitle" class="text-xs text-neutral-500 mt-0.5">
@@ -738,21 +738,23 @@ $up_logo    = !empty($selected_tenant->ins_logo_path) ? media_url($selected_tena
                         </p>
                     </div>
                 </div>
-                <button type="button" onclick="closeSonodTextModal()" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 flex items-center justify-center text-lg cursor-pointer">
+                <button type="button" onclick="closeSonodTextModal()" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 flex items-center justify-center text-lg cursor-pointer transition-colors" aria-label="বন্ধ করুন">
                     <i class="ph ph-x"></i>
                 </button>
             </div>
 
-            <!-- Modal Warning / Info Banner -->
-            <div id="modalNoticeBanner" class="p-3.5 rounded-xl border text-xs leading-relaxed flex items-start gap-2.5">
-                <i id="modalNoticeIcon" class="ph ph-info text-base shrink-0 pt-0.5"></i>
-                <span id="modalNoticeText"></span>
-            </div>
+            <!-- Dynamic Form with Scrollable Body and Pinned Footer -->
+            <form id="sonodTextModalForm" method="post" action="" class="flex flex-col flex-1 overflow-hidden min-h-0 m-0">
+                <div class="p-6 overflow-y-auto flex-1 space-y-4 text-xs">
 
-            <!-- Dynamic Form -->
-            <form id="sonodTextModalForm" method="post" action="" class="space-y-4">
-                <input type="hidden" name="tenant_id" value="<?= (int)$selected_tenant_id ?>">
-                <input type="hidden" name="sonod_id" id="modalSonodId" value="0">
+                    <!-- Modal Warning / Info Banner -->
+                    <div id="modalNoticeBanner" class="p-3.5 rounded-xl border text-xs leading-relaxed flex items-start gap-2.5">
+                        <i id="modalNoticeIcon" class="ph ph-info text-base shrink-0 pt-0.5"></i>
+                        <span id="modalNoticeText"></span>
+                    </div>
+
+                    <input type="hidden" name="tenant_id" value="<?= (int)$selected_tenant_id ?>">
+                    <input type="hidden" name="sonod_id" id="modalSonodId" value="0">
                 <input type="hidden" name="global_id" id="modalGlobalId" value="0">
                 <input type="hidden" name="custom_id" id="modalCustomId" value="0">
 
@@ -845,20 +847,21 @@ $up_logo    = !empty($selected_tenant->ins_logo_path) ? media_url($selected_tena
                     </div>
                 </div>
 
-                <!-- Modal Actions -->
-                <div class="flex items-center justify-end gap-3 pt-3 border-t border-neutral-100">
+                </div>
+
+                <!-- Pinned Modal Actions Footer -->
+                <div class="px-6 py-3.5 border-t border-neutral-200 flex items-center justify-end gap-3 shrink-0 bg-neutral-50/90 z-20">
                     <button type="button" onclick="closeSonodTextModal()"
-                            class="ht-btn ht-btn-outline px-4 py-2 text-xs font-bold cursor-pointer">
+                            class="px-4 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-xs font-bold cursor-pointer transition-colors">
                         বাতিল
                     </button>
                     <button type="submit" id="modalSubmitBtn"
-                            class="ht-btn ht-btn-primary px-5 py-2 text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs">
+                            class="px-5 py-2 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors">
                         <i class="ph ph-check-circle text-base"></i>
                         <span>সংরক্ষণ করুন</span>
                     </button>
                 </div>
             </form>
-
         </div>
     </div>
 
