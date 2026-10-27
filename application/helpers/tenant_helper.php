@@ -427,6 +427,33 @@ if ( ! function_exists('tenant_login_url'))
 			return base_url('dashboard');
 		}
 
+		$is_dev = (bool) $CI->config->item('is_development');
+
+		// In development: when on a dev platform host (localhost, 127.0.0.1, ::1), stay on the
+		// current host with ?tenant=N to preserve the dev server port (e.g. :8080), maintain
+		// session cookies, and avoid broken cross-domain redirects to unreachable .local hostnames.
+		if ($is_dev && $tenant_id > 0)
+		{
+			$current_host = '';
+			if (isset($CI->tenant_resolver))
+			{
+				$current_host = $CI->tenant_resolver->hostname();
+			}
+			elseif (isset($_SERVER['HTTP_HOST']))
+			{
+				$current_host = strtolower(trim($_SERVER['HTTP_HOST']));
+				if (($c = strrpos($current_host, ':')) !== false)
+				{
+					$current_host = substr($current_host, 0, $c);
+				}
+			}
+
+			if ($current_host === 'localhost' || $current_host === '127.0.0.1' || $current_host === '::1')
+			{
+				return base_url('dashboard?tenant=' . $tenant_id);
+			}
+		}
+
 		if ($tenant_id > 0)
 		{
 			$rows = $CI->db->where('ins_titute_p_id', $tenant_id)
@@ -435,7 +462,6 @@ if ( ! function_exists('tenant_login_url'))
 			                ->get('tenant_domains')
 			                ->result();
 
-			$is_dev    = (bool) $CI->config->item('is_development');
 			$dev_host  = null;
 			$live_host = null;
 			$any_host  = null;
@@ -455,9 +481,14 @@ if ( ! function_exists('tenant_login_url'))
 				{
 					$live_host = $h;
 				}
-				if ( ! empty($r->is_dev_only) && $dev_host === null)
+				if ( ! empty($r->is_dev_only))
 				{
-					$dev_host = $h;
+					// Prefer *.localhost over *.local because modern browsers and OS resolvers
+					// automatically resolve *.localhost without requiring /etc/hosts modification.
+					if ($dev_host === null || str_ends_with($h, '.localhost'))
+					{
+						$dev_host = $h;
+					}
 				}
 			}
 
@@ -473,7 +504,12 @@ if ( ! function_exists('tenant_login_url'))
 
 			if ($host)
 			{
-				return (is_https() ? 'https://' : 'http://') . $host . '/dashboard';
+				$port = '';
+				if ($is_dev && isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], ':') !== false)
+				{
+					$port = ':' . substr($_SERVER['HTTP_HOST'], strpos($_SERVER['HTTP_HOST'], ':') + 1);
+				}
+				return (is_https() ? 'https://' : 'http://') . $host . $port . '/dashboard';
 			}
 		}
 
