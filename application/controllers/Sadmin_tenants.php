@@ -134,12 +134,17 @@ class Sadmin_tenants extends CI_Controller
 			$subs[$sub->ins_titute_p_id] = $sub;
 		}
 
+		$pending_count = 0;
 		foreach ($tenants as &$t) {
 			$tid = $t->ins_titute_p_idds;
 			$t->domains = $domains_by_tenant[$tid] ?? [];
 			$t->users = $users_by_tenant[$tid] ?? [];
 			$t->holdings_count = $holdings_counts[$tid] ?? 0;
 			$t->subscription = $subs[$tid] ?? NULL;
+			$t->is_pending_approval = (!$t->is_active && $t->subscription && $t->subscription->status === 'pending');
+			if ($t->is_pending_approval) {
+				$pending_count++;
+			}
 
 			// Primary domain / preview URL
 			$preview_host = null;
@@ -159,6 +164,7 @@ class Sadmin_tenants extends CI_Controller
 		$data += [
 			'tenants'              => $tenants,
 			'total_tenants'        => count($tenants),
+			'pending_count'        => $pending_count,
 			'total_custom_domains' => $total_custom_domains,
 			'total_subdomains'     => $total_subdomains,
 			'total_holdings'       => $total_all_holdings,
@@ -782,6 +788,103 @@ class Sadmin_tenants extends CI_Controller
 		}
 
 		sadmin_json(['success' => true, 'data' => $rows]);
+	}
+
+	/**
+	 * API: Approve a pending tenant and activate 4-day free trial.
+	 */
+	public function api_approve_tenant()
+	{
+		$input = sadmin_api_input();
+		$tenant_id = (int)($input['tenant_id'] ?? 0);
+		$tenant = $this->db->where('ins_titute_p_idds', $tenant_id)->get('ins_titute')->row();
+		if (!$tenant) {
+			sadmin_fail('ইউনিয়ন পরিষদ পাওয়া যায়নি।', 404);
+		}
+
+		$sub = $this->db->where('ins_titute_p_id', $tenant_id)->get('subscriptions')->row();
+		$trial_end = date('Y-m-d', strtotime('+4 days'));
+
+		$this->db->trans_start();
+
+		// 1. Activate tenant
+		$this->db->where('ins_titute_p_idds', $tenant_id)->update('ins_titute', [
+			'is_active'    => TRUE,
+			'expire_times' => $trial_end
+		]);
+
+		// 2. Activate subscription with 4-day trial
+		if ($sub) {
+			$this->db->where('subscription_id', $sub->subscription_id)->update('subscriptions', [
+				'status'     => 'active',
+				'start_date' => date('Y-m-d'),
+				'end_date'   => $trial_end,
+				'note'       => 'অনুমোদিত — ৪ দিনের ফ্রি ট্রায়াল সক্রিয়'
+			]);
+		}
+
+		$this->db->trans_complete();
+
+		if ($this->db->trans_status() === FALSE) {
+			sadmin_fail('অনুমোদন ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।');
+		}
+
+		sadmin_write(function () use ($tenant, $tenant_id, $trial_end) {
+			return [
+				'success' => true,
+				'message' => '"' . $tenant->ins_name . '" সফলভাবে অনুমোদন করা হয়েছে এবং ৪ দিনের ফ্রি ট্রায়াল সক্রিয় করা হয়েছে (মেয়াদ: ' . $trial_end . ')।',
+				'audit'   => [
+					'entity_id' => (string) $tenant_id,
+					'tenant_id' => $tenant_id,
+					'summary'   => $tenant->ins_name . ' — অনুমোদন ও ৪ দিনের ট্রায়াল চালু',
+					'before'    => ['is_active' => false, 'status' => 'pending'],
+					'after'     => ['is_active' => true, 'status' => 'active', 'end_date' => $trial_end]
+				]
+			];
+		}, 'update', 'tenant');
+	}
+
+	/**
+	 * API: Reject and delete a pending tenant application.
+	 */
+	public function api_reject_tenant()
+	{
+		$input = sadmin_api_input();
+		$tenant_id = (int)($input['tenant_id'] ?? 0);
+		$tenant = $this->db->where('ins_titute_p_idds', $tenant_id)->get('ins_titute')->row();
+		if (!$tenant) {
+			sadmin_fail('ইউনিয়ন পরিষদ পাওয়া যায়নি।', 404);
+		}
+
+		if ($tenant_id === 1) {
+			sadmin_fail('মূল সিস্টেম টেন্যান্ট মুছে ফেলা সম্ভব নয়।', 400);
+		}
+
+		$this->db->trans_start();
+
+		// Delete associated users
+		$this->db->where('ins_pr_id_s', $tenant_id)->delete('users');
+
+		// Delete tenant (cascades tenant_domains, subscriptions)
+		$this->db->where('ins_titute_p_idds', $tenant_id)->delete('ins_titute');
+
+		$this->db->trans_complete();
+
+		if ($this->db->trans_status() === FALSE) {
+			sadmin_fail('প্রত্যাখ্যান ও মুছে ফেলা ব্যর্থ হয়েছে।');
+		}
+
+		sadmin_write(function () use ($tenant, $tenant_id) {
+			return [
+				'success' => true,
+				'message' => '"' . $tenant->ins_name . '"-এর আবেদন সফলভাবে প্রত্যাখ্যান ও মুছে ফেলা হয়েছে।',
+				'audit'   => [
+					'entity_id' => (string) $tenant_id,
+					'tenant_id' => $tenant_id,
+					'summary'   => $tenant->ins_name . ' — আবেদন প্রত্যাখ্যান ও মুছে ফেলা'
+				]
+			];
+		}, 'delete', 'tenant');
 	}
 }
 

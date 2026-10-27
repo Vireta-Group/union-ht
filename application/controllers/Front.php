@@ -511,6 +511,7 @@ class Front extends CI_Controller {
 	 */
 	private function create_tenant($input)
 	{
+		$input['is_self_signup'] = true;
 		$this->load->model('Tenant_creator');
 		return $this->Tenant_creator->create($input);
 	}
@@ -676,8 +677,13 @@ class Front extends CI_Controller {
 			if ($tenant_id > 0) {
 				$t_check = $this->db->where('ins_titute_p_idds', $tenant_id)->get('ins_titute')->row();
 				if ($t_check && isset($t_check->is_active) && ! $t_check->is_active) {
+					$sub_chk = $this->db->where('ins_titute_p_id', $tenant_id)->get('subscriptions')->row();
 					$this->ion_auth->logout();
-					$message = 'আপনার ইউনিয়ন পরিষদের কার্যক্রম প্ল্যাটফর্ম কর্তৃপক্ষ কর্তৃক সাময়িকভাবে স্থগিত (Suspended) রাখা হয়েছে। সহায়তার জন্য সেন্ট্রাল সাপোর্টে যোগাযোগ করুন।';
+					if ($sub_chk && $sub_chk->status === 'pending') {
+						$message = 'আপনার পরিষদটি এখনও প্ল্যাটফর্ম সুপার অ্যাডমিনের অনুমোদনের অপেক্ষায় রয়েছে। অনুমোদন পাওয়ার পর আপনার ৪ দিনের ফ্রি ট্রায়াল সক্রিয় হবে এবং আপনি লগইন করতে পারবেন।';
+					} else {
+						$message = 'আপনার ইউনিয়ন পরিষদের কার্যক্রম প্ল্যাটফর্ম কর্তৃপক্ষ কর্তৃক সাময়িকভাবে স্থগিত (Suspended) রাখা হয়েছে। সহায়তার জন্য সেন্ট্রাল সাপোর্টে যোগাযোগ করুন।';
+					}
 					if ($wants_json) {
 						echo json_encode(['success' => false, 'message' => $message]);
 					} else {

@@ -34,27 +34,48 @@ $saas_pkg_names = array(
 );
 $saas_pkg_name = $saas_pkg_names[$saas_plan] ?? $saas_pkg_names['standard'];
 
-$saas_subdomain    = $saas_done['subdomain'] ?? '';
+$saas_subdomain     = $saas_done['subdomain'] ?? '';
 $saas_custom_domain = $saas_done['custom_domain'] ?? '';
-$saas_tenant_id    = $saas_done['tenant_id'] ?? '';
+$saas_tenant_id     = $saas_done['tenant_id'] ?? '';
+$saas_is_pending    = !empty($saas_done['is_pending_approval']);
 ?>
         <main class="grow">
         <div class="py-16 min-h-[80vh]">
             <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="ht-card neu-glass-card border-2 border-emerald-500/80 rounded-3xl p-8 sm:p-12 text-center">
-                    <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <?= icon('check-circle', 48, 'fill') ?>
+                <div class="ht-card neu-glass-card border-2 <?= $saas_is_pending ? 'border-amber-400/80' : 'border-emerald-500/80' ?> rounded-3xl p-8 sm:p-12 text-center">
+                    <div class="w-20 h-20 <?= $saas_is_pending ? 'bg-amber-100 text-amber-600' : 'bg-emerald-100 text-emerald-600' ?> rounded-full flex items-center justify-center mx-auto mb-6">
+                        <?= $saas_is_pending ? icon('clock', 48, 'bold') : icon('check-circle', 48, 'fill') ?>
                     </div>
 
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 mb-3">
-                        সফলভাবে অ্যাক্টিভেট হয়েছে
-                    </span>
-                    <h1 class="text-2xl sm:text-4xl font-black text-neutral-900 tracking-tight">
-                        অভিনন্দন! আপনার ইউনিয়ন পোর্টাল প্রস্তুত
-                    </h1>
-                    <p class="mt-3 text-neutral-600 text-sm sm:text-base max-w-xl mx-auto">
-                        <strong><?= html_escape($saas_done['union_name'] ?? '', ENT_QUOTES, 'UTF-8') ?></strong> এর জন্য স্বয়ংক্রিয় ক্লাউড ইনস্ট্যান্স ও ডাটাবেজ তৈরি সম্পন্ন হয়েছে।
-                    </p>
+                    <?php if ($saas_is_pending): ?>
+                        <span class="inline-block px-3.5 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 mb-3">
+                            আবেদন সফলভাবে গৃহীত • অনুমোদনের অপেক্ষায়
+                        </span>
+                        <h1 class="text-2xl sm:text-4xl font-black text-neutral-900 tracking-tight">
+                            ধন্যবাদ! আপনার পরিষদ রেজিস্ট্রেশন জমা হয়েছে
+                        </h1>
+                        <p class="mt-3 text-neutral-600 text-sm sm:text-base max-w-xl mx-auto">
+                            <strong><?= html_escape($saas_done['union_name'] ?? '', ENT_QUOTES, 'UTF-8') ?></strong> এর রেজিস্ট্রেশন তথ্য সফলভাবে রেকর্ড করা হয়েছে। প্ল্যাটফর্ম সুপার অ্যাডমিন তথ্য যাচাই করার পর অনুমোদন দিলে তাৎক্ষণিকভাবে আপনার <strong>৪ দিনের ফ্রি ট্রায়াল</strong> সক্রিয় হবে।
+                        </p>
+
+                        <div class="mt-4 p-4 rounded-xl bg-amber-50 border border-amber-300 text-left flex items-start gap-3">
+                            <span class="text-amber-600 text-xl shrink-0 mt-0.5"><?= icon('info', 20, 'bold') ?></span>
+                            <div class="text-xs text-amber-950 leading-relaxed">
+                                <strong>৪ দিনের ফ্রি ট্রায়াল ও অনুমোদন প্রক্রিয়া:</strong><br />
+                                সুপার অ্যাডমিন পরিষদটি অনুমোদন দেওয়া মাত্রই আপনার ৪ দিনের ট্রায়াল সক্রিয় হবে এবং নিচের ক্রেডেনশিয়াল ব্যবহার করে পোর্টালে কাজ শুরু করতে পারবেন। দ্রুত অনুমোদনের জন্য যোগাযোগ করুন: <strong>+৮৮০ ১৭০০-০০০০০০</strong>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 mb-3">
+                            সফলভাবে অ্যাক্টিভেট হয়েছে
+                        </span>
+                        <h1 class="text-2xl sm:text-4xl font-black text-neutral-900 tracking-tight">
+                            অভিনন্দন! আপনার ইউনিয়ন পোর্টাল প্রস্তুত
+                        </h1>
+                        <p class="mt-3 text-neutral-600 text-sm sm:text-base max-w-xl mx-auto">
+                            <strong><?= html_escape($saas_done['union_name'] ?? '', ENT_QUOTES, 'UTF-8') ?></strong> এর জন্য স্বয়ংক্রিয় ক্লাউড ইনস্ট্যান্স ও ডাটাবেজ তৈরি সম্পন্ন হয়েছে।
+                        </p>
+                    <?php endif; ?>
 
                     <!-- Generated Credentials & Links Box -->
                     <div class="mt-8 neu-glass-inset rounded-2xl p-6 text-left space-y-4">
@@ -163,29 +184,44 @@ $saas_tenant_id    = $saas_done['tenant_id'] ?? '';
 
                     <!-- CTAs -->
                     <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-
-                        <?php /* Was a fetch to api_login from a click handler. Now a
-                                 real POST: api_login() redirects a non-AJAX caller
-                                 to the dashboard. The React version fell back to
-                                 onNavigate('/login') on failure, which is what the
-                                 server does on its own. */ ?>
-                        <form method="post" action="<?= site_url('api_login') ?>" class="w-full sm:w-auto">
-                            <input type="hidden" name="identity" value="<?= html_escape($saas_done['admin_email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                            <input type="hidden" name="password" value="<?= html_escape($saas_done['admin_password'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                            <button type="submit"
-                                    class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-black text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all">
+                        <?php if ($saas_is_pending): ?>
+                            <a href="<?= site_url('login') ?>"
+                               class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-98 text-white font-black text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all">
                                 <?= icon('lock-key', 18, 'bold') ?>
-                                <span>সরাসরি ড্যাশবোর্ডে প্রবেশ করুন (১-ক্লিক লগইন)</span>
+                                <span>লগইন পেজে যান</span>
                                 <?= icon('arrow-right', 18, 'bold') ?>
-                            </button>
-                        </form>
+                            </a>
 
-                        <a href="<?= html_escape($saas_done['tenant_url'] ?? ('?tenant=' . $saas_tenant_id), ENT_QUOTES, 'UTF-8') ?>"
-                           target="_blank" rel="noreferrer"
-                           class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-bold text-sm border border-indigo-200 flex items-center justify-center gap-2 cursor-pointer transition-colors">
-                            <span>পাবলিক পোর্টাল দেখুন</span>
-                            <?= icon('arrow-square-out', 16, 'bold') ?>
-                        </a>
+                            <a href="<?= html_escape($saas_done['tenant_url'] ?? ('?tenant=' . $saas_tenant_id), ENT_QUOTES, 'UTF-8') ?>"
+                               target="_blank" rel="noreferrer"
+                               class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-sm border border-neutral-300 flex items-center justify-center gap-2 cursor-pointer transition-colors">
+                                <span>পাবলিক পোর্টাল দেখুন</span>
+                                <?= icon('arrow-square-out', 16, 'bold') ?>
+                            </a>
+
+                            <a href="<?= site_url('/') ?>"
+                               class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-bold text-sm border border-indigo-200 flex items-center justify-center gap-2 cursor-pointer transition-colors">
+                                <span>হোম পেজে ফিরে যান</span>
+                            </a>
+                        <?php else: ?>
+                            <form method="post" action="<?= site_url('api_login') ?>" class="w-full sm:w-auto">
+                                <input type="hidden" name="identity" value="<?= html_escape($saas_done['admin_email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                <input type="hidden" name="password" value="<?= html_escape($saas_done['admin_password'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                <button type="submit"
+                                        class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-black text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all">
+                                    <?= icon('lock-key', 18, 'bold') ?>
+                                    <span>সরাসরি ড্যাশবোর্ডে প্রবেশ করুন (১-ক্লিক লগইন)</span>
+                                    <?= icon('arrow-right', 18, 'bold') ?>
+                                </button>
+                            </form>
+
+                            <a href="<?= html_escape($saas_done['tenant_url'] ?? ('?tenant=' . $saas_tenant_id), ENT_QUOTES, 'UTF-8') ?>"
+                               target="_blank" rel="noreferrer"
+                               class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-bold text-sm border border-indigo-200 flex items-center justify-center gap-2 cursor-pointer transition-colors">
+                                <span>পাবলিক পোর্টাল দেখুন</span>
+                                <?= icon('arrow-square-out', 16, 'bold') ?>
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

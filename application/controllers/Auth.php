@@ -82,6 +82,23 @@ class Auth extends CI_Controller
 				} elseif ($this->ion_auth->in_group('collect')) {
 					redirect('taxCollection', 'refresh');
 				} else {
+					$u_row = $this->ion_auth->user()->row();
+					$tenant_id = (int)($u_row->ins_pr_id_s ?? 0);
+					if ($tenant_id > 0) {
+						$t_check = $this->db->where('ins_titute_p_idds', $tenant_id)->get('ins_titute')->row();
+						if ($t_check && isset($t_check->is_active) && ! $t_check->is_active) {
+							$sub_chk = $this->db->where('ins_titute_p_id', $tenant_id)->get('subscriptions')->row();
+							$this->ion_auth->logout();
+							if ($sub_chk && $sub_chk->status === 'pending') {
+								$this->session->set_flashdata('message', 'আপনার পরিষদটি এখনও প্ল্যাটফর্ম সুপার অ্যাডমিনের অনুমোদনের অপেক্ষায় রয়েছে। অনুমোদন সম্পন্ন হলে আপনার ৪ দিনের ফ্রি ট্রায়াল সক্রিয় হবে এবং আপনি লগইন করতে পারবেন।');
+							} else {
+								$this->session->set_flashdata('message', 'আপনার ইউনিয়ন পরিষদের কার্যক্রম প্ল্যাটফর্ম কর্তৃপক্ষ কর্তৃক সাময়িকভাবে স্থগিত (Suspended) রাখা হয়েছে। সহায়তার জন্য সেন্ট্রাল সাপোর্টে যোগাযোগ করুন।');
+							}
+							redirect('login', 'refresh');
+							return;
+						}
+					}
+
 					// Send them to a host belonging to THEIR parishad, not
 					// whichever parishad's site they typed the password into.
 					// This used to be a bare redirect('dashboard'), i.e.
@@ -89,7 +106,7 @@ class Auth extends CI_Controller
 					// Front::api_login() had. tenant_login_url() is shared with
 					// api_login() so the two routes cannot drift apart again;
 					// enforce_tenant_scope() is the backstop if it ever has to.
-					redirect(tenant_login_url($this->ion_auth->user()->row()), 'refresh');
+					redirect(tenant_login_url($u_row), 'refresh');
 				}
 			}
 			else

@@ -216,6 +216,8 @@ class Tenant_creator extends CI_Model
 			];
 		}
 
+		$is_self_signup = !empty($input['is_self_signup']);
+
 		$ins_data = [
 			'ins_name'        => $union_name,
 			'ins_name_en'     => !empty($union_name_en) ? $union_name_en : $union_name,
@@ -234,6 +236,7 @@ class Tenant_creator extends CI_Model
 			'theme_ss'        => $plan->package_key,
 			'package_key'     => $plan->package_key,
 			'start_year_s'    => date('Y'),
+			'is_active'       => $is_self_signup ? false : true,
 		];
 
 		/*
@@ -295,25 +298,38 @@ class Tenant_creator extends CI_Model
 		 * tenant rather than a missing row, and nothing in the panel could
 		 * tell the two apart.
 		 *
-		 * Subscriptions row with chosen plan and billing cycle.
+		 * Self-signups receive a 4-day trial marked pending approval;
+		 * platform operator onboardings are activated immediately.
 		 */
-		$billing_cycle = ($input['cycle'] ?? $input['billing_cycle'] ?? 'yearly') === 'monthly' ? 'monthly' : 'yearly';
-		$end_date = !empty($input['end_date']) ? trim($input['end_date']) : '';
-		if (empty($end_date)) {
-			$end_date = ($billing_cycle === 'monthly')
-				? date('Y-m-d', strtotime('+1 month'))
-				: date('Y-m-d', strtotime('+1 year'));
+		if ($is_self_signup) {
+			$billing_cycle = 'monthly';
+			$start_date    = date('Y-m-d');
+			$end_date      = date('Y-m-d', strtotime('+4 days'));
+			$sub_status    = 'pending';
+			$sub_note      = 'পাবলিক রেজিস্ট্রেশন — ৪ দিনের ট্রায়াল (অনুমোদনের অপেক্ষায়)';
+		} else {
+			$billing_cycle = ($input['cycle'] ?? $input['billing_cycle'] ?? 'yearly') === 'monthly' ? 'monthly' : 'yearly';
+			$end_date = !empty($input['end_date']) ? trim($input['end_date']) : '';
+			if (empty($end_date)) {
+				$end_date = ($billing_cycle === 'monthly')
+					? date('Y-m-d', strtotime('+1 month'))
+					: date('Y-m-d', strtotime('+1 year'));
+			}
+			$start_date = min(date('Y-m-d'), $end_date);
+			$sub_status = 'active';
+			$sub_note   = 'স্বয়ংক্রিয় অনবোর্ডিং (' . ($billing_cycle === 'monthly' ? 'মাসিক' : 'বাৎসরিক') . ')';
 		}
+
 		$this->db->insert('subscriptions', [
 			'ins_titute_p_id' => $new_tenant_id,
 			'package_id'      => $plan->package_id,
 			'billing_cycle'   => $billing_cycle,
 			// min() against start_date, because subscriptions_exp_check is
 			// CHECK (end_date >= start_date)
-			'start_date'      => min(date('Y-m-d'), $end_date),
+			'start_date'      => $start_date,
 			'end_date'        => $end_date,
-			'status'          => 'active',
-			'note'            => 'স্বয়ংক্রিয় অনবোর্ডিং (' . ($billing_cycle === 'monthly' ? 'মাসিক' : 'বাৎসরিক') . ')',
+			'status'          => $sub_status,
+			'note'            => $sub_note,
 		]);
 
 		// The legacy column the rest of the app still reads. Kept in step with
@@ -473,19 +489,24 @@ class Tenant_creator extends CI_Model
 			],
 		]);
 
+		$success_msg = $is_self_signup
+			? 'আপনার পরিষদ রেজিস্ট্রেশনের আবেদনটি সফলভাবে জমা হয়েছে। প্ল্যাটফর্ম অ্যাডমিন তথ্য যাচাই করে অনুমোদন দেওয়া মাত্রই আপনার ৪ দিনের ফ্রি ট্রায়াল সক্রিয় হবে।'
+			: 'অভিনন্দন! আপনার ইউনিয়ন পরিষদ সফলভাবে সক্রিয় হয়েছে।';
+
 		return [
-			'success'       => true,
-			'message'       => 'অভিনন্দন! আপনার ইউনিয়ন পরিষদ সফলভাবে সক্রিয় হয়েছে।',
-			'tenant_id'     => $new_tenant_id,
-			'subdomain'     => $subdomain,
-			'custom_domain' => $custom_domain,
-			'package_key'   => $plan->package_key,
-			'end_date'      => $end_date,
-			'tenant_url'    => $config_is_dev
+			'success'             => true,
+			'message'             => $success_msg,
+			'tenant_id'           => $new_tenant_id,
+			'subdomain'           => $subdomain,
+			'custom_domain'       => $custom_domain,
+			'package_key'         => $plan->package_key,
+			'end_date'            => $end_date,
+			'is_pending_approval' => $is_self_signup,
+			'tenant_url'          => $config_is_dev
 				? base_url('?tenant=' . $new_tenant_id)
 				: $scheme . (!empty($custom_domain) ? $custom_domain : $subdomain . '.' . $apex) . '/',
-			'subdomain_url' => $scheme . $subdomain . '.' . $apex . '/',
-			'identity'      => $admin_email
+			'subdomain_url'       => $scheme . $subdomain . '.' . $apex . '/',
+			'identity'            => $admin_email
 		];
 	}
 }

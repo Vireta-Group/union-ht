@@ -281,9 +281,29 @@ if ( ! function_exists('enforce_tenant_status'))
 			return;
 		}
 
-		// 1. Check if the tenant has been suspended by platform authorities
+		// 1. Check if the tenant is pending approval or has been suspended
 		if (isset($tenant->is_active) && ! $tenant->is_active)
 		{
+			$sub = $CI->db->where('ins_titute_p_id', $tenant_id)->get('subscriptions')->row();
+			if ($sub && $sub->status === 'pending')
+			{
+				log_message('info', 'Tenant status guard: tenant ' . $tenant_id . ' is PENDING APPROVAL. User ' . $row->id);
+				show_error(
+					'<div style="text-align:center; padding: 25px 15px; font-family: sans-serif;">' .
+					'<div style="width: 56px; height: 56px; background: #fef3c7; color: #d97706; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 16px;">⏳</div>' .
+					'<h2 style="color: #92400e; font-size: 20px; font-weight: bold; margin-bottom: 12px;">ইউনিয়ন পরিষদ অনুমোদনের অপেক্ষায় রয়েছে (Pending Approval)</h2>' .
+					'<p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin-bottom: 18px; max-width: 500px; margin-left: auto; margin-right: auto;">' .
+					'আপনার ইউনিয়ন পরিষদ রেজিস্ট্রেশন সফলভাবে জমা হয়েছে। প্ল্যাটফর্ম সুপার অ্যাডমিন তথ্য যাচাই করে অনুমোদন দেওয়া মাত্রই আপনার ৪ দিনের ফ্রি ট্রায়াল সক্রিয় হবে এবং আপনি সকল ফিচার ব্যবহার করতে পারবেন।' .
+					'</p>' .
+					'<div style="background: #fdf6b2; border: 1px solid #fde047; border-radius: 10px; padding: 12px 18px; font-size: 13px; color: #723b10; display: inline-block;">' .
+					'সাপোর্ট হেল্পলাইন: <strong>+৮৮০ ১৭০০-০০০০০০</strong> &nbsp;|&nbsp; ইমেইল: <strong>support@viretadev.com</strong>' .
+					'</div>' .
+					'</div>',
+					403,
+					'অনুমোদন প্রক্রিয়াধীন / Pending Approval'
+				);
+			}
+
 			log_message('error', 'Tenant status guard refused: tenant ' . $tenant_id . ' is SUSPENDED. User ' . $row->id);
 			show_error(
 				'<div style="text-align:center; padding: 20px 10px;">' .

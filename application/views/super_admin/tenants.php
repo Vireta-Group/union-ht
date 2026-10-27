@@ -100,10 +100,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     </div>
 
+    <!-- Pending Approval Banner if any -->
+    <?php if (!empty($pending_count)): ?>
+        <div class="bg-amber-50 border border-amber-300 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+            <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl shrink-0 font-bold border border-amber-200">
+                    <i class="ph ph-clock"></i>
+                </div>
+                <div>
+                    <h4 class="text-sm sm:text-base font-bold text-amber-950 flex items-center gap-2">
+                        <span><?= bn_number($pending_count); ?> টি নতুন ইউনিয়ন পরিষদ অনুমোদনের অপেক্ষায় রয়েছে!</span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] bg-amber-200 text-amber-900 font-bold">নতুন আবেদন</span>
+                    </h4>
+                    <p class="text-xs text-amber-800 mt-0.5">
+                        পাবলিক সাইট থেকে রেজিস্ট্রেশন সম্পন্ন হয়েছে। তথ্য যাচাই করে অনুমোদন দিলে তাৎক্ষণিকভাবে ৪ দিনের ফ্রি ট্রায়াল চালু হবে।
+                    </p>
+                </div>
+            </div>
+            <button type="button" onclick="setTenantFilter('pending', document.querySelectorAll('.tenant-filter-btn')[2])" class="w-full sm:w-auto px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shrink-0 cursor-pointer transition-colors shadow-xs flex items-center justify-center gap-1.5">
+                <i class="ph ph-list-checks"></i>
+                <span>পেন্ডিং আবেদনগুলো দেখুন</span>
+            </button>
+        </div>
+    <?php endif; ?>
+
     <!-- Tenants Directory Table -->
     <div class="min-w-0 bg-white border border-neutral-200 rounded-3xl overflow-hidden shadow-xs">
         
-        <div class="p-4 sm:p-6 border-b border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="p-4 sm:p-6 border-b border-neutral-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
                 <h2 class="text-lg font-bold text-neutral-900 flex items-center gap-2">
                     <i class="ph ph-list-dashes text-indigo-600"></i>
@@ -116,7 +140,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </p>
             </div>
 
-            <div class="flex items-center gap-2 w-full sm:w-auto">
+            <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
+                <!-- Status Filter Tabs -->
+                <div class="flex items-center gap-1 p-1 bg-neutral-100 rounded-xl text-xs font-semibold overflow-x-auto w-full sm:w-auto">
+                    <button type="button" onclick="setTenantFilter('all', this)" class="tenant-filter-btn px-2.5 py-1.5 rounded-lg bg-white shadow-xs text-neutral-900 font-bold transition-all cursor-pointer">
+                        সব (<?= count($tenants); ?>)
+                    </button>
+                    <button type="button" onclick="setTenantFilter('active', this)" class="tenant-filter-btn px-2.5 py-1.5 rounded-lg text-neutral-600 hover:text-neutral-900 transition-all cursor-pointer">
+                        সক্রিয়
+                    </button>
+                    <button type="button" onclick="setTenantFilter('pending', this)" class="tenant-filter-btn px-2.5 py-1.5 rounded-lg text-neutral-600 hover:text-neutral-900 transition-all flex items-center gap-1 cursor-pointer">
+                        <span>অনুমোদন পেন্ডিং</span>
+                        <?php if (!empty($pending_count)): ?>
+                            <span class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500 text-white font-bold animate-pulse"><?= $pending_count ?></span>
+                        <?php endif; ?>
+                    </button>
+                    <button type="button" onclick="setTenantFilter('suspended', this)" class="tenant-filter-btn px-2.5 py-1.5 rounded-lg text-neutral-600 hover:text-neutral-900 transition-all cursor-pointer">
+                        স্থগিত
+                    </button>
+                </div>
+
                 <div class="relative w-full sm:w-auto">
                     <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-neutral-400 text-sm"></i>
                     <input 
@@ -124,7 +167,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         id="searchTenant" 
                         onkeyup="filterTenants()" 
                         placeholder="ইউনিয়ন বা ডোমেন সার্চ করুন..." 
-                        class="pl-9 pr-3.5 py-1.5 text-xs rounded-xl border border-neutral-300 focus:outline-none focus:border-indigo-600 bg-neutral-50 w-full sm:w-64"
+                        class="pl-9 pr-3.5 py-1.5 text-xs rounded-xl border border-neutral-300 focus:outline-none focus:border-indigo-600 bg-neutral-50 w-full sm:w-56"
                     >
                 </div>
             </div>
@@ -201,8 +244,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         }
                         $subdom_url = $ht_scheme . '://' . $subdom
                                     . ($ht_port !== '' ? ':' . $ht_port : '');
+                        $t_status_key = !empty($t->is_pending_approval) ? 'pending' : ($t->is_active ? 'active' : 'suspended');
                     ?>
-                    <tr class="hover:bg-neutral-50/80 transition-colors tenant-row">
+                    <tr class="hover:bg-neutral-50/80 transition-colors tenant-row" data-status="<?= $t_status_key; ?>">
                         <!-- Tenant ID -->
                         <td class="py-4 px-4 sm:px-6 font-mono font-bold text-neutral-900">
                             <span class="bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded border border-neutral-300">
@@ -312,9 +356,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <?php endif; ?>
                         </td>
 
-                        <!-- Active / suspended -->
+                        <!-- Active / suspended / pending approval -->
                         <td class="py-4 px-4">
-                            <?php if ($t->is_active): ?>
+                            <?php if (!empty($t->is_pending_approval)): ?>
+                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 border border-amber-300 text-[11px] font-bold">
+                                    <i class="ph ph-clock text-amber-600"></i> অনুমোদনের অপেক্ষায় <span class="text-[9px] font-normal opacity-75">/ Pending</span>
+                                </span>
+                            <?php elseif ($t->is_active): ?>
                                 <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold">
                                     <i class="ph ph-check-circle"></i> সক্রিয় <span class="text-[9px] font-normal opacity-75">/ Active</span>
                                 </span>
@@ -327,7 +375,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                         <!-- Actions -->
                         <td class="py-4 px-4 text-right pr-6 space-x-1.5 whitespace-nowrap">
-                            
+                            <?php if (!empty($t->is_pending_approval)): ?>
+                                <!-- Approve Button -->
+                                <button 
+                                    type="button"
+                                    onclick="approveTenant(<?= (int) $t->ins_titute_p_idds; ?>, <?= htmlspecialchars(json_encode($t->ins_name), ENT_QUOTES, 'UTF-8'); ?>)"
+                                    title="অনুমোদন করুন ও ৪ দিনের ফ্রি ট্রায়াল চালু করুন"
+                                    class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer">
+                                    <i class="ph ph-check-bold text-xs"></i>
+                                    <span>অনুমোদন</span>
+                                </button>
+
+                                <!-- Reject Button -->
+                                <button 
+                                    type="button"
+                                    onclick="rejectTenant(<?= (int) $t->ins_titute_p_idds; ?>, <?= htmlspecialchars(json_encode($t->ins_name), ENT_QUOTES, 'UTF-8'); ?>)"
+                                    title="আবেদন প্রত্যাখ্যান ও ডিলিট করুন"
+                                    class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs transition-colors cursor-pointer">
+                                    <i class="ph ph-trash text-xs"></i>
+                                    <span>বাতিল</span>
+                                </button>
+                            <?php endif; ?>
+
                             <!-- Temporary Delegated Support Access Button -->
                             <button 
                                 type="button"
@@ -347,31 +416,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <span>এডিট</span>
                             </button>
 
-                        <!--
-                            Suspend / reactivate.
-
-                            The button says "স্থগিত" and it does exactly that:
-                            it flips ins_titute.is_active, which the panel
-                            records and displays. It does NOT take the
-                            parishad's website down — nothing reads
-                            is_active yet. The tooltip says so, because a
-                            button labelled "suspend" that leaves the site
-                            serving is the kind of thing an operator
-                            discovers during an incident rather than
-                            before one.
-                        -->
-                        <?php
-                            $active_btn_cls = $t->is_active 
-                                ? 'bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-300' 
-                                : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300';
-                        ?>
-                        <button
-                            type="button"
-                            onclick="toggleTenantActive(<?= (int) $t->ins_titute_p_idds; ?>, <?= $t->is_active ? 'true' : 'false' ?>, <?= htmlspecialchars(json_encode($t->ins_name), ENT_QUOTES, 'UTF-8'); ?>)"
-                            title="<?= $t->is_active ? 'স্থগিত করুন' : 'সক্রিয় করুন' ?>"
-                            class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg <?= $active_btn_cls; ?> font-bold text-xs border transition-colors cursor-pointer">
-                            <i class="ph <?= $t->is_active ? 'ph-pause' : 'ph-play' ?> text-xs"></i>
-                        </button>
+                            <?php
+                                $active_btn_cls = $t->is_active 
+                                    ? 'bg-amber-50 hover:bg-amber-100 text-amber-800 border-amber-300' 
+                                    : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300';
+                            ?>
+                            <button
+                                type="button"
+                                onclick="toggleTenantActive(<?= (int) $t->ins_titute_p_idds; ?>, <?= $t->is_active ? 'true' : 'false' ?>, <?= htmlspecialchars(json_encode($t->ins_name), ENT_QUOTES, 'UTF-8'); ?>)"
+                                title="<?= $t->is_active ? 'স্থগিত করুন' : 'সক্রিয় করুন' ?>"
+                                class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg <?= $active_btn_cls; ?> font-bold text-xs border transition-colors cursor-pointer">
+                                <i class="ph <?= $t->is_active ? 'ph-pause' : 'ph-play' ?> text-xs"></i>
+                            </button>
 
                             <!-- Public Portal View -->
                             <a 
@@ -858,13 +914,79 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <!-- JavaScript Actions -->
 <script>
+    let currentTenantStatusFilter = 'all';
+
+    function setTenantFilter(status, btn) {
+        currentTenantStatusFilter = status;
+        document.querySelectorAll('.tenant-filter-btn').forEach(b => {
+            b.classList.remove('bg-white', 'shadow-xs', 'text-neutral-900', 'font-bold');
+            b.classList.add('text-neutral-600');
+        });
+        if (btn) {
+            btn.classList.add('bg-white', 'shadow-xs', 'text-neutral-900', 'font-bold');
+            btn.classList.remove('text-neutral-600');
+        }
+        filterTenants();
+    }
+
     function filterTenants() {
-        const query = document.getElementById('searchTenant').value.toLowerCase();
+        const query = (document.getElementById('searchTenant').value || '').toLowerCase().trim();
         const rows = document.querySelectorAll('.tenant-row');
         rows.forEach(row => {
             const text = row.innerText.toLowerCase();
-            row.style.display = text.includes(query) ? '' : 'none';
+            const rowStatus = row.getAttribute('data-status') || 'active';
+            const matchesQuery = query === '' || text.includes(query);
+            const matchesStatus = (currentTenantStatusFilter === 'all' || rowStatus === currentTenantStatusFilter);
+            row.style.display = (matchesQuery && matchesStatus) ? '' : 'none';
         });
+    }
+
+    /**
+     * Approve a pending tenant and activate 4-day trial.
+     */
+    async function approveTenant(tenantId, name) {
+        const confirmed = await vConfirm('ইউনিয়ন পরিষদ অনুমোদন', `আপনি কি নিশ্চিত যে "${name}"-কে অনুমোদন দিতে চান? এটি অনুমোদনের দিন থেকে ৪ দিনের ফ্রি ট্রায়াল সক্রিয় করবে।`, { confirmText: 'হ্যাঁ, অনুমোদন করুন' });
+        if (!confirmed) return;
+
+        try {
+            const resp = await fetch('<?= base_url('sadmin_tenants/api_approve_tenant'); ?>', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ tenant_id: tenantId })
+            });
+            const res = await resp.json();
+            if (res.success) {
+                window.location.reload();
+            } else {
+                alert(res.message || 'অনুমোদনে ত্রুটি ঘটেছে।');
+            }
+        } catch (e) {
+            alert('সার্ভারে সংযোগ স্থাপন করা যায়নি।');
+        }
+    }
+
+    /**
+     * Reject and delete a pending tenant application.
+     */
+    async function rejectTenant(tenantId, name) {
+        const confirmed = await vConfirm('আবেদন প্রত্যাখ্যান ও ডিলিট', `আপনি কি নিশ্চিত যে "${name}"-এর আবেদনটি প্রত্যাখ্যান ও ডাটাবেজ থেকে মুছে ফেলতে চান?`, { danger: true, confirmText: 'হ্যাঁ, মুছে ফেলুন' });
+        if (!confirmed) return;
+
+        try {
+            const resp = await fetch('<?= base_url('sadmin_tenants/api_reject_tenant'); ?>', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ tenant_id: tenantId })
+            });
+            const res = await resp.json();
+            if (res.success) {
+                window.location.reload();
+            } else {
+                alert(res.message || 'মুছে ফেলা যায়নি।');
+            }
+        } catch (e) {
+            alert('সার্ভারে সংযোগ স্থাপন করা যায়নি।');
+        }
     }
 
     // Helper: format YYYY-MM-DD
