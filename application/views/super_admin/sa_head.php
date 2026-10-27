@@ -241,9 +241,33 @@
             background-color: #111827 !important;
             color: #f9fafb !important;
         }
-        html[data-theme="dark"] .fixed.inset-0 .bg-white {
+        /* Modal & Dialog Solid Elevation (Light Mode) */
+        .fixed.inset-0 .bg-white,
+        .fixed.inset-0 > div:not(.modal-backdrop),
+        [id*="Modal"] .bg-white,
+        [id*="modal"] .bg-white {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+        }
+        .fixed.inset-0 .bg-neutral-50,
+        [id*="Modal"] .bg-neutral-50 {
+            background-color: #f8fafc !important;
+            color: #1e293b !important;
+        }
+
+        /* Modal & Dialog Solid Elevation (Dark Mode) */
+        html[data-theme="dark"] .fixed.inset-0 .bg-white,
+        html[data-theme="dark"] .fixed.inset-0 > div:not(.modal-backdrop),
+        html[data-theme="dark"] [id*="Modal"] .bg-white,
+        html[data-theme="dark"] [id*="modal"] .bg-white {
             background-color: #111827 !important;
             color: #f9fafb !important;
+            border-color: #1f2937 !important;
+        }
+        html[data-theme="dark"] .fixed.inset-0 .bg-neutral-50,
+        html[data-theme="dark"] [id*="Modal"] .bg-neutral-50 {
+            background-color: #162032 !important;
+            color: #f1f5f9 !important;
             border-color: #1f2937 !important;
         }
         html[data-theme="dark"] .bg-amber-50 {

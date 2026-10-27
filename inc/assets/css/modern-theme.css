@@ -820,12 +820,86 @@ body.ht-modal-open {
 /* 14.10. Global SaaS Pages Ambient Canvas Transparency */
 main.bg-white,
 main.bg-neutral-50,
-main .bg-neutral-50,
-main .bg-neutral-50\/70,
-main .bg-neutral-50\/50,
-main .bg-white:not(.modal-content):not(.ht-card):not(.neu-glass-card):not([data-saas-accordion] > div):not(.saas-plan-card):not(.ht-btn):not(button):not(a):not(input):not(select):not(textarea) {
+main .bg-neutral-50:not(.fixed *):not([id*="Modal"] *):not([id*="modal"] *),
+main .bg-neutral-50\/70:not(.fixed *):not([id*="Modal"] *):not([id*="modal"] *),
+main .bg-neutral-50\/50:not(.fixed *):not([id*="Modal"] *):not([id*="modal"] *),
+main .bg-white:not(.fixed *):not([id*="Modal"] *):not([id*="modal"] *):not(.modal-content):not(.ht-card):not(.neu-glass-card):not([data-saas-accordion] > div):not(.saas-plan-card):not(.ht-btn):not(button):not(a):not(input):not(select):not(textarea) {
     background-color: transparent !important;
 }
+
+/* 14.10.1. Modals & Dialog Protection - MUST ALWAYS have solid, opaque backgrounds */
+.fixed.inset-0 .bg-white,
+[id*="Modal"] .bg-white,
+[id*="modal"] .bg-white,
+.fixed.inset-0 > div.bg-white,
+[id*="Modal"] > div.bg-white {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+}
+
+.fixed.inset-0 .bg-neutral-50,
+[id*="Modal"] .bg-neutral-50,
+[id*="modal"] .bg-neutral-50 {
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+}
+
+.fixed.inset-0 .bg-neutral-100,
+[id*="Modal"] .bg-neutral-100,
+[id*="modal"] .bg-neutral-100 {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+}
+
+.fixed.inset-0 .bg-amber-50\/70,
+.fixed.inset-0 .bg-amber-50,
+[id*="Modal"] .bg-amber-50,
+[id*="Modal"] .bg-amber-50\/70 {
+    background-color: #fffbeb !important;
+    border-color: #fde68a !important;
+    color: #78350f !important;
+}
+
+.fixed.inset-0 .bg-indigo-50,
+[id*="Modal"] .bg-indigo-50 {
+    background-color: #eef2ff !important;
+    border-color: #c7d2fe !important;
+    color: #3730a3 !important;
+}
+
+/* Modals in Dark Theme */
+html[data-theme="dark"] .fixed.inset-0 .bg-white,
+html[data-theme="dark"] [id*="Modal"] .bg-white,
+html[data-theme="dark"] [id*="modal"] .bg-white {
+    background-color: #111827 !important;
+    color: #f9fafb !important;
+    border-color: #1f2937 !important;
+}
+
+html[data-theme="dark"] .fixed.inset-0 .bg-neutral-50,
+html[data-theme="dark"] [id*="Modal"] .bg-neutral-50,
+html[data-theme="dark"] [id*="modal"] .bg-neutral-50 {
+    background-color: #162032 !important;
+    color: #f1f5f9 !important;
+    border-color: #1f2937 !important;
+}
+
+html[data-theme="dark"] .fixed.inset-0 .bg-amber-50\/70,
+html[data-theme="dark"] .fixed.inset-0 .bg-amber-50,
+html[data-theme="dark"] [id*="Modal"] .bg-amber-50,
+html[data-theme="dark"] [id*="Modal"] .bg-amber-50\/70 {
+    background-color: rgba(245, 158, 11, 0.12) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+    color: #fde68a !important;
+}
+
+html[data-theme="dark"] .fixed.inset-0 .bg-indigo-50,
+html[data-theme="dark"] [id*="Modal"] .bg-indigo-50 {
+    background-color: rgba(99, 102, 241, 0.15) !important;
+    border-color: rgba(99, 102, 241, 0.3) !important;
+    color: #c7d2fe !important;
+}
+
 
 /* 14.11. All-Pages Neumorphic Glass Card & Panel Upgrades */
 /* FAQ accordions, contact channel cards, pricing cards, login panels */
