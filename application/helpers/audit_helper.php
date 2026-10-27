@@ -122,7 +122,11 @@ function audit_log($action, $entity, array $opts = [])
 	// INSERT ... ON CONFLICT on the table's primary key, and audit_id is
 	// a sequence that is not in $row — there is no conflict target to
 	// name, and a malformed ON CONFLICT is a 500 on every audit write.
+	$db_debug = $CI->db->db_debug;
+	$CI->db->db_debug = FALSE;
 	$inserted = $CI->db->insert('audit_logs', $row);
+	$CI->db->db_debug = $db_debug;
+
 	if ($inserted === FALSE)
 	{
 		$CI->db->reset_query();

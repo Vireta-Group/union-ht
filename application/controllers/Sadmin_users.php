@@ -525,13 +525,14 @@ class Sadmin_users extends CI_Controller
 		$this->db->where('id', $user_id)->update('users', $update_data);
 
 		if (function_exists('audit_log')) {
-			audit_log('reset_password', 'user', [
+			audit_log('update', 'user', [
 				'entity_id' => (string) $user_id,
 				'tenant_id' => $user->ins_pr_id_s ? (int) $user->ins_pr_id_s : NULL,
 				'summary'   => 'পাসওয়ার্ড পরিবর্তন: ' . $user->email . ' (' . ($user->username ?: 'ইউজার') . ')',
 				'after'     => [
 					'user_id'   => $user_id,
 					'email'     => $user->email,
+					'action'    => 'reset_password',
 					'by_sadmin' => true,
 				],
 			]);
