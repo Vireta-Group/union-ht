@@ -1,0 +1,140 @@
+/* Modern Alert & Toast Styling for ViretaDev */
+div:where(.swal2-container) {
+    z-index: 100000 !important;
+    font-family: 'AdarshaLipi', 'Adarsha Lipi', 'AdorshoLipi', 'Adorsho Lipi', 'Hind Siliguri', 'Inter', system-ui, sans-serif !important;
+}
+
+div:where(.swal2-container).swal2-backdrop-show {
+    background: rgba(15, 23, 42, 0.45) !important;
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+}
+
+div:where(.swal2-popup) {
+    font-family: 'AdarshaLipi', 'Adarsha Lipi', 'AdorshoLipi', 'Adorsho Lipi', 'Hind Siliguri', 'Inter', system-ui, sans-serif !important;
+    border-radius: 1.25rem !important;
+    padding: 1.5rem 1.75rem !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
+    box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.08) !important;
+    max-width: 26rem !important;
+    width: 90% !important;
+}
+
+div:where(.swal2-icon) {
+    margin: 0.25rem auto 0.75rem auto !important;
+    transform: scale(0.85);
+}
+
+div:where(.swal2-icon).swal2-warning {
+    border-color: #f59e0b !important;
+    color: #f59e0b !important;
+}
+
+div:where(.swal2-icon).swal2-success {
+    border-color: #10b981 !important;
+    color: #10b981 !important;
+}
+
+div:where(.swal2-icon).swal2-error {
+    border-color: #ef4444 !important;
+    color: #ef4444 !important;
+}
+
+div:where(.swal2-icon).swal2-info {
+    border-color: #3b82f6 !important;
+    color: #3b82f6 !important;
+}
+
+div:where(.swal2-title) {
+    font-family: 'AdarshaLipi', 'Adarsha Lipi', 'AdorshoLipi', 'Adorsho Lipi', 'Hind Siliguri', 'Inter', system-ui, sans-serif !important;
+    font-size: 1.0625rem !important; /* 17px */
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    padding: 0 !important;
+    margin: 0 0 0.5rem 0 !important;
+    line-height: 1.4 !important;
+}
+
+div:where(.swal2-html-container) {
+    font-family: 'AdarshaLipi', 'Adarsha Lipi', 'AdorshoLipi', 'Adorsho Lipi', 'Hind Siliguri', 'Inter', system-ui, sans-serif !important;
+    font-size: 0.84375rem !important; /* 13.5px */
+    line-height: 1.55 !important;
+    color: #475569 !important;
+    margin: 0 0 1rem 0 !important;
+    padding: 0 !important;
+}
+
+div:where(.swal2-actions) {
+    margin: 0.75rem 0 0 0 !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+div:where(.swal2-styled).swal2-confirm {
+    background-color: #4f46e5 !important;
+    color: #ffffff !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    padding: 0.45rem 1.125rem !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    outline: none !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+div:where(.swal2-styled).swal2-confirm:hover {
+    background-color: #4338ca !important;
+    box-shadow: 0 2px 4px 0 rgba(79, 70, 229, 0.25) !important;
+    transform: translateY(-0.5px);
+}
+
+div:where(.swal2-styled).swal2-confirm:active {
+    transform: translateY(0.5px) scale(0.98);
+}
+
+div:where(.swal2-styled).swal2-cancel {
+    background-color: #f1f5f9 !important;
+    color: #475569 !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    padding: 0.45rem 1rem !important;
+    outline: none !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+div:where(.swal2-styled).swal2-cancel:hover {
+    background-color: #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+div:where(.swal2-styled).swal2-cancel:active {
+    transform: translateY(0.5px) scale(0.98);
+}
+
+/* Toast styling override */
+div:where(.swal2-popup).swal2-toast {
+    border-radius: 0.75rem !important;
+    padding: 0.75rem 1rem !important;
+    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -4px rgba(15, 23, 42, 0.05) !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+}
+
+div:where(.swal2-popup).swal2-toast .swal2-title {
+    font-size: 0.8125rem !important;
+    color: #1e293b !important;
+    margin: 0 !important;
+}
+
+div:where(.swal2-popup).swal2-toast .swal2-icon {
+    margin: 0 0.5rem 0 0 !important;
+    transform: scale(0.65) !important;
+}

@@ -1,0 +1,186 @@
+/* GENERATED from resources/css/tokens.css by npm run build:admin. Do not edit. */
+/* ==========================================================================
+   Brand tokens — Warm Indigo + Terracotta
+   --------------------------------------------------------------------------
+   The single source of truth for the product's colour, type and shape.
+
+   THREE consumers read this file, which is the whole point of putting it
+   somewhere neutral:
+
+     1. resources/css/portal.css   Tailwind entry for the public pages
+     2. inc/assets/css/brand.css   overlay for the admin (loaded after MDK)
+     3. inc/assets/css/print.css   print-first styles for the paper documents
+
+   The public side and the admin therefore cannot drift apart: a change here
+   moves all three at once.
+
+   WHY OVERRIDE THE ADMIN INSTEAD OF REWRITING IT
+   inc/assets/css/app.css is 16,049 lines of Material Design Kit with 1,533
+   hardcoded hex values, and MDK's own JavaScript, flatpickr, jQuery UI and
+   select2 are all styled by it. Rewriting that is a rewrite of the admin, not
+   a retheme. So the admin keeps app.css and this file is layered on top.
+
+   PALETTE RATIONALE
+   This is a product sold to union parishads by an agency, not a government
+   portal, so it deliberately avoids the green-and-white institutional look
+   that Bengali local-government sites default to. Indigo carries the
+   trustworthy, legible, "this is a real system" signal; terracotta supplies
+   warmth and a distinctly non-government accent. The neutral ramp is warm
+   rather than slate, because a cool grey under warm indigo reads as muddy.
+
+   Every foreground/background pair below clears WCAG AA at its intended size.
+   ========================================================================== */
+
+:root {
+  /* --- brand ramps ------------------------------------------------------ */
+
+  /* indigo — primary. Actions, links, active navigation, focus rings. */
+  --brand-indigo-50:  #eef2ff;
+  --brand-indigo-100: #e0e7ff;
+  --brand-indigo-200: #c7d2fe;
+  --brand-indigo-300: #a5b4fc;
+  --brand-indigo-400: #818cf8;
+  --brand-indigo-500: #6366f1;
+  --brand-indigo-600: #4f46e5;   /* primary */
+  --brand-indigo-700: #4338ca;
+  --brand-indigo-800: #3730a3;
+  --brand-indigo-900: #312e81;
+  --brand-indigo-950: #1e1b4b;
+
+  /* terracotta — accent. Highlights, member-facing emphasis, the
+     "your parishad" warmth. Never used for destructive actions. */
+  --brand-terracotta-50:  #fef6f2;
+  --brand-terracotta-100: #fee9df;
+  --brand-terracotta-200: #fcd0bc;
+  --brand-terracotta-300: #f8ad8e;
+  --brand-terracotta-400: #f0855f;
+  --brand-terracotta-500: #e2683d;
+  --brand-terracotta-600: #c2410c;   /* accent */
+  --brand-terracotta-700: #9a3412;
+  --brand-terracotta-800: #7c2d12;
+  --brand-terracotta-900: #651c11;
+  --brand-terracotta-950: #3b0d07;
+
+  /* warm neutral ramp. Slate greys look dirty next to terracotta. */
+  --brand-neutral-0:   #ffffff;
+  --brand-neutral-50:  #faf9f7;
+  --brand-neutral-100: #f5f2ef;
+  --brand-neutral-200: #eae5e0;
+  --brand-neutral-300: #d6cfc8;
+  --brand-neutral-400: #a8a099;   /* decorative only: rules, disabled marks.
+                                     2.41:1 on the warm surface, so it must
+                                     never carry text. */
+  --brand-neutral-500: #736a63;   /* muted and placeholder text: 4.96:1 on the
+                                     warm surface, clears AA. #7c746d was
+                                     4.30:1 there and failed. */
+  --brand-neutral-600: #5c5550;
+  --brand-neutral-700: #45403c;
+  --brand-neutral-800: #2e2a27;
+  --brand-neutral-900: #1c1917;   /* body text */
+  --brand-neutral-950: #0f0d0c;
+
+  /* --- semantic roles --------------------------------------------------- */
+
+  /* NOTE on the --brand- prefix: every value in this file lives under the
+     --brand- namespace. That is deliberate. portal.css maps these onto
+     Tailwind's own --color-* names, and two declarations sharing a name in
+     the same :root scope would resolve to whichever came last — silently
+     invalidating one of them. Keeping the namespaces disjoint makes that
+     impossible. */
+
+  /* A screen is almost always a light surface, so "bg" is white and
+     "surface" is the slightly warm off-white that panels sit on. */
+  --brand-bg:             var(--brand-neutral-0);
+  --brand-surface:        #faf7f5;
+  --brand-surface-raised: var(--brand-neutral-0);
+  --brand-surface-sunken: var(--brand-neutral-100);
+
+  --brand-border:        var(--brand-neutral-200);   /* hairlines and dividers */
+  --brand-border-strong: #cec6be;                    /* input borders: 1.58:1
+                                                       against the warm surface
+                                                       and 1.69:1 against
+                                                       white. #d6cfc8 was only
+                                                       1.45:1 on the surface. */
+
+  --brand-text:          var(--brand-neutral-900);
+  --brand-text-muted:    var(--brand-neutral-600);
+  --brand-text-subtle:   var(--brand-neutral-500);
+  --brand-text-inverse:  var(--brand-neutral-0);
+
+  --brand-primary:        var(--brand-indigo-600);
+  --brand-primary-hover:  var(--brand-indigo-700);
+  --brand-primary-active: var(--brand-indigo-800);
+  --brand-primary-subtle: var(--brand-indigo-50);
+  --brand-primary-text:   var(--brand-indigo-700);
+
+  --brand-accent:        var(--brand-terracotta-600);
+  --brand-accent-hover:  var(--brand-terracotta-700);
+  --brand-accent-subtle: var(--brand-terracotta-50);
+  --brand-accent-text:   var(--brand-terracotta-700);
+
+  --brand-success:        #047857;
+  --brand-success-subtle: #ecfdf5;
+  --brand-warning:        #b45309;
+  --brand-warning-subtle: #fffbeb;
+  --brand-danger:         #b91c1c;
+  --brand-danger-subtle:  #fef2f2;
+  --brand-info:           var(--brand-indigo-600);
+  --brand-info-subtle:    var(--brand-indigo-50);
+
+  /* --- typography ------------------------------------------------------- */
+
+  /* Bengali is the primary language of every screen a member will read, so
+     the body stack must include a good Bengali face or the browser will fall
+     back to a default with no Bengali coverage at all. */
+  --brand-font-sans: "AdarshaLipi", "Adarsha Lipi", "AdorshoLipi", "Adorsho Lipi",
+                     "Hind Siliguri", "Noto Sans Bengali", "SolaimanLipi",
+                     ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+                     Roboto, "Helvetica Neue", Arial, sans-serif;
+  --brand-font-display: "AdarshaLipi", "Adarsha Lipi", "AdorshoLipi", "Adorsho Lipi",
+                        "Hind Siliguri", "Noto Sans Bengali", "SolaimanLipi",
+                        ui-sans-serif, system-ui, sans-serif;
+  --brand-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+                     "Liberation Mono", monospace;
+
+  --brand-text-xs:   0.75rem;
+  --brand-text-sm:   0.875rem;
+  --brand-text-base: 1rem;
+  --brand-text-lg:   1.125rem;
+  --brand-text-xl:   1.25rem;
+  --brand-text-2xl:  1.5rem;
+  --brand-text-3xl:  1.875rem;
+  --brand-text-4xl:  2.25rem;
+  --brand-text-5xl:  3rem;
+
+  --brand-leading-tight:   1.2;
+  --brand-leading-snug:    1.375;
+  --brand-leading-normal:  1.6;
+  --brand-leading-relaxed: 1.75;
+
+  --brand-weight-normal:   400;
+  --brand-weight-medium:   500;
+  --brand-weight-semibold: 600;
+  --brand-weight-bold:     700;
+
+  /* --- shape ------------------------------------------------------------ */
+
+  --brand-radius-sm:   0.25rem;
+  --brand-radius-md:   0.5rem;
+  --brand-radius-lg:   0.75rem;
+  --brand-radius-xl:   1rem;
+  --brand-radius-2xl:  1.5rem;
+  --brand-radius-full: 9999px;
+
+  /* Restrained on purpose: this is a document-and-data product. Large radii
+     read as consumer, which is not the register a tax system wants. */
+  --brand-shadow-sm: 0 1px 2px 0 rgb(28 25 23 / 0.06);
+  --brand-shadow-md: 0 2px 8px -2px rgb(28 25 23 / 0.10), 0 2px 4px -2px rgb(28 25 23 / 0.06);
+  --brand-shadow-lg: 0 12px 24px -8px rgb(28 25 23 / 0.16), 0 4px 8px -4px rgb(28 25 23 / 0.08);
+  --brand-shadow-focus: 0 0 0 3px rgb(79 70 229 / 0.35);
+
+  /* --- spacing rhythm --------------------------------------------------- */
+
+  --brand-space-section: 4.5rem;
+  --brand-container-page: 76rem;   /* 1216px — comfortable for Bengali body copy */
+  --brand-container-prose: 44rem;
+}

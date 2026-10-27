@@ -1,0 +1,427 @@
+/* ==========================================================================
+   portal.css — Tailwind entry point for the PUBLIC pages
+   --------------------------------------------------------------------------
+   Public surface only:  front/  sonod/  api/  and the redesigned home page.
+
+   This file is NOT loaded by the admin. The admin keeps Material Design Kit
+   and is restyled by inc/assets/css/brand.css, which layers the same tokens
+   on top of app.css. Two entry points on purpose — Bootstrap/MDK and Tailwind
+   in one stylesheet fight over the same element selectors (and front/ was
+   already loading Bootstrap 5 from a CDN alongside Bootstrap 4.6 locally,
+   which is that collision already happening).
+
+   ONE SOURCE OF TRUTH
+   @theme inline maps utilities onto the custom properties declared in
+   tokens.css instead of restating the values. A colour is written once, in
+   tokens.css, and both the public theme and the admin overlay move together.
+   ========================================================================== */
+
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* Scan the views that actually render public pages. Excluding views/ex is not
+   cosmetic: those 65 Ion Auth demo files contain enough class-like strings to
+   generate a large amount of CSS that no live page can use. */
+@source "../../application/views/front";
+@source "../../application/views/sonod";
+@source "../../application/views/api";
+@source "../../application/views/p";
+@source "../../application/views/errors";
+/* Product site. Server-rendered since the React SPA was retired, so the classes
+   come from the same place every other public class does. Excluded from the
+   admin scan below on purpose — the two shells are not allowed to share CSS. */
+@source "../../application/views/saas";
+@source "../../application/views/back";
+@source "../../application/views/super_admin";
+@source "../../application/helpers/sadmin_helper.php";
+@source "../../application/controllers/Sadmin_*.php";
+@source "../../application/controllers/Super_admin.php";
+
+/* There is deliberately no @source for a JS tree any more. It was
+   "@source \"../js\"" and it existed only to pull utility classes out of the
+   React source, which needed classes generated from a file the browser never
+   saw. Every public class now comes from a view the server renders, which is
+   what the six @source lines above scan. The product site is a PHP view tree
+   like the rest of the public surface — if you add a class here and it does
+   not appear, check that the file you added it to is under a scanned path. */
+
+/* --------------------------------------------------------------------------
+   Token -> utility mapping
+   -------------------------------------------------------------------------- */
+@theme inline {
+  /* brand ramps, re-exposed as Tailwind colour utilities.
+     bg-indigo-600, text-terracotta-700, border-neutral-200, ... */
+  --color-indigo-50:  var(--brand-indigo-50);
+  --color-indigo-100: var(--brand-indigo-100);
+  --color-indigo-200: var(--brand-indigo-200);
+  --color-indigo-300: var(--brand-indigo-300);
+  --color-indigo-400: var(--brand-indigo-400);
+  --color-indigo-500: var(--brand-indigo-500);
+  --color-indigo-600: var(--brand-indigo-600);
+  --color-indigo-700: var(--brand-indigo-700);
+  --color-indigo-800: var(--brand-indigo-800);
+  --color-indigo-900: var(--brand-indigo-900);
+  --color-indigo-950: var(--brand-indigo-950);
+
+  --color-terracotta-50:  var(--brand-terracotta-50);
+  --color-terracotta-100: var(--brand-terracotta-100);
+  --color-terracotta-200: var(--brand-terracotta-200);
+  --color-terracotta-300: var(--brand-terracotta-300);
+  --color-terracotta-400: var(--brand-terracotta-400);
+  --color-terracotta-500: var(--brand-terracotta-500);
+  --color-terracotta-600: var(--brand-terracotta-600);
+  --color-terracotta-700: var(--brand-terracotta-700);
+  --color-terracotta-800: var(--brand-terracotta-800);
+  --color-terracotta-900: var(--brand-terracotta-900);
+  --color-terracotta-950: var(--brand-terracotta-950);
+
+  --color-neutral-0:   var(--brand-neutral-0);
+  --color-neutral-50:  var(--brand-neutral-50);
+  --color-neutral-100: var(--brand-neutral-100);
+  --color-neutral-200: var(--brand-neutral-200);
+  --color-neutral-300: var(--brand-neutral-300);
+  --color-neutral-400: var(--brand-neutral-400);
+  --color-neutral-500: var(--brand-neutral-500);
+  --color-neutral-600: var(--brand-neutral-600);
+  --color-neutral-700: var(--brand-neutral-700);
+  --color-neutral-800: var(--brand-neutral-800);
+  --color-neutral-900: var(--brand-neutral-900);
+  --color-neutral-950: var(--brand-neutral-950);
+
+  /* semantic roles. Each points at a --brand-* name, never at a name this
+     block also declares, so nothing can resolve to itself. */
+  --color-bg:             var(--brand-bg);
+  --color-surface:        var(--brand-surface);
+  --color-surface-raised: var(--brand-surface-raised);
+  --color-surface-sunken: var(--brand-surface-sunken);
+
+  --color-line:        var(--brand-border);
+  --color-line-strong: var(--brand-border-strong);
+
+  --color-ink:         var(--brand-text);
+  --color-ink-muted:   var(--brand-text-muted);
+  --color-ink-subtle:  var(--brand-text-subtle);
+  --color-ink-inverse: var(--brand-text-inverse);
+
+  --color-primary:        var(--brand-primary);
+  --color-primary-hover:  var(--brand-primary-hover);
+  --color-primary-active: var(--brand-primary-active);
+  --color-primary-subtle: var(--brand-primary-subtle);
+  --color-primary-text:   var(--brand-primary-text);
+
+  --color-accent:        var(--brand-accent);
+  --color-accent-hover:  var(--brand-accent-hover);
+  --color-accent-subtle: var(--brand-accent-subtle);
+  --color-accent-text:   var(--brand-accent-text);
+
+  --color-success:        var(--brand-success);
+  --color-success-subtle: var(--brand-success-subtle);
+  --color-warning:        var(--brand-warning);
+  --color-warning-subtle: var(--brand-warning-subtle);
+  --color-danger:         var(--brand-danger);
+  --color-danger-subtle:  var(--brand-danger-subtle);
+  --color-info:           var(--brand-info);
+  --color-info-subtle:    var(--brand-info-subtle);
+
+  /* type */
+  --font-sans:    var(--brand-font-sans);
+  --font-display: var(--brand-font-display);
+  --font-mono:    var(--brand-font-mono);
+
+  --text-xs:   var(--brand-text-xs);
+  --text-sm:   var(--brand-text-sm);
+  --text-base: var(--brand-text-base);
+  --text-lg:   var(--brand-text-lg);
+  --text-xl:   var(--brand-text-xl);
+  --text-2xl:  var(--brand-text-2xl);
+  --text-3xl:  var(--brand-text-3xl);
+  --text-4xl:  var(--brand-text-4xl);
+  --text-5xl:  var(--brand-text-5xl);
+
+  --leading-tight:   var(--brand-leading-tight);
+  --leading-snug:    var(--brand-leading-snug);
+  --leading-normal:  var(--brand-leading-normal);
+  --leading-relaxed: var(--brand-leading-relaxed);
+
+  --font-weight-normal:   var(--brand-weight-normal);
+  --font-weight-medium:   var(--brand-weight-medium);
+  --font-weight-semibold: var(--brand-weight-semibold);
+  --font-weight-bold:     var(--brand-weight-bold);
+
+  /* shape */
+  --radius-sm:   var(--brand-radius-sm);
+  --radius-md:   var(--brand-radius-md);
+  --radius-lg:   var(--brand-radius-lg);
+  --radius-xl:   var(--brand-radius-xl);
+  --radius-2xl:  var(--brand-radius-2xl);
+  --radius-full: var(--brand-radius-full);
+
+  --shadow-sm: var(--brand-shadow-sm);
+  --shadow-md: var(--brand-shadow-md);
+  --shadow-lg: var(--brand-shadow-lg);
+
+  --container-page:  var(--brand-container-page);
+  --container-prose: var(--brand-container-prose);
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Bengali script has tall ascenders and deep descenders; the default
+       line-height clips the matra on headings. */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--brand-bg);
+    color: var(--brand-text);
+    font-family: var(--brand-font-sans);
+    font-size: var(--brand-text-base);
+    line-height: var(--brand-leading-relaxed);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Bengali and Latin numerals sit at different optical sizes; unifying the
+     tabular figures keeps the amount columns in the data tables from
+     shimmering as digits change. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Visible focus for keyboard users only — a permanent ring on mouse click
+     is noise, but losing the ring entirely fails WCAG 2.4.7. */
+  :focus-visible {
+    outline: 2px solid var(--brand-primary);
+    outline-offset: 2px;
+    border-radius: var(--brand-radius-sm);
+  }
+
+  ::selection {
+    background-color: var(--brand-indigo-200);
+    color: var(--brand-indigo-950);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Components
+   Kept small and explicit rather than pulling in a component library. The
+   public pages have a narrow, repeatable set of needs: buttons, cards, form
+   fields, badges. Anything more is a sign the markup needs rethinking first.
+   -------------------------------------------------------------------------- */
+@layer components {
+  .ht-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.125rem;
+    border-radius: var(--brand-radius-md);
+    font-size: var(--brand-text-sm);
+    font-weight: var(--weight-semibold);
+    line-height: 1.25rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease,
+                border-color 150ms ease, box-shadow 150ms ease,
+                transform 150ms ease;
+  }
+  .ht-btn:disabled,
+  .ht-btn[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .ht-btn:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  .ht-btn-primary {
+    background-color: var(--brand-primary);
+    color: var(--brand-text-inverse);
+    box-shadow: var(--brand-shadow-sm);
+  }
+  .ht-btn-primary:hover:not(:disabled) {
+    background-color: var(--brand-primary-hover);
+  }
+
+  .ht-btn-accent {
+    background-color: var(--brand-accent);
+    color: var(--brand-text-inverse);
+    box-shadow: var(--brand-shadow-sm);
+  }
+  .ht-btn-accent:hover:not(:disabled) {
+    background-color: var(--brand-accent-hover);
+  }
+
+  .ht-btn-secondary {
+    background-color: var(--brand-surface-raised);
+    color: var(--brand-primary-text);
+    border: 1px solid var(--brand-border-strong);
+  }
+  .ht-btn-secondary:hover:not(:disabled) {
+    background-color: var(--brand-primary-subtle);
+    border-color: var(--brand-indigo-300);
+  }
+
+  .ht-btn-ghost {
+    background-color: transparent;
+    color: var(--brand-text-muted);
+  }
+  .ht-btn-ghost:hover:not(:disabled) {
+    background-color: var(--brand-surface-sunken);
+    color: var(--brand-text);
+  }
+
+  .ht-card {
+    background-color: var(--brand-surface-raised);
+    border: 1px solid var(--brand-border);
+    border-radius: var(--brand-radius-lg);
+    box-shadow: var(--brand-shadow-sm);
+  }
+
+  .ht-field {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    background-color: var(--brand-surface-raised);
+    border: 1px solid var(--brand-border-strong);
+    border-radius: var(--brand-radius-md);
+    color: var(--brand-text);
+    font-size: var(--brand-text-sm);
+    line-height: 1.5rem;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+  /* Placeholder is text, not decoration. It has to clear the same contrast
+     bar as real text, so it uses the muted token rather than the subtle one
+     (2.41:1 on the warm surface, decorative only). */
+  .ht-field::placeholder {
+    color: var(--brand-text-muted);
+  }
+  .ht-field:hover:not(:disabled) {
+    border-color: var(--brand-neutral-400);
+  }
+  .ht-field:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: var(--brand-shadow-focus);
+  }
+  .ht-field:disabled {
+    background-color: var(--brand-surface-sunken);
+    color: var(--brand-text-subtle);
+    cursor: not-allowed;
+  }
+
+  .ht-label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: var(--brand-text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--brand-text);
+  }
+
+  .ht-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--brand-radius-full);
+    font-size: var(--brand-text-xs);
+    font-weight: var(--weight-semibold);
+    line-height: 1.125rem;
+  }
+  .ht-badge-primary { background: var(--brand-primary-subtle); color: var(--brand-primary-text); }
+  .ht-badge-accent  { background: var(--brand-accent-subtle);  color: var(--brand-accent-text); }
+  .ht-badge-success { background: var(--brand-success-subtle); color: var(--brand-success); }
+  .ht-badge-warning { background: var(--brand-warning-subtle); color: var(--brand-warning); }
+  .ht-badge-danger  { background: var(--brand-danger-subtle);  color: var(--brand-danger); }
+  .ht-badge-neutral { background: var(--brand-surface-sunken); color: var(--brand-text-muted); }
+
+  /* -----------------------------------------------------------------------
+     Modal + collapse shell
+     The last thing Bootstrap was doing on public pages. These classes keep the
+     existing `class="modal fade"` / `modal-dialog` markup in
+     front/partials/speeches.php and front/add.php working after
+     inc/assets/css/app.css (3.1 MB of Bootstrap 4) stopped loading on the
+     public shell. Behaviour lives in inc/assets/js/ht-modal.js; this is only
+     the box.
+
+     Everything inside .modal-content is already Tailwind in those files, so
+     only the three structural layers below are reproduced here.
+     ----------------------------------------------------------------------- */
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1055;
+    display: none;
+    overflow-y: auto;
+    outline: none;
+  }
+  .modal.fade { opacity: 0; transition: opacity 150ms linear; }
+  .modal.show { display: block; opacity: 1; }
+
+  .modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 0.75rem;
+    pointer-events: none;
+  }
+  .modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1.5rem);
+  }
+  /* A long speech on a short screen must scroll the body, not the dialog. */
+  .modal-dialog-scrollable { max-height: calc(100vh - 1.5rem); }
+  .modal-dialog-scrollable .modal-content { max-height: 100%; }
+  .modal-dialog-scrollable .modal-body { overflow-y: auto; }
+
+  .modal-dialog-sm { max-width: 300px; margin-inline: auto; }
+  .modal-dialog-md { max-width: 500px; margin-inline: auto; }
+  .modal-dialog-lg { max-width: 800px; margin-inline: auto; }
+  .modal-dialog-xl { max-width: 1140px; margin-inline: auto; }
+
+  .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    outline: none;
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    background-color: #000;
+    opacity: 0;
+    transition: opacity 150ms linear;
+  }
+  .modal-backdrop.show { opacity: 0.5; }
+
+  /* Bootstrap's .close, still present on the speeches modals. */
+  .close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.5;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  .close:hover { opacity: 1; }
+
+  /* `.collapse` is display:none until .show is added. Only used by the
+     legacy standalone pages; the public shell has no collapse nav. */
+  .collapse:not(.show) { display: none; }
+
+  /* Scroll lock while a modal is open. Applied to <body> by the shim. */
+  body.ht-modal-open { overflow: hidden; }
+}

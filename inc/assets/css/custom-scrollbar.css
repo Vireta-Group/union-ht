@@ -1,0 +1,102 @@
+/**
+ * Modern Custom WebKit Scrollbar Styling for ViretaDev
+ * Provides sleek, smooth horizontal and vertical scrollbars across the application.
+ */
+
+/* 1. Standards-based scrollbar styling (Firefox & modern browsers) */
+html, body, * {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+/* 2. WebKit Scrollbars Base (Chrome, Edge, Safari, Opera) */
+::-webkit-scrollbar {
+    width: 6px;  /* Vertical scrollbar width */
+    height: 6px; /* Horizontal scrollbar height */
+}
+
+/* 3. Scrollbar Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-track:hover {
+    background: rgba(15, 23, 42, 0.03);
+}
+
+/* 4. Scrollbar Thumb (Pill shape with subtle hover transition) */
+::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1; /* slate-300 */
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+    transition: background-color 0.2s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8; /* slate-400 */
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: #64748b; /* slate-500 */
+}
+
+/* 5. Scrollbar Corner (Intersection of horizontal and vertical bars) */
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* 6. Refined Horizontal Scrollbars for Tables & Overflow Containers */
+.overflow-x-auto::-webkit-scrollbar,
+[dir=ltr] .overflow-x-auto::-webkit-scrollbar,
+.overflow-auto::-webkit-scrollbar,
+[dir=ltr] .overflow-auto::-webkit-scrollbar,
+.table-responsive::-webkit-scrollbar,
+[dir=ltr] .table-responsive::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track,
+[dir=ltr] .overflow-x-auto::-webkit-scrollbar-track,
+.overflow-auto::-webkit-scrollbar-track,
+[dir=ltr] .overflow-auto::-webkit-scrollbar-track {
+    background: rgba(241, 245, 249, 0.65); /* slate-100 / 65% */
+    border-radius: 9999px;
+    margin-inline: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb,
+[dir=ltr] .overflow-x-auto::-webkit-scrollbar-thumb,
+.overflow-auto::-webkit-scrollbar-thumb,
+[dir=ltr] .overflow-auto::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 9999px;
+    border: 1px solid rgba(241, 245, 249, 0.65);
+    background-clip: padding-box;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover,
+[dir=ltr] .overflow-x-auto::-webkit-scrollbar-thumb:hover,
+.overflow-auto::-webkit-scrollbar-thumb:hover,
+[dir=ltr] .overflow-auto::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8;
+}
+
+/* 7. Dark themed elements (e.g. dark headers, sidebars, modals) */
+.dark ::-webkit-scrollbar-thumb,
+[data-theme="dark"] ::-webkit-scrollbar-thumb,
+.bg-neutral-900 ::-webkit-scrollbar-thumb,
+.bg-neutral-950 ::-webkit-scrollbar-thumb,
+header.bg-neutral-900 ::-webkit-scrollbar-thumb {
+    background-color: #475569; /* slate-600 */
+}
+
+.dark ::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover,
+.bg-neutral-900 ::-webkit-scrollbar-thumb:hover,
+.bg-neutral-950 ::-webkit-scrollbar-thumb:hover,
+header.bg-neutral-900 ::-webkit-scrollbar-thumb:hover {
+    background-color: #64748b; /* slate-500 */
+}

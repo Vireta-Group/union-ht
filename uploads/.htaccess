@@ -1,0 +1,29 @@
+# -------------------------------------------------------------------
+# Tenant media directory — IMAGES ONLY, NEVER EXECUTED
+# -------------------------------------------------------------------
+# Uploaded bytes are never named or trusted from the client, but a
+# defensive "no script ever runs here" rule is the only thing standing
+# between a future upload bug and remote code execution. The root
+# .htaccess adds an AddHandler for .php, and that applies recursively,
+# so it has to be neutralised here explicitly.
+# -------------------------------------------------------------------
+
+<IfModule mod_mime.c>
+  RemoveHandler .php .php3 .php4 .php5 .php7 .php8 .phtml .pht .phar .cgi .pl .py
+  RemoveType .php .php3 .php4 .php5 .php7 .php8 .phtml .pht .phar .cgi .pl .py
+</IfModule>
+
+<IfModule mod_authz_core.c>
+  <FilesMatch "(?i)\.(php[0-9]?|phtml|pht|phar|cgi|pl|py|sh|shtml|html?|htaccess)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+  <FilesMatch "(?i)\.(php[0-9]?|phtml|pht|phar|cgi|pl|py|sh|shtml|html?|htaccess)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
+DirectoryIndex index.html

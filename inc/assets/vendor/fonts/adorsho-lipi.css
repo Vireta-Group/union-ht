@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Adorsho Lipi (আদর্শ লিপি) Web Font
+   Designed by Partha Sarathi Pal / OmicronLab
+   ========================================================================== */
+
+/* Standard declaration with wide weight support (100 to 900) */
+@font-face {
+  font-family: 'AdorshoLipi';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('AdorshoLipi.ttf') format('truetype');
+}
+
+/* Alias: 'Adorsho Lipi' */
+@font-face {
+  font-family: 'Adorsho Lipi';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('AdorshoLipi.ttf') format('truetype');
+}
+
+/* Alias: 'AdarshaLipi' */
+@font-face {
+  font-family: 'AdarshaLipi';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('AdorshoLipi.ttf') format('truetype');
+}
+
+/* Alias: 'Adarsha Lipi' */
+@font-face {
+  font-family: 'Adarsha Lipi';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('AdorshoLipi.ttf') format('truetype');
+}
+
+/* Specific weights for legacy engine compatibility */
+@font-face {
+  font-family: 'AdorshoLipi';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('AdorshoLipi.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AdorshoLipi';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('AdorshoLipi.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AdorshoLipi';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('AdorshoLipi.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AdorshoLipi';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('AdorshoLipi.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AdorshoLipi';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('AdorshoLipi.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AdorshoLipi';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('AdorshoLipi.ttf') format('truetype');
+}
