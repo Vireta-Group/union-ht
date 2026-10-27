@@ -83,11 +83,29 @@ class Super_admin extends CI_Controller
 		$data['total_domains'] = (int) $this->db->count_all_results('tenant_domains');
 		$this->db->reset_query();
 
-		// Holdings and sonods, across all tenants. ins_aut_iiid is the
-		// tenant column on family_data_sheet (see AGENTS.md's IDOR section);
-		// sonod_genarates has no tenant column at all, so it is one count.
-		$data['total_holdings'] = (int) $this->db->count_all('family_data_sheet');
-		$data['total_sonods']   = (int) $this->db->count_all('sonod_genarates');
+		// SaaS platform revenue & collections metrics (Super admin business view)
+		$month_sales_row = $this->db->select('COALESCE(SUM(amount), 0) AS total')
+			->where('paid_at >=', date('Y-m-01'))
+			->get('subscription_payments')
+			->row();
+		$data['month_sales'] = (int) ($month_sales_row ? $month_sales_row->total : 0);
+
+		$total_collected_row = $this->db->select('COALESCE(SUM(amount), 0) AS total, COUNT(*) AS count')
+			->where('paid_at IS NOT NULL', NULL, FALSE)
+			->get('subscription_payments')
+			->row();
+		$data['total_collected']       = (int) ($total_collected_row ? $total_collected_row->total : 0);
+		$data['total_collected_count'] = (int) ($total_collected_row ? $total_collected_row->count : 0);
+
+		// Contracted Annual Recurring Revenue (ARR) across active subscriptions
+		$arr_row = $this->db->select('COALESCE(SUM(CASE WHEN s.billing_cycle = \'monthly\' THEN p.price_monthly * 12 ELSE p.price_yearly END), 0) AS total')
+			->from('subscriptions s')
+			->join('packages p', 'p.package_id = s.package_id')
+			->where('s.status', 'active')
+			->get()
+			->row();
+		$data['total_arr'] = (int) ($arr_row ? $arr_row->total : 0);
+
 		$data['total_users']    = (int) $this->db->count_all('users');
 
 		/*

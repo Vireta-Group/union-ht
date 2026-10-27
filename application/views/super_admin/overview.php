@@ -13,56 +13,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php
 $metrics = [
     [
-        'label' => 'মোট ইউনিয়ন', 'label_en' => 'Total Tenants', 'value' => $total_tenants, 'icon' => 'ph-buildings',
+        'label' => 'মোট ইউনিয়ন', 'label_en' => 'Total Tenants', 'value' => $total_tenants, 'is_currency' => false, 'icon' => 'ph-buildings',
         'sub'   => $suspended_count > 0 ? bn_number($suspended_count) . 'টি স্থগিত' : 'সবগুলো সক্রিয়',
         'sub_en' => $suspended_count > 0 ? $suspended_count . ' suspended' : 'All active',
         'sub_cls' => $suspended_count > 0 ? 'text-amber-600' : 'text-emerald-600',
         'href'  => 'sadmin_tenants',
     ],
     [
-        'label' => 'ডোমেন', 'label_en' => 'Domains', 'value' => $total_domains, 'icon' => 'ph-globe',
-        'sub'   => $is_development ? 'ডেভ হোস্টসহ' : 'লাইভ হোস্টসহ',
+        'label' => 'চলতি মাসের আদায়', 'label_en' => 'This Month Sales', 'value' => $month_sales, 'is_currency' => true, 'icon' => 'ph-money',
+        'sub'   => 'চলতি মাসে সংগৃহীত পেমেন্ট',
+        'sub_en' => 'Collected this month',
+        'sub_cls' => 'text-emerald-600',
+        'href'  => 'sadmin_subscriptions',
+    ],
+    [
+        'label' => 'মোট প্ল্যাটফর্ম রাজস্ব', 'label_en' => 'Total Collections', 'value' => $total_collected, 'is_currency' => true, 'icon' => 'ph-vault',
+        'sub'   => ($total_collected_count > 0 ? bn_number($total_collected_count) . 'টি ইনভয়েস পেমেন্ট' : 'সাবস্ক্রিপশন ফি সংগ্রহ'),
+        'sub_en' => $total_collected_count . ' invoices paid',
+        'sub_cls' => 'text-indigo-600',
+        'href'  => 'sadmin_subscriptions',
+    ],
+    [
+        'label' => 'বাৎসরিক চুক্তি মূল্য (ARR)', 'label_en' => 'Annual Run Rate', 'value' => $total_arr, 'is_currency' => true, 'icon' => 'ph-chart-line-up',
+        'sub' => 'সক্রিয় সাবস্ক্রিপশন চুক্তি ভ্যালু',
+        'sub_en' => 'Active contracted ARR',
+        'sub_cls' => 'text-neutral-500',
+        'href' => 'sadmin_subscriptions',
+    ],
+    [
+        'label' => 'ডোমেন ও ক্লাউড হোস্ট', 'label_en' => 'Domains & Hosts', 'value' => $total_domains, 'is_currency' => false, 'icon' => 'ph-globe',
+        'sub'   => $is_development ? 'ডেভ হোস্টসহ সক্রিয়' : 'লাইভ হোস্টসহ সক্রিয়',
         'sub_en' => $is_development ? 'Incl. dev hosts' : 'Live hosts only',
         'sub_cls' => 'text-neutral-500', 'href' => 'sadmin_tenants',
     ],
     [
-        'label' => 'হোল্ডিং', 'label_en' => 'Holdings', 'value' => $total_holdings, 'icon' => 'ph-house-line',
-        'sub'   => 'সব ইউনিয়ন মিলিয়ে',
-        'sub_en' => 'Across all tenants',
-        'sub_cls' => 'text-neutral-500',
-        'href'  => 'sadmin_tenants',
-    ],
-    [
-        'label' => 'ইউজার', 'label_en' => 'Users', 'value' => $total_users, 'icon' => 'ph-users-three',
-        'sub' => 'সব ইউনিয়ন মিলিয়ে',
-        'sub_en' => 'Across all tenants',
-        'sub_cls' => 'text-neutral-500',
-        'href' => 'sadmin_users',
-    ],
-    [
-        'label' => 'ডিজিটাল সনদ', 'label_en' => 'Digital Certificates', 'value' => $total_sonods, 'icon' => 'ph-seal-check',
-        'sub' => 'সব ইউনিয়ন মিলিয়ে',
-        'sub_en' => 'Across all tenants',
-        'sub_cls' => 'text-neutral-500',
-        'href' => 'sadmin_tenants',
-    ],
-    [
-        'label' => 'মেয়াদ শেষের কাছাকাছি', 'label_en' => 'Expiring Soon', 'value' => $subs_expiring, 'icon' => 'ph-timer',
-        'sub'   => $subs_expiring > 0 ? '৩০ দিনের মধ্যে' : 'কোনোটিই নেই',
+        'label' => 'মেয়াদ শেষের কাছাকাছি', 'label_en' => 'Expiring Soon', 'value' => $subs_expiring, 'is_currency' => false, 'icon' => 'ph-timer',
+        'sub'   => $subs_expiring > 0 ? '৩০ দিনের মধ্যে মেয়াদ শেষ' : 'কোনোটিই নেই',
         'sub_en' => $subs_expiring > 0 ? 'Within 30 days' : 'None expiring',
         'sub_cls' => $subs_expiring > 0 ? 'text-amber-600' : 'text-emerald-600',
         'href'  => 'sadmin_subscriptions',
     ],
     [
-        'label' => 'খোলা সাপোর্ট টিকিট', 'label_en' => 'Open Tickets', 'value' => $tickets_open, 'icon' => 'ph-lifebuoy',
+        'label' => 'খোলা সাপোর্ট টিকিট', 'label_en' => 'Open Tickets', 'value' => $tickets_open, 'is_currency' => false, 'icon' => 'ph-lifebuoy',
         'sub'   => $tickets_urgent > 0 ? bn_number($tickets_urgent) . 'টি জরুরি' : 'জরুরি কোনোটি নেই',
         'sub_en' => $tickets_urgent > 0 ? $tickets_urgent . ' urgent' : 'No urgent tickets',
         'sub_cls' => $tickets_urgent > 0 ? 'text-rose-600' : 'text-emerald-600',
         'href'  => 'sadmin_support',
     ],
     [
-        'label' => 'মেয়াদোত্তীর্ণ সাবস্ক্রিপশন', 'label_en' => 'Expired Subscriptions', 'value' => $subs_expired, 'icon' => 'ph-credit-card',
-        'sub'   => $subs_total > 0 ? bn_number($subs_total) . 'টি মোট' : 'কোনো সাবস্ক্রিপশন নেই',
+        'label' => 'মেয়াদোত্তীর্ণ সাবস্ক্রিপশন', 'label_en' => 'Expired Subscriptions', 'value' => $subs_expired, 'is_currency' => false, 'icon' => 'ph-credit-card',
+        'sub'   => $subs_total > 0 ? bn_number($subs_total) . 'টি মোট সাবস্ক্রিপশন' : 'কোনো সাবস্ক্রিপশন নেই',
         'sub_en' => $subs_total > 0 ? $subs_total . ' total subscriptions' : 'No subscriptions',
         'sub_cls' => $subs_expired > 0 ? 'text-rose-600' : 'text-emerald-600',
         'href'  => 'sadmin_subscriptions',
@@ -82,8 +82,13 @@ $metrics = [
                 <i class="ph <?= $m['icon'] ?> text-lg text-neutral-300 group-hover:text-indigo-500 transition-colors shrink-0"></i>
             </div>
             <div class="mt-2 text-2xl sm:text-3xl font-black text-neutral-900 leading-none">
-                <span class="lang-bn bengali-num"><?= bn_number(number_format($m['value'])) ?></span>
-                <span class="lang-en font-mono"><?= number_format($m['value']) ?></span>
+                <?php if (!empty($m['is_currency'])): ?>
+                    <span class="lang-bn bengali-num">৳<?= bn_number(number_format($m['value'])) ?></span>
+                    <span class="lang-en font-mono">৳<?= number_format($m['value']) ?></span>
+                <?php else: ?>
+                    <span class="lang-bn bengali-num"><?= bn_number(number_format($m['value'])) ?></span>
+                    <span class="lang-en font-mono"><?= number_format($m['value']) ?></span>
+                <?php endif; ?>
             </div>
             <div class="mt-1.5 text-[11px] font-medium <?= $m['sub_cls'] ?>">
                 <span class="lang-bn"><?= $m['sub'] ?></span>
