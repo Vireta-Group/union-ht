@@ -22,6 +22,9 @@ application/cache/*
 *.pid
 *.tmp
 *.bak
+*.dump
+*.sql.gz
+*.tar.gz
 user_guide_src/build/*
 user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*

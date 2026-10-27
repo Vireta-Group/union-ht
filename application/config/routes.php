@@ -13,6 +13,7 @@ $route['plans'] 					= 'front/plans';
 $route['contact'] 					= 'front/contact';
 $route['reviews'] 					= 'front/reviews';
 $route['api/reviews/submit'] 			= 'front/api_submit_review';
+$route['api_submit_review'] 			= 'front/api_submit_review';
 $route['api/reviews/public'] 			= 'front/api_public_reviews';
 $route['sadmin_reviews/(:any)'] 		= 'sadmin_reviews/$1';
 $route['sadmin_reviews'] 				= 'sadmin_reviews/api_list';

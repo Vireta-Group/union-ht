@@ -206,6 +206,11 @@ function platform_contact()
 		'hours'         => 'সকাল ৯টা - রাত ১০টা',
 		'address'       => '',
 		'telegram'      => '',
+		'fb_link'       => 'https://facebook.com/viretadev',
+		'twitter_link'  => 'https://x.com/viretadev',
+		'youtube_link'  => 'https://youtube.com/@viretadev',
+		'linkedin_link' => 'https://linkedin.com/company/viretadev',
+		'instagram_link'=> 'https://instagram.com/viretadev',
 		'stale'         => TRUE,
 	];
 
@@ -224,7 +229,7 @@ function platform_contact()
 	 */
 	$CI->db->reset_query();
 	$row = $CI->db
-		->select('vphone1, vphone2, vmail, vwhatsapp, vsupport_hours, vaddrs, vtelegram', FALSE)
+		->select('vphone1, vphone2, vmail, vwhatsapp, vsupport_hours, vaddrs, vtelegram, fb_link, twitlink, "youtubeLink", "linkedIN", "instagramLink"', FALSE)
 		->limit(1)
 		->get('satting_infos')
 		->row_array();
@@ -236,14 +241,19 @@ function platform_contact()
 	}
 
 	$cache = [
-		'phone1'      => trim((string) ($row['vphone1']      ?? '')),
-		'phone2'      => trim((string) ($row['vphone2']      ?? '')),
-		'mail'        => trim((string) ($row['vmail']        ?? '')),
-		'whatsapp'    => trim((string) ($row['vwhatsapp']    ?? '')),
-		'hours'       => trim((string) ($row['vsupport_hours'] ?? '')),
-		'address'     => trim((string) ($row['vaddrs']       ?? '')),
-		'telegram'    => trim((string) ($row['vtelegram']    ?? '')),
-		'stale'       => FALSE,
+		'phone1'         => trim((string) ($row['vphone1']        ?? '')),
+		'phone2'         => trim((string) ($row['vphone2']        ?? '')),
+		'mail'           => trim((string) ($row['vmail']          ?? '')),
+		'whatsapp'       => trim((string) ($row['vwhatsapp']      ?? '')),
+		'hours'          => trim((string) ($row['vsupport_hours'] ?? '')),
+		'address'        => trim((string) ($row['vaddrs']         ?? '')),
+		'telegram'       => trim((string) ($row['vtelegram']      ?? '')),
+		'fb_link'        => trim((string) ($row['fb_link']        ?? '')),
+		'twitter_link'   => trim((string) ($row['twitlink']       ?? '')),
+		'youtube_link'   => trim((string) ($row['youtubeLink']    ?? '')),
+		'linkedin_link'  => trim((string) ($row['linkedIN']        ?? '')),
+		'instagram_link' => trim((string) ($row['instagramLink']   ?? '')),
+		'stale'          => FALSE,
 	];
 
 	/*

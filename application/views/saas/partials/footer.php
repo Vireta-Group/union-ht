@@ -20,6 +20,13 @@ $saas_quick_links = array(
     '/policy'   => 'পলিসি ও শর্তাবলী (Policies)',
     '/contact'  => 'যোগাযোগ (Contact)',
 );
+
+$platform_contact = function_exists('platform_contact') ? platform_contact() : array();
+$fb_url = !empty($platform_contact['fb_link']) ? $platform_contact['fb_link'] : 'https://facebook.com/viretadev';
+$tw_url = !empty($platform_contact['twitter_link']) ? $platform_contact['twitter_link'] : 'https://x.com/viretadev';
+$yt_url = !empty($platform_contact['youtube_link']) ? $platform_contact['youtube_link'] : 'https://youtube.com/@viretadev';
+$li_url = !empty($platform_contact['linkedin_link']) ? $platform_contact['linkedin_link'] : 'https://linkedin.com/company/viretadev';
+$ig_url = !empty($platform_contact['instagram_link']) ? $platform_contact['instagram_link'] : 'https://instagram.com/viretadev';
 ?>
         <footer class="mt-auto border-t border-neutral-800 bg-neutral-950 py-10 text-xs text-neutral-400">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -39,9 +46,10 @@ $saas_quick_links = array(
                             ইউনিয়ন পরিষদসমূহের প্রশাসনিক ও নাগরিক সেবা ডিজিটালকরণের নির্ভরযোগ্য প্রাইভেট ক্লাউড প্ল্যাটফর্ম।
                         </p>
 
-                        <!-- Social Media Links (Official Brand Colors & Larger Size) -->
+                        <!-- Social Media Links (Dynamically configured via Super Admin Settings) -->
                         <div class="flex items-center gap-2.5 pt-2">
-                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+                            <?php if (!empty($fb_url)): ?>
+                            <a href="<?= htmlspecialchars($fb_url) ?>" target="_blank" rel="noopener noreferrer"
                                class="flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-200 hover:scale-105"
                                style="background: rgba(24, 119, 242, 0.1); border: 1px solid rgba(24, 119, 242, 0.25); color: #1877F2;"
                                onmouseover="this.style.background='#1877F2'; this.style.color='#FFFFFF';"
@@ -49,7 +57,10 @@ $saas_quick_links = array(
                                title="ফেসবুক পেজ" aria-label="Facebook">
                                 <i class="ph-fill ph-facebook-logo" style="font-size: 20px;"></i>
                             </a>
-                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                            <?php endif; ?>
+
+                            <?php if (!empty($ig_url)): ?>
+                            <a href="<?= htmlspecialchars($ig_url) ?>" target="_blank" rel="noopener noreferrer"
                                class="flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-200 hover:scale-105"
                                style="background: rgba(225, 48, 108, 0.1); border: 1px solid rgba(225, 48, 108, 0.25); color: #E1306C;"
                                onmouseover="this.style.background='linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)'; this.style.color='#FFFFFF';"
@@ -57,7 +68,10 @@ $saas_quick_links = array(
                                title="ইনস্টাগ্রাম" aria-label="Instagram">
                                 <i class="ph-fill ph-instagram-logo" style="font-size: 20px;"></i>
                             </a>
-                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                            <?php endif; ?>
+
+                            <?php if (!empty($li_url)): ?>
+                            <a href="<?= htmlspecialchars($li_url) ?>" target="_blank" rel="noopener noreferrer"
                                class="flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-200 hover:scale-105"
                                style="background: rgba(10, 102, 194, 0.1); border: 1px solid rgba(10, 102, 194, 0.25); color: #0A66C2;"
                                onmouseover="this.style.background='#0A66C2'; this.style.color='#FFFFFF';"
@@ -65,7 +79,10 @@ $saas_quick_links = array(
                                title="লিংকডইন" aria-label="LinkedIn">
                                 <i class="ph-fill ph-linkedin-logo" style="font-size: 20px;"></i>
                             </a>
-                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                            <?php endif; ?>
+
+                            <?php if (!empty($tw_url)): ?>
+                            <a href="<?= htmlspecialchars($tw_url) ?>" target="_blank" rel="noopener noreferrer"
                                class="flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-200 hover:scale-105"
                                style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #FFFFFF;"
                                onmouseover="this.style.background='#FFFFFF'; this.style.color='#000000';"
@@ -73,7 +90,10 @@ $saas_quick_links = array(
                                title="এক্স (টুইটার)" aria-label="X (Twitter)">
                                 <i class="ph-fill ph-x-logo" style="font-size: 19px;"></i>
                             </a>
-                            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer"
+                            <?php endif; ?>
+
+                            <?php if (!empty($yt_url)): ?>
+                            <a href="<?= htmlspecialchars($yt_url) ?>" target="_blank" rel="noopener noreferrer"
                                class="flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-200 hover:scale-105"
                                style="background: rgba(255, 0, 0, 0.1); border: 1px solid rgba(255, 0, 0, 0.25); color: #FF0000;"
                                onmouseover="this.style.background='#FF0000'; this.style.color='#FFFFFF';"
@@ -81,14 +101,7 @@ $saas_quick_links = array(
                                title="ইউটিউব" aria-label="YouTube">
                                 <i class="ph-fill ph-youtube-logo" style="font-size: 20px;"></i>
                             </a>
-                            <a href="https://github.com" target="_blank" rel="noopener noreferrer"
-                               class="flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-200 hover:scale-105"
-                               style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #E6EDF3;"
-                               onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.color='#FFFFFF';"
-                               onmouseout="this.style.background='rgba(255, 255, 255, 0.08)'; this.style.color='#E6EDF3';"
-                               title="গিটহাব" aria-label="GitHub">
-                                <i class="ph-fill ph-github-logo" style="font-size: 20px;"></i>
-                            </a>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -107,10 +120,26 @@ $saas_quick_links = array(
 
                     <!-- Direct Support Column -->
                     <div class="md:col-span-4">
-                        <h4 class="mb-3 font-bold tracking-wider text-white uppercase">সরাসরি সহায়তা</h4>
+                        <h4 class="mb-3 font-bold tracking-wider text-white uppercase">সরাসরি সহায়তা ও হেল্পডেস্ক</h4>
                         <p class="mb-2 text-neutral-400">
                             যেকোনো কারিগরি সহায়তা বা তথ্যের জন্য আমাদের সাথে সরাসরি যোগাযোগ করুন।
                         </p>
+                        <?php if (!empty($platform_contact['phone1_label'])): ?>
+                            <div class="mb-1.5">
+                                <a href="<?= $platform_contact['phone1_href'] ?>" class="text-xs text-neutral-300 hover:text-white flex items-center gap-1.5">
+                                    <i class="ph-bold ph-phone text-emerald-400"></i>
+                                    <span><?= $platform_contact['phone1_label'] ?></span>
+                                </a>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (!empty($platform_contact['mail'])): ?>
+                            <div class="mb-3">
+                                <a href="<?= $platform_contact['mail_href'] ?>" class="text-xs text-neutral-300 hover:text-white flex items-center gap-1.5">
+                                    <i class="ph-bold ph-envelope text-indigo-400"></i>
+                                    <span><?= htmlspecialchars($platform_contact['mail']) ?></span>
+                                </a>
+                            </div>
+                        <?php endif; ?>
                         <button type="button" data-toggle="modal" data-target="#supportModal"
                                 class="ht-btn ht-btn-secondary text-xs">
                             <?= icon('headset', 16, 'bold', 'text-indigo-400') ?>

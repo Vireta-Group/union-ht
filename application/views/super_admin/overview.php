@@ -139,9 +139,12 @@ $metrics = [
                                 · <span class="lang-bn">শেষ <?= bn_number(date('d M Y', strtotime($s->end_date))) ?></span><span class="lang-en font-mono">Ends <?= date('d M Y', strtotime($s->end_date)) ?></span>
                             </p>
                         </div>
-                        <span class="shrink-0 px-2 py-1 rounded-lg text-[11px] font-bold <?= $left <= 7
+                        <?php
+                            $badge_cls = ($left <= 7)
                                 ? 'bg-rose-50 text-rose-700 border border-rose-200'
-                                : 'bg-amber-50 text-amber-700 border border-amber-200' ?>">
+                                : 'bg-amber-50 text-amber-700 border border-amber-200';
+                        ?>
+                        <span class="shrink-0 px-2 py-1 rounded-lg text-[11px] font-bold <?= $badge_cls ?>">
                             <span class="lang-bn bengali-num"><?= bn_number($left) ?> দিন বাকি</span>
                             <span class="lang-en font-mono"><?= $left ?> days left</span>
                         </span>
@@ -266,10 +269,13 @@ $metrics = [
     an operator sees in production, and nothing else on the page would
     tell them which one they are looking at.
 -->
+<?php
+    $dev_badge_cls = $is_development
+        ? 'bg-amber-100 text-amber-800 border border-amber-300'
+        : 'bg-emerald-100 text-emerald-800 border border-emerald-300';
+?>
 <div class="flex items-center justify-center">
-    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold <?= $is_development
-            ? 'bg-amber-100 text-amber-800 border border-amber-300'
-            : 'bg-emerald-100 text-emerald-800 border border-emerald-300' ?>">
+    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold <?= $dev_badge_cls ?>">
         <i class="ph <?= $is_development ? 'ph-flask' : 'ph-shield-check' ?>"></i>
         <?= $is_development
             ? 'ডেভেলপমেন্ট মোড — ডেভ হোস্ট ও টেন্যান্ট ওভাররাইড সক্রিয়'

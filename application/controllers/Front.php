@@ -184,12 +184,44 @@ class Front extends CI_Controller {
 	public function api_submit_review()
 	{
 		$author      = trim($this->input->post('author', TRUE) ?: '');
-		$role        = trim($this->input->post('role', TRUE) ?: 'নাগরিক');
+		$role        = trim($this->input->post('role', TRUE) ?: '');
 		$tenant_name = trim($this->input->post('tenant_name', TRUE) ?: '');
 		$service     = trim($this->input->post('service', TRUE) ?: 'নাগরিক সেবা');
 		$rating      = (int) ($this->input->post('rating', TRUE) ?: 5);
 		$content     = trim($this->input->post('content', TRUE) ?: '');
 		$impact      = trim($this->input->post('impact', TRUE) ?: '');
+
+		$tenant_id = (int)tenant_code();
+		$tenant_row = function_exists('tenant_row') ? tenant_row() : null;
+
+		$logged_in = isset($this->ion_auth) && $this->ion_auth->logged_in();
+		$user = $logged_in ? $this->ion_auth->user()->row() : null;
+
+		if ($logged_in && $user) {
+			if (empty($author)) {
+				$author = !empty($user->user_person_name) ? $user->user_person_name : ($user->username ?: $user->email);
+			}
+			if (empty($tenant_name) && $tenant_row) {
+				$tenant_name = $tenant_row->ins_name;
+			}
+			if (empty($role)) {
+				$role = $this->ion_auth->in_group('uphead') ? 'ইউপি চেয়ারম্যান' : ($this->ion_auth->in_group('upsocib') ? 'ইউপি সচিব' : 'ইউপি প্রশাসক');
+			}
+			if (empty($tenant_id) && !empty($user->ins_pr_id_s)) {
+				$tenant_id = (int)$user->ins_pr_id_s;
+			}
+		}
+
+		if (empty($role)) {
+			$role = 'নাগরিক';
+		}
+
+		$avatar_path = 'inc/assets/himg/avatar' . rand(1, 3) . '.png';
+		if (!empty($tenant_row->ins_logo_path)) {
+			$avatar_path = media_url($tenant_row->ins_logo_path);
+		} elseif (!empty($user->user_img_base64)) {
+			$avatar_path = media_url($user->user_img_base64);
+		}
 
 		if ($rating < 1 || $rating > 5) {
 			$rating = 5;
@@ -210,6 +242,7 @@ class Front extends CI_Controller {
 		}
 
 		$insert_data = array(
+			'tenant_id'       => $tenant_id ?: null,
 			'author'          => $author,
 			'role'            => $role,
 			'tenant_name'     => $tenant_name ?: 'সাধারণ নাগরিক / ইউপি সেবা',
@@ -217,7 +250,7 @@ class Front extends CI_Controller {
 			'rating'          => $rating,
 			'impact'          => $impact ?: 'নাগরিক মতামত',
 			'content'         => $content,
-			'avatar'          => 'inc/assets/himg/avatar' . rand(1, 3) . '.png',
+			'avatar'          => $avatar_path,
 			'status'          => 'pending',
 			'show_on_landing' => FALSE,
 			'featured'        => FALSE,

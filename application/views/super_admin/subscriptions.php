@@ -157,7 +157,7 @@ $summary = [
         </div>
     <?php else: ?>
         <div class="overflow-x-auto">
-        <table class="w-full min-w-[900px]">
+        <table class="w-full min-w-225">
             <thead class="bg-neutral-50 border-b border-neutral-200">
                 <tr>
                     <th class="py-3 px-4 text-left text-[11px] font-bold uppercase tracking-wider text-neutral-500"><span class="lang-bn">ইউনিয়ন</span><span class="lang-en">Union / Parishad</span></th>

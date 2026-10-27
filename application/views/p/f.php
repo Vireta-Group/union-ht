@@ -255,6 +255,215 @@
         }
     </script>
 
+    <!-- Tenant ViretaDev Review Modal -->
+    <div id="tenantReviewModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-neutral-900/60 backdrop-blur-xs items-center justify-center p-4">
+        <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl border border-neutral-200 overflow-hidden" onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-linear-to-r from-amber-500/10 via-indigo-50/50 to-white border-b border-neutral-100 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 flex items-center justify-center">
+                        <i class="ph-bold ph-star text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-neutral-900">ViretaDev প্ল্যাটফর্ম রিভিউ ও মতামত</h3>
+                        <p class="text-[11px] text-neutral-500">আপনার মূল্যবান মতামত সরাসরি প্ল্যাটফর্মে যুক্ত হবে</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeTenantReviewModal()" class="w-8 h-8 rounded-lg text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 flex items-center justify-center transition-colors">
+                    <i class="ph-bold ph-x text-base"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body / Form -->
+            <form id="tenantReviewForm" onsubmit="submitTenantReview(event)" class="p-6 space-y-4 text-xs">
+                <!-- Tenant & User Info Summary (Auto-detected) -->
+                <div class="p-3 bg-neutral-50 rounded-xl border border-neutral-200/80 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="ph-bold ph-buildings text-neutral-500 text-sm"></i>
+                        <div>
+                            <span class="text-[10px] text-neutral-500 block">ইউনিয়ন পরিষদ:</span>
+                            <span class="font-bold text-neutral-900"><?= htmlspecialchars($ins_info->ins_name ?? 'ইউনিয়ন পরিষদ', ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        যাচাইকৃত ইউপি
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-neutral-700 mb-1">আপনার নাম <span class="text-rose-500">*</span></label>
+                        <input type="text" name="author" id="trv_author" required value="<?= htmlspecialchars($loggedUser['userName'] ?? '', ENT_QUOTES, 'UTF-8'); ?>" class="w-full px-3 py-2 bg-white border border-neutral-300 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none text-xs">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-neutral-700 mb-1">পদবী / ভূমিকা</label>
+                        <input type="text" name="role" id="trv_role" value="<?= htmlspecialchars($loggedUser['userGroupName'] ?? 'ইউপি কর্মকর্তা', ENT_QUOTES, 'UTF-8'); ?>" class="w-full px-3 py-2 bg-white border border-neutral-300 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none text-xs" placeholder="উদাঃ ইউপি সচিব / উদ্যোক্তা">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-neutral-700 mb-1">ব্যবহৃত প্রধান সেবা</label>
+                        <select name="service" id="trv_service" class="w-full px-3 py-2 bg-white border border-neutral-300 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none text-xs">
+                            <option value="সনদ ও ডিজিটাল ট্রেড লাইসেন্স" selected>সনদ ও ডিজিটাল ট্রেড লাইসেন্স</option>
+                            <option value="হোল্ডিং ট্যাক্স ও অনলাইন রশিদ">হোল্ডিং ট্যাক্স ও অনলাইন রশিদ</option>
+                            <option value="নাগরিক ডাটাবেজ ও ওয়ার্ড ব্যবস্থাপনা">নাগরিক ডাটাবেজ ও ওয়ার্ড ব্যবস্থাপনা</option>
+                            <option value="সার্বিক ইউনিয়ন ডিজিটালাইজেশন">সার্বিক ইউনিয়ন ডিজিটালাইজেশন</option>
+                            <option value="ক্লাউড ব্যাকআপ ও দ্রুত সাপোর্ট">ক্লাউড ব্যাকআপ ও দ্রুত সাপোর্ট</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-neutral-700 mb-1">প্রাপ্ত মূল সুবিধা / প্রভাব</label>
+                        <input type="text" name="impact" id="trv_impact" class="w-full px-3 py-2 bg-white border border-neutral-300 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none text-xs" placeholder="উদাঃ ট্যাক্স আদায় দ্বিগুণ / সেবা সময় হ্রাস">
+                    </div>
+                </div>
+
+                <!-- Star Rating -->
+                <div>
+                    <label class="block font-semibold text-neutral-700 mb-1">রেটিং প্রদান করুন</label>
+                    <div class="flex items-center gap-1.5" id="trv_stars">
+                        <button type="button" onclick="setTenantRating(1)" class="text-amber-400 hover:scale-110 transition-transform"><i class="ph-fill ph-star text-xl"></i></button>
+                        <button type="button" onclick="setTenantRating(2)" class="text-amber-400 hover:scale-110 transition-transform"><i class="ph-fill ph-star text-xl"></i></button>
+                        <button type="button" onclick="setTenantRating(3)" class="text-amber-400 hover:scale-110 transition-transform"><i class="ph-fill ph-star text-xl"></i></button>
+                        <button type="button" onclick="setTenantRating(4)" class="text-amber-400 hover:scale-110 transition-transform"><i class="ph-fill ph-star text-xl"></i></button>
+                        <button type="button" onclick="setTenantRating(5)" class="text-amber-400 hover:scale-110 transition-transform"><i class="ph-fill ph-star text-xl"></i></button>
+                        <span id="trv_rating_text" class="text-xs font-bold text-amber-600 ml-2">৫.০ (চমৎকার)</span>
+                    </div>
+                    <input type="hidden" name="rating" id="trv_rating_val" value="5">
+                </div>
+
+                <!-- Comments -->
+                <div>
+                    <label class="block font-semibold text-neutral-700 mb-1">আপনার বিস্তারিত মন্তব্য ও পরামর্শ <span class="text-rose-500">*</span></label>
+                    <textarea name="content" id="trv_content" rows="3" required class="w-full px-3 py-2 bg-white border border-neutral-300 rounded-xl focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none text-xs resize-none" placeholder="সফটওয়্যার ব্যবহারের অভিজ্ঞতা কেমন এবং ইউনিয়ন পরিচালনায় কি কি সুবিধা পাচ্ছেন..."></textarea>
+                </div>
+
+                <!-- Status alert box -->
+                <div id="trv_msg_box" class="hidden p-3 rounded-xl text-xs"></div>
+
+                <!-- Footer / Actions -->
+                <div class="pt-2 flex items-center justify-end gap-2 border-t border-neutral-100">
+                    <button type="button" onclick="closeTenantReviewModal()" class="px-4 py-2 rounded-xl border border-neutral-200 text-neutral-700 hover:bg-neutral-50 font-medium transition-colors">
+                        বাতিল
+                    </button>
+                    <button type="submit" id="trv_submit_btn" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer">
+                        <i class="ph-bold ph-paper-plane-tilt"></i>
+                        <span>রিভিউ জমা দিন</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tenant Review Script -->
+    <script>
+        var currentRating = 5;
+        var ratingLabels = {
+            1: '১.০ (খুব খারাপ)',
+            2: '২.০ (উন্নতি দরকার)',
+            3: '৩.০ (মোটামুটি)',
+            4: '৪.০ (ভালো)',
+            5: '৫.০ (অসাধারণ ও চমৎকার)'
+        };
+
+        function openTenantReviewModal() {
+            var modal = document.getElementById('tenantReviewModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                var content = document.getElementById('trv_content');
+                if (content) setTimeout(function() { content.focus(); }, 150);
+            }
+        }
+
+        function closeTenantReviewModal() {
+            var modal = document.getElementById('tenantReviewModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            var msgBox = document.getElementById('trv_msg_box');
+            if (msgBox) {
+                msgBox.className = 'hidden';
+                msgBox.innerHTML = '';
+            }
+        }
+
+        function setTenantRating(stars) {
+            currentRating = stars;
+            var valInput = document.getElementById('trv_rating_val');
+            if (valInput) valInput.value = stars;
+            var lbl = document.getElementById('trv_rating_text');
+            if (lbl) lbl.textContent = ratingLabels[stars] || stars + '.০';
+
+            var starBtns = document.querySelectorAll('#trv_stars button');
+            starBtns.forEach(function(btn, idx) {
+                var icon = btn.querySelector('i');
+                if (idx < stars) {
+                    icon.className = 'ph-fill ph-star text-xl text-amber-400';
+                } else {
+                    icon.className = 'ph-bold ph-star text-xl text-neutral-300';
+                }
+            });
+        }
+
+        function submitTenantReview(e) {
+            e.preventDefault();
+            var btn = document.getElementById('trv_submit_btn');
+            var msgBox = document.getElementById('trv_msg_box');
+            var form = document.getElementById('tenantReviewForm');
+            if (!form) return;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="ph-bold ph-spinner animate-spin"></i><span>জমা হচ্ছে...</span>';
+
+            var formData = new FormData(form);
+
+            fetch('api_submit_review', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="ph-bold ph-paper-plane-tilt"></i><span>রিভিউ জমা দিন</span>';
+                if (data.success) {
+                    msgBox.className = 'p-3 rounded-xl text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 block';
+                    msgBox.innerHTML = '<div class="flex items-center gap-2"><i class="ph-bold ph-check-circle text-base text-emerald-600"></i><span>' + (data.message || 'আপনার রিভিউটি সফলভাবে জমা হয়েছে!') + '</span></div>';
+                    setTimeout(function() {
+                        closeTenantReviewModal();
+                        form.reset();
+                        setTenantRating(5);
+                    }, 2000);
+                } else {
+                    msgBox.className = 'p-3 rounded-xl text-xs bg-rose-50 text-rose-800 border border-rose-200 block';
+                    msgBox.innerHTML = '<div class="flex items-center gap-2"><i class="ph-bold ph-warning-circle text-base text-rose-600"></i><span>' + (data.message || 'রিভিউ জমা দিতে সমস্যা হয়েছে।') + '</span></div>';
+                }
+            })
+            .catch(function(err) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="ph-bold ph-paper-plane-tilt"></i><span>রিভিউ জমা দিন</span>';
+                msgBox.className = 'p-3 rounded-xl text-xs bg-rose-50 text-rose-800 border border-rose-200 block';
+                msgBox.innerHTML = '<div class="flex items-center gap-2"><i class="ph-bold ph-warning-circle text-base text-rose-600"></i><span>সার্ভারের সাথে সংযোগ স্থাপন করা যায়নি।</span></div>';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = document.getElementById('tenantReviewModal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeTenantReviewModal();
+                    }
+                });
+            }
+        });
+    </script>
+
     <!-- Password visibility toggle for [data-saas-toggle-password] fields
          (view_profile, user_view, change_cm_sign, ...). Same contract as
          saas.js, hand-written and dependency-free. -->

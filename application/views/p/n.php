@@ -261,6 +261,9 @@
                         <a href="support" class="flex items-center gap-2.5 px-4 py-2 hover:bg-indigo-50 hover:text-indigo-600 transition-colors font-medium">
                             <i class="ph-bold ph-headset text-sm text-indigo-600"></i> হেল্প ও সাপোর্ট
                         </a>
+                        <button type="button" onclick="openTenantReviewModal()" class="w-full text-left flex items-center gap-2.5 px-4 py-2 hover:bg-amber-50 hover:text-amber-700 transition-colors font-medium cursor-pointer">
+                            <i class="ph-bold ph-star text-sm text-amber-500"></i> ViretaDev রিভিউ দিন
+                        </button>
                         <div class="border-t border-neutral-100 my-1"></div>
                         <a href="logout" class="flex items-center gap-2.5 px-4 py-2 text-rose-600 hover:bg-rose-50 transition-colors font-medium">
                             <i class="ph-bold ph-sign-out text-sm"></i> লগআউট
