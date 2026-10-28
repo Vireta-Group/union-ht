@@ -1,0 +1,66 @@
+# -------------------------------------------------------------------
+# SECURITY & DIRECTORY OBFUSCATION
+# Prevents discovery of internal directory structures, framework files,
+# migration schemas, internal documentation, and sensitive assets.
+# -------------------------------------------------------------------
+Options -Indexes
+ServerSignature Off
+
+# 1. Deny sensitive file extensions and dotfiles
+<IfModule mod_authz_core.c>
+  <FilesMatch "(?i)\.(sql|dump|bak|old|orig|save|swp|log|ini|conf|env|sh|sql\.gz|tar|gz|zip|md|lock)$">
+    Require all denied
+  </FilesMatch>
+  # any dotfile (.env, .git, .htpasswd, ...)
+  <FilesMatch "(?i)^\.">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+  <FilesMatch "(?i)\.(sql|dump|bak|old|orig|save|swp|log|ini|conf|env|sh|tar|gz|zip|md|lock)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+  <FilesMatch "(?i)^\.">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
+# 2. Modern HTTP Security Headers
+<IfModule mod_headers.c>
+  Header always unset X-Powered-By
+  Header unset X-Powered-By
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# 3. URL Rewriting & Concealment
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Return 404 for any internal directories (conceals existence of application structure)
+  RewriteRule ^(application|system|vendor|docs|migrations|deploy|resources)(/|$) - [R=404,L]
+
+  # Return 404 for root repo docs, configs and tooling
+  RewriteRule ^(AGENTS\.md|README\.md|LICENSE|router\.php|dev\.sh|composer\.(json|lock)|package(-lock)?\.json)$ - [R=404,L]
+
+  # Route non-existent files to front controller index.php
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php84” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php84___lsphp .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

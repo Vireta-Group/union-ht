@@ -1,0 +1,944 @@
+/**
+ * =============================================================================
+ * ViretaDev Modern Theme — Tactile, Dimensional & Glassmorphic Elevation Layer
+ * =============================================================================
+ * Upgrades the application from flat 2D layout to a rich, modern, multi-layered
+ * tactile interface with ambient studio lighting, frosted acrylic surfaces,
+ * inset beveled highlights, and responsive micro-interactions.
+ * =============================================================================
+ */
+
+/* -----------------------------------------------------------------------------
+ * 1. Global Ambient Studio Canvas & Depth Lighting
+ * -------------------------------------------------------------------------- */
+body,
+[dir=ltr] body {
+    background-color: #f8fafc !important;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.055) 0px, transparent 50%),
+        radial-gradient(at 100% 12%, rgba(249, 115, 22, 0.038) 0px, transparent 40%),
+        radial-gradient(at 50% 100%, rgba(99, 102, 241, 0.045) 0px, transparent 55%) !important;
+    background-attachment: fixed !important;
+    color: #0f172a !important;
+}
+
+/* -----------------------------------------------------------------------------
+ * 2. Frosted Acrylic Glass Surfaces (Header, Sub-Navbar & Floating Bars)
+ * -------------------------------------------------------------------------- */
+header.sticky,
+[dir=ltr] header.sticky {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25) !important;
+}
+
+nav.sticky,
+[dir=ltr] nav.sticky,
+.tenant-subnav,
+nav[class*="top-16"] {
+    background: rgba(255, 255, 255, 0.88) !important;
+    backdrop-filter: blur(14px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.85) !important;
+    box-shadow: 
+        0 1px 2px rgba(0, 0, 0, 0.02),
+        0 8px 24px -4px rgba(15, 23, 42, 0.03),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Dropdown Menus: Glassmorphic Floating Panel */
+.tenant-dropdown-menu,
+[id$="DropdownContent"],
+[dir=ltr] .dropdown-menu {
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    border: 1px solid rgba(226, 232, 240, 0.9) !important;
+    border-radius: 1rem !important;
+    box-shadow: 
+        0 12px 36px -4px rgba(15, 23, 42, 0.12),
+        0 4px 12px rgba(15, 23, 42, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+/* -----------------------------------------------------------------------------
+ * 3. Dimensional Tactile Cards & Container Surfaces
+ * -------------------------------------------------------------------------- */
+.card,
+[dir=ltr] .card,
+.ht-card,
+.bg-white.rounded-2xl,
+.bg-white.rounded-xl {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(226, 232, 240, 0.85) !important;
+    border-radius: 1rem !important;
+    box-shadow: 
+        0 1px 2px rgba(15, 23, 42, 0.02),
+        0 10px 28px -4px rgba(15, 23, 42, 0.045),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Elevated Hover Cards */
+.card-hover:hover,
+.hover-lift:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 
+        0 2px 4px rgba(15, 23, 42, 0.03),
+        0 16px 36px -6px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+/* -----------------------------------------------------------------------------
+ * 4. Physical 3D Touchable Buttons with Tactile Edge Highlights
+ * -------------------------------------------------------------------------- */
+[dir=ltr] .btn,
+.admin-btn,
+button.btn,
+a.btn,
+input[type="submit"].btn,
+input[type="button"].btn,
+.ht-btn {
+    border-radius: 0.75rem !important;
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.4rem !important;
+    cursor: pointer !important;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* Physical click compression */
+[dir=ltr] .btn:active,
+button.btn:active,
+a.btn:active,
+.ht-btn:active {
+    transform: translateY(1px) scale(0.98) !important;
+}
+
+/* Primary Button (Warm Indigo with Glow & Top Inset Edge) */
+[dir=ltr] .btn-primary,
+.ht-btn-primary {
+    background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%) !important;
+    border: 1px solid rgba(67, 56, 202, 0.8) !important;
+    color: #ffffff !important;
+    box-shadow: 
+        0 1px 2px rgba(0, 0, 0, 0.06),
+        0 4px 14px 0 rgba(79, 70, 229, 0.35),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.28) !important;
+}
+
+[dir=ltr] .btn-primary:hover,
+.ht-btn-primary:hover {
+    background: linear-gradient(180deg, #5558e6 0%, #4338ca 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.08),
+        0 8px 22px 0 rgba(79, 70, 229, 0.45),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.35) !important;
+}
+
+[dir=ltr] .btn-primary:active,
+.ht-btn-primary:active {
+    box-shadow: 
+        0 1px 2px rgba(79, 70, 229, 0.25),
+        inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Secondary & White Buttons (Beveled Light Edge) */
+[dir=ltr] .btn-secondary,
+[dir=ltr] .btn-light,
+[dir=ltr] .btn-white,
+.ht-btn-secondary {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #334155 !important;
+    box-shadow: 
+        0 1px 2px rgba(0, 0, 0, 0.03),
+        0 2px 6px rgba(15, 23, 42, 0.03),
+        inset 0 1px 0 #ffffff !important;
+}
+
+[dir=ltr] .btn-secondary:hover,
+[dir=ltr] .btn-light:hover,
+[dir=ltr] .btn-white:hover,
+.ht-btn-secondary:hover {
+    background: #ffffff !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 
+        0 3px 8px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 #ffffff !important;
+}
+
+/* Success Button (Emerald Tactile Depth) */
+[dir=ltr] .btn-success {
+    background: linear-gradient(180deg, #10b981 0%, #059669 100%) !important;
+    border: 1px solid rgba(4, 120, 87, 0.8) !important;
+    color: #ffffff !important;
+    box-shadow: 
+        0 1px 2px rgba(0, 0, 0, 0.06),
+        0 4px 14px 0 rgba(5, 150, 105, 0.35),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.28) !important;
+}
+
+[dir=ltr] .btn-success:hover {
+    background: linear-gradient(180deg, #059669 0%, #047857 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.08),
+        0 8px 22px 0 rgba(5, 150, 105, 0.45),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.35) !important;
+}
+
+/* Danger Button (Rose/Crimson Tactile Depth) */
+[dir=ltr] .btn-danger {
+    background: linear-gradient(180deg, #f43f5e 0%, #e11d48 100%) !important;
+    border: 1px solid rgba(190, 18, 60, 0.8) !important;
+    color: #ffffff !important;
+    box-shadow: 
+        0 1px 2px rgba(0, 0, 0, 0.06),
+        0 4px 14px 0 rgba(225, 29, 72, 0.35),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.28) !important;
+}
+
+[dir=ltr] .btn-danger:hover {
+    background: linear-gradient(180deg, #e11d48 0%, #be123c 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.08),
+        0 8px 22px 0 rgba(225, 29, 72, 0.45),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.35) !important;
+}
+
+/* -----------------------------------------------------------------------------
+ * 5. Sunken Physical Form Controls (Inputs, Selects & Textareas)
+ * -------------------------------------------------------------------------- */
+[dir=ltr] .form-control,
+[dir=ltr] input:not([type="checkbox"]):not([type="radio"]),
+[dir=ltr] input[type="text"],
+[dir=ltr] input[type="email"],
+[dir=ltr] input[type="password"],
+[dir=ltr] input[type="number"],
+[dir=ltr] input[type="tel"],
+[dir=ltr] input[type="url"],
+[dir=ltr] input[type="search"],
+[dir=ltr] textarea,
+[dir=ltr] select,
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select,
+.ht-field {
+    font-family: 'Inter', 'Hind Siliguri', 'AdorshoLipi', ui-sans-serif, system-ui, -apple-system, sans-serif !important;
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 0.75rem !important;
+    color: #0f172a !important;
+    box-shadow: 
+        inset 0 1.5px 2px rgba(15, 23, 42, 0.035),
+        0 1px 2px rgba(0, 0, 0, 0.02) !important;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease !important;
+}
+
+/* Modern clean checkboxes */
+input[type="checkbox"],
+[dir=ltr] input[type="checkbox"] {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    border-radius: 4px !important;
+    accent-color: #4f46e5 !important;
+    cursor: pointer !important;
+    border: 1px solid #cbd5e1 !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+}
+
+[dir=ltr] input::placeholder,
+[dir=ltr] textarea::placeholder,
+.ht-field::placeholder,
+input::placeholder,
+textarea::placeholder {
+    font-family: 'Inter', 'Hind Siliguri', 'AdorshoLipi', ui-sans-serif, system-ui, -apple-system, sans-serif !important;
+}
+
+/* Sunken slot feel when hovering */
+[dir=ltr] .form-control:hover:not(:disabled),
+[dir=ltr] input:not([type="checkbox"]):not([type="radio"]):hover:not(:disabled),
+input:not([type="checkbox"]):not([type="radio"]):hover:not(:disabled),
+[dir=ltr] textarea:hover:not(:disabled),
+[dir=ltr] select:hover:not(:disabled),
+.ht-field:hover:not(:disabled) {
+    border-color: #94a3b8 !important;
+}
+
+/* Interactive Ambient Glow on Focus */
+[dir=ltr] .form-control:focus,
+[dir=ltr] input[type="text"]:focus,
+[dir=ltr] input[type="email"]:focus,
+[dir=ltr] input[type="password"]:focus,
+[dir=ltr] input[type="number"]:focus,
+[dir=ltr] input[type="tel"]:focus,
+[dir=ltr] input[type="url"]:focus,
+[dir=ltr] input[type="search"]:focus,
+[dir=ltr] textarea:focus,
+[dir=ltr] select:focus,
+.ht-field:focus {
+    background-color: #ffffff !important;
+    border-color: #6366f1 !important;
+    box-shadow: 
+        inset 0 1px 2px rgba(0, 0, 0, 0.02),
+        0 0 0 3.5px rgba(99, 102, 241, 0.18),
+        0 2px 6px rgba(79, 70, 229, 0.08) !important;
+    outline: none !important;
+}
+
+/* -----------------------------------------------------------------------------
+ * 6. Modern Elevated Tables & Clean Data Rows
+ * -------------------------------------------------------------------------- */
+table,
+[dir=ltr] table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+
+table th,
+[dir=ltr] table th {
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+    padding: 0.75rem 1rem !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+table td,
+[dir=ltr] table td {
+    padding: 0.75rem 1rem !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    transition: background-color 0.15s ease !important;
+}
+
+table tr:hover td,
+[dir=ltr] table tr:hover td {
+    background-color: rgba(241, 245, 249, 0.6) !important;
+}
+
+/* -----------------------------------------------------------------------------
+ * 7. Modern Status Badges & Pills (Frosted with Inset Ring)
+ * -------------------------------------------------------------------------- */
+.badge,
+[dir=ltr] .badge,
+.ht-badge {
+    border-radius: 9999px !important;
+    padding: 0.2rem 0.65rem !important;
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+[dir=ltr] .badge-success,
+.badge-soft-success {
+    background: #ecfdf5 !important;
+    color: #047857 !important;
+    border: 1px solid rgba(16, 185, 129, 0.25) !important;
+}
+
+[dir=ltr] .badge-primary,
+.badge-soft-primary {
+    background: #eef2ff !important;
+    color: #4338ca !important;
+    border: 1px solid rgba(99, 102, 241, 0.25) !important;
+}
+
+[dir=ltr] .badge-warning,
+.badge-soft-warning {
+    background: #fffbeb !important;
+    color: #b45309 !important;
+    border: 1px solid rgba(245, 158, 11, 0.25) !important;
+}
+
+[dir=ltr] .badge-danger,
+.badge-soft-danger {
+    background: #fff1f2 !important;
+    color: #be123c !important;
+    border: 1px solid rgba(244, 63, 94, 0.25) !important;
+}
+
+/* =============================================================================
+ * 12. Full-Credit Typewriter & Text-Swapping Layer (Zero Box / Natural Typography)
+ * ============================================================================= */
+.viretadev-credit-line {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5em;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    text-decoration: none !important;
+    position: relative;
+    color: inherit;
+    cursor: default;
+}
+
+.viretadev-credit-link {
+    color: inherit;
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+}
+
+.viretadev-credit-link:hover {
+    color: #818cf8;
+}
+
+.viretadev-typewriter-text {
+    font-weight: 500;
+    color: inherit;
+    white-space: nowrap;
+}
+
+.viretadev-typewriter-cursor {
+    display: inline-block;
+    margin-left: 2px;
+    font-weight: 700;
+    color: #818cf8;
+    animation: viretadev-cursor-blink 0.85s step-start infinite;
+    user-select: none;
+}
+
+@keyframes viretadev-cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* =============================================================================
+ * 13. Certificate Verification Portal Utilities
+ * ============================================================================= */
+.verify-status-banner {
+    background: linear-gradient(135deg, #065f46 0%, #047857 50%, #0f766e 100%) !important;
+    color: #ffffff !important;
+    position: relative;
+    overflow: hidden;
+    padding: 1.5rem;
+}
+
+.verify-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+@media (min-width: 640px) {
+    .verify-meta-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.verify-profile-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+@media (min-width: 768px) {
+    .verify-profile-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Image object-position utilities */
+.object-top {
+    object-position: top center !important;
+}
+
+/* Linear gradient overlay support */
+.bg-linear-to-t,
+.bg-gradient-to-t {
+    background-image: linear-gradient(to top, rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0.7) 50%, transparent 100%) !important;
+}
+
+/* Swiper hero controls */
+.heroSwiper .swiper-button-prev,
+.heroSwiper .swiper-button-next {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    border-radius: 9999px !important;
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    color: #ffffff !important;
+    transition: all 0.2s ease !important;
+}
+.heroSwiper .swiper-button-prev:hover,
+.heroSwiper .swiper-button-next:hover {
+    background-color: rgba(0, 0, 0, 0.9) !important;
+}
+.heroSwiper .swiper-button-prev::after,
+.heroSwiper .swiper-button-next::after {
+    font-size: 0.875rem !important;
+}
+.heroSwiper .swiper-pagination {
+    bottom: 0.75rem !important;
+}
+
+/* -----------------------------------------------------------------------------
+ * Top Announcement Bar Marquee
+ * -------------------------------------------------------------------------- */
+.marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+}
+
+.marquee-content {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    animation: marquee-ticker 32s linear infinite;
+    will-change: transform;
+}
+
+.marquee-group {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.marquee-container:hover .marquee-content {
+    animation-play-state: paused;
+}
+
+@keyframes marquee-ticker {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+/* =============================================================================
+ * 14. SaaS Product Platform — Soft Neumorphic & Liquid Glassmorphism System
+ * =============================================================================
+ * Transforms the public SaaS tier into a high-end tactile, frosted glassmorphic
+ * aesthetic with ambient light refraction, sunken wells, embossed pill controls,
+ * and specular highlights.
+ * ============================================================================= */
+
+/* 14.1. Global Ambient Canvas Lighting */
+.bg-surface,
+body {
+    background-color: #f4f6fb !important;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 48%),
+        radial-gradient(at 100% 10%, rgba(56, 189, 248, 0.07) 0px, transparent 42%),
+        radial-gradient(at 50% 50%, rgba(244, 114, 182, 0.035) 0px, transparent 50%),
+        radial-gradient(at 80% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 45%) !important;
+    background-attachment: fixed !important;
+}
+
+/* 14.2. Frosted Acrylic Glass Navbar (Dark Premium Glass for dark tenant headers) */
+header.sticky.bg-neutral-900,
+[dir=ltr] header.sticky.bg-neutral-900 {
+    background: rgba(15, 23, 42, 0.96) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(30, 41, 59, 0.9) !important;
+    box-shadow: 
+        0 4px 24px -2px rgba(0, 0, 0, 0.4),
+        0 1px 2px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 14.2b. Frosted Acrylic Glass Navbar (SaaS & Public Light Header) */
+header.sticky.bg-white,
+[dir=ltr] header.sticky.bg-white,
+header.sticky:not(.bg-neutral-900) {
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(16px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.85) !important;
+    box-shadow: 
+        0 1px 3px rgba(0, 0, 0, 0.03),
+        0 6px 20px -4px rgba(15, 23, 42, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+}
+
+/* 14.3. Neumorphic Glass Cards (.ht-card, .neu-glass-card, and card variants) */
+.ht-card,
+.neu-glass-card {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(16px) saturate(170%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(170%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.85) !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 
+        8px 8px 24px -4px rgba(160, 175, 205, 0.22),
+        -6px -6px 20px 0 rgba(255, 255, 255, 0.95),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 1) !important;
+    transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.24s ease !important;
+}
+
+.ht-card:hover,
+.neu-glass-card:hover {
+    transform: translateY(-4px) !important;
+    border-color: rgba(99, 102, 241, 0.35) !important;
+    box-shadow: 
+        12px 16px 36px -6px rgba(160, 175, 205, 0.28),
+        -8px -8px 24px 0 rgba(255, 255, 255, 1),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 1) !important;
+}
+
+/* 14.4. Sunken Neumorphic Wells / Inset Tracks */
+.neu-glass-inset,
+.ht-neu-inset {
+    background: rgba(238, 242, 246, 0.65) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(226, 232, 240, 0.85) !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 
+        inset 3px 3px 8px rgba(148, 163, 184, 0.22),
+        inset -3px -3px 8px rgba(255, 255, 255, 0.95),
+        0 1px 2px rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 14.5. Tactile 3D Buttons */
+.ht-btn-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border-radius: 0.875rem !important;
+    color: #ffffff !important;
+    box-shadow: 
+        0 4px 14px 0 rgba(79, 70, 229, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.ht-btn-primary:hover {
+    background: linear-gradient(135deg, #5a5de8 0%, #4338ca 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 
+        0 6px 20px 0 rgba(79, 70, 229, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.55) !important;
+}
+
+.ht-btn-primary:active {
+    transform: translateY(1px) scale(0.98) !important;
+    box-shadow: 
+        inset 2px 2px 6px rgba(0, 0, 0, 0.25),
+        0 1px 2px rgba(79, 70, 229, 0.2) !important;
+}
+
+.ht-btn-secondary {
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(203, 213, 225, 0.8) !important;
+    border-radius: 0.875rem !important;
+    color: #1e293b !important;
+    box-shadow: 
+        0 2px 8px rgba(15, 23, 42, 0.06),
+        inset 0 1px 0 #ffffff !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.ht-btn-secondary:hover {
+    background: #ffffff !important;
+    border-color: rgba(99, 102, 241, 0.35) !important;
+    color: #4338ca !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 
+        0 4px 14px rgba(15, 23, 42, 0.12),
+        inset 0 1px 0 #ffffff !important;
+}
+
+.ht-btn-secondary:active {
+    transform: translateY(1px) scale(0.98) !important;
+    box-shadow: 
+        inset 2px 2px 5px rgba(148, 163, 184, 0.25),
+        inset -1px -1px 3px rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Secondary & Primary Buttons inside Dark Sections */
+.bg-indigo-950 .ht-btn-primary,
+.bg-neutral-900 .ht-btn-primary,
+.bg-indigo-900 .ht-btn-primary,
+.neu-dark-glass .ht-btn-primary {
+    box-shadow: 0 4px 18px 0 rgba(99, 102, 241, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+
+.bg-indigo-950 .ht-btn-secondary,
+.bg-neutral-900 .ht-btn-secondary,
+.bg-indigo-900 .ht-btn-secondary,
+.neu-dark-glass .ht-btn-secondary {
+    background: #ffffff !important;
+    color: #1e1b4b !important;
+    border: 1px solid rgba(255, 255, 255, 0.9) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+.bg-indigo-950 .ht-btn-secondary:hover,
+.bg-neutral-900 .ht-btn-secondary:hover,
+.bg-indigo-900 .ht-btn-secondary:hover,
+.neu-dark-glass .ht-btn-secondary:hover {
+    background: #f8fafc !important;
+    color: #312e81 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* 14.6. Sunken Neumorphic Form Controls */
+.ht-field,
+input.ht-field,
+textarea.ht-field,
+select.ht-field {
+    background: rgba(248, 250, 252, 0.85) !important;
+    border: 1px solid rgba(203, 213, 225, 0.85) !important;
+    border-radius: 0.875rem !important;
+    box-shadow: 
+        inset 2px 2px 5px rgba(15, 23, 42, 0.055),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.95),
+        0 1px 1px rgba(255, 255, 255, 0.8) !important;
+    transition: all 0.18s ease !important;
+}
+
+.ht-field:focus {
+    background: #ffffff !important;
+    border-color: #6366f1 !important;
+    box-shadow: 
+        0 0 0 3.5px rgba(99, 102, 241, 0.18),
+        inset 1px 1px 2px rgba(15, 23, 42, 0.03) !important;
+    outline: none !important;
+}
+
+/* 14.7. Dark Obsidian Glass Surface */
+.neu-dark-glass {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(30, 27, 75, 0.92) 100%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 
+        0 20px 45px -10px rgba(0, 0, 0, 0.45),
+        0 8px 18px -4px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 14.8. Universal Modal System (Tailwind / Pure CSS Replacement for Bootstrap) */
+.modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 1055 !important;
+    display: none;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    outline: 0 !important;
+    padding: 1rem !important;
+    box-sizing: border-box !important;
+}
+
+.modal.show {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Support Modal (Floating Chat Widget) override so it stays in the bottom right */
+#supportModal.show {
+    display: block !important;
+    pointer-events: none !important;
+    padding: 0 !important;
+}
+
+.modal-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 1050 !important;
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(8px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(160%) !important;
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out !important;
+    pointer-events: auto !important;
+}
+
+.modal-backdrop.show {
+    opacity: 1 !important;
+}
+
+.modal-dialog {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 540px !important;
+    margin: auto !important;
+    pointer-events: auto !important;
+    z-index: 1056 !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+}
+
+.modal.fade .modal-dialog {
+    transform: scale(0.95) translateY(-14px) !important;
+    opacity: 0 !important;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1) translateY(0) !important;
+    opacity: 1 !important;
+}
+
+body.ht-modal-open {
+    overflow: hidden !important;
+}
+
+/* 14.9. Floating Modals: Frosted Acrylic Elevation */
+.modal-content {
+    background: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(24px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.95) !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 
+        0 25px 60px -15px rgba(15, 23, 42, 0.25),
+        0 10px 25px -5px rgba(15, 23, 42, 0.1),
+        inset 0 1px 1px rgba(255, 255, 255, 1) !important;
+}
+
+/* 14.10. Global SaaS Pages Ambient Canvas Transparency */
+main.bg-white,
+main.bg-neutral-50,
+main .bg-neutral-50:not(.fixed *):not([id*="Modal"] *):not([id*="modal"] *),
+main .bg-neutral-50\/70:not(.fixed *):not([id*="Modal"] *):not([id*="modal"] *),
+main .bg-neutral-50\/50:not(.fixed *):not([id*="Modal"] *):not([id*="modal"] *),
+main .bg-white:not(.fixed *):not([id*="Modal"] *):not([id*="modal"] *):not(.modal-content):not(.ht-card):not(.neu-glass-card):not([data-saas-accordion] > div):not(.saas-plan-card):not(.ht-btn):not(button):not(a):not(input):not(select):not(textarea) {
+    background-color: transparent !important;
+}
+
+/* 14.10.1. Modals & Dialog Protection - MUST ALWAYS have solid, opaque backgrounds */
+.fixed.inset-0 .bg-white,
+[id*="Modal"] .bg-white,
+[id*="modal"] .bg-white,
+.fixed.inset-0 > div.bg-white,
+[id*="Modal"] > div.bg-white {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+}
+
+.fixed.inset-0 .bg-neutral-50,
+[id*="Modal"] .bg-neutral-50,
+[id*="modal"] .bg-neutral-50 {
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+}
+
+.fixed.inset-0 .bg-neutral-100,
+[id*="Modal"] .bg-neutral-100,
+[id*="modal"] .bg-neutral-100 {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+}
+
+.fixed.inset-0 .bg-amber-50\/70,
+.fixed.inset-0 .bg-amber-50,
+[id*="Modal"] .bg-amber-50,
+[id*="Modal"] .bg-amber-50\/70 {
+    background-color: #fffbeb !important;
+    border-color: #fde68a !important;
+    color: #78350f !important;
+}
+
+.fixed.inset-0 .bg-indigo-50,
+[id*="Modal"] .bg-indigo-50 {
+    background-color: #eef2ff !important;
+    border-color: #c7d2fe !important;
+    color: #3730a3 !important;
+}
+
+/* Modals in Dark Theme */
+html[data-theme="dark"] .fixed.inset-0 .bg-white,
+html[data-theme="dark"] [id*="Modal"] .bg-white,
+html[data-theme="dark"] [id*="modal"] .bg-white {
+    background-color: #111827 !important;
+    color: #f9fafb !important;
+    border-color: #1f2937 !important;
+}
+
+html[data-theme="dark"] .fixed.inset-0 .bg-neutral-50,
+html[data-theme="dark"] [id*="Modal"] .bg-neutral-50,
+html[data-theme="dark"] [id*="modal"] .bg-neutral-50 {
+    background-color: #162032 !important;
+    color: #f1f5f9 !important;
+    border-color: #1f2937 !important;
+}
+
+html[data-theme="dark"] .fixed.inset-0 .bg-amber-50\/70,
+html[data-theme="dark"] .fixed.inset-0 .bg-amber-50,
+html[data-theme="dark"] [id*="Modal"] .bg-amber-50,
+html[data-theme="dark"] [id*="Modal"] .bg-amber-50\/70 {
+    background-color: rgba(245, 158, 11, 0.12) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+    color: #fde68a !important;
+}
+
+html[data-theme="dark"] .fixed.inset-0 .bg-indigo-50,
+html[data-theme="dark"] [id*="Modal"] .bg-indigo-50 {
+    background-color: rgba(99, 102, 241, 0.15) !important;
+    border-color: rgba(99, 102, 241, 0.3) !important;
+    color: #c7d2fe !important;
+}
+
+
+/* 14.11. All-Pages Neumorphic Glass Card & Panel Upgrades */
+/* FAQ accordions, contact channel cards, pricing cards, login panels */
+[data-saas-accordion] > div,
+.saas-plan-card,
+.overflow-x-auto.bg-white.border.border-neutral-200.rounded-3xl {
+    background: rgba(255, 255, 255, 0.82) !important;
+    backdrop-filter: blur(16px) saturate(170%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(170%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.85) !important;
+    box-shadow: 
+        6px 6px 20px -3px rgba(160, 175, 205, 0.2),
+        -5px -5px 16px 0 rgba(255, 255, 255, 0.95),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 1) !important;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease !important;
+}
+
+[data-saas-accordion] > div:hover,
+.saas-plan-card:hover {
+    transform: translateY(-2px) !important;
+    border-color: rgba(99, 102, 241, 0.3) !important;
+    box-shadow: 
+        8px 12px 28px -4px rgba(160, 175, 205, 0.25),
+        -6px -6px 20px 0 rgba(255, 255, 255, 1) !important;
+}
+
+/* Dark CTA panels (FAQ CTA, About CTA, Home CTA) */
+.bg-neutral-900.text-white.rounded-3xl,
+.bg-indigo-900.text-white.rounded-3xl,
+.bg-indigo-950.text-white.rounded-3xl {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(30, 27, 75, 0.94) 100%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 
+        0 24px 50px -12px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+}
+
+
+
+

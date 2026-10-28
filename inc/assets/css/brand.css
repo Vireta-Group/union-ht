@@ -1,0 +1,237 @@
+/* ==========================================================================
+   brand.css — admin theme overlay
+   --------------------------------------------------------------------------
+   Loaded AFTER inc/assets/css/app.css (Material Design Kit) and AFTER
+   inc/assets/css/tokens.css, from p/h.php.
+
+   WHY AN OVERLAY AND NOT A REWRITE
+   app.css is 16,049 lines with 1,533 hardcoded hex values, and MDK's own
+   JavaScript, flatpickr, jQuery UI and select2 are all styled by it.
+   Replacing it is a rewrite of the admin, not a retheme.
+
+   The reason this works anyway is that MDK exposes its palette as custom
+   properties (app.css line 10-45). Redeclaring about fifteen of them on :root
+   after app.css has loaded recolours the entire admin — sidebar, navbar,
+   cards, buttons, badges, tables, form controls, focus states — without
+   touching a single markup file and without breaking a single plugin.
+
+   Verified to cascade: the admin's own CSS consumes these variables rather
+   than hardcoding them, so nothing has to be hunted down individually.
+
+   ORDER MATTERS. app.css must come first. Equal-specificity :root rules are
+   resolved by source order, so this file wins only because it is later.
+   ========================================================================== */
+
+:root {
+  /* --- brand -> MDK palette mapping --------------------------------------
+     MDK's originals in comments, so the substitution is auditable rather
+     than a silent colour swap.                                             */
+
+  --primary:   #4f46e5;   /* was #6774DF — indigo 600 */
+  --secondary: #5c5550;   /* was #6c757d — warm neutral 600, not cool slate */
+  --success:   #047857;   /* was #7DC668 — darkened for text contrast */
+  --info:      #c2410c;   /* was #5dd2bc — terracotta 600, carries the warmth */
+  --warning:   #b45309;   /* was #F5B666 — darkened for text contrast */
+  --danger:    #b91c1c;   /* was #ff7076 — darkened for text contrast */
+
+  --light:     #faf7f5;   /* was #FAFBFE — warm off-white page background */
+  --dark:      #1c1917;   /* was #1C2260 — warm neutral 900 */
+  --white:     #ffffff;   /* unchanged */
+
+  /* greys. MDK uses --light-gray for borders and --gray for muted text, and
+     a cool grey next to terracotta reads as dirty, so the whole ramp warms. */
+  --gray:       #736a63;  /* was #6c757d. Darkened from #7c746d: that value was
+                             4.30:1 on the #faf7f5 page background and failed
+                             WCAG AA. This is 4.96:1. */
+  --gray-dark:  #2e2a27;  /* was #343a40 */
+  --dark-gray:  #a8a099;  /* was #939FAD */
+  --light-gray: #d6cfc8;  /* was #ECEEF0 — structural and input borders. At the
+                             old weight an input border was 1.25:1 against
+                             white, too faint to see where to click. */
+  --muted-light:#eae5e0;  /* was #DBDFE4 — hairline dividers only */
+
+  /* Bengali is what the admin actually displays. MDK's stack has no Bengali
+     face, so every label and every data cell was falling back to whatever the
+     browser supplied. */
+  --font-family-sans-serif: "AdarshaLipi", "Adarsha Lipi", "AdorshoLipi", "Adorsho Lipi",
+                             "Hind Siliguri", "Noto Sans Bengali", "SolaimanLipi",
+                             -apple-system, BlinkMacSystemFont, "Segoe UI",
+                             Roboto, Arial, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   What CSS variables cannot express
+   MDK hardcodes border-radius and shadows rather than exposing them, so the
+   shape of the admin is set here.
+   -------------------------------------------------------------------------- */
+
+body,
+.mdk-layout__content,
+.page,
+input, select, textarea, button, table, th, td, h1, h2, h3, h4, h5, h6, .card, .btn {
+  font-family: var(--font-family-sans-serif) !important;
+}
+
+input, select, textarea, .form-control {
+  font-family: "Inter", "Hind Siliguri", "AdorshoLipi", var(--font-family-sans-serif) !important;
+}
+
+input::placeholder, textarea::placeholder, select::placeholder, .form-control::placeholder {
+  font-family: "Inter", "Hind Siliguri", "AdorshoLipi", var(--font-family-sans-serif) !important;
+}
+
+body,
+.mdk-layout__content,
+.page {
+  background-color: var(--light);
+  color: var(--dark);
+}
+
+/* Cards and panels. MDK's default is a heavier grey shadow than this product
+   wants — a data-entry tool should read flat, with depth reserved for things
+   that float (modals, dropdowns). */
+.card,
+.panel,
+.mdk-card {
+  border-radius: var(--brand-radius-lg, 0.75rem);
+  box-shadow: 0 1px 2px 0 rgb(28 25 23 / 0.06) !important;
+  border: 1px solid var(--light-gray);
+}
+
+/* Primary buttons and active navigation */
+.btn-primary,
+.navbar-toggler,
+.navbar .nav-link.active,
+.sidenav .nav-link.active {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #4338ca;
+  border-color: #4338ca;
+}
+
+/* Secondary buttons should not read as another primary */
+.btn-secondary {
+  background-color: #ffffff;
+  border: 1px solid var(--light-gray);
+  color: var(--gray-dark);
+}
+.btn-secondary:hover {
+  background-color: var(--muted-light);
+}
+
+/* Danger needs to be unmistakable on a form that submits money amounts */
+.btn-danger {
+  background-color: var(--danger);
+  border-color: var(--danger);
+}
+.btn-danger:hover {
+  background-color: #991b1b;
+}
+
+/* Form controls. MDK's default focus ring is subtle enough to lose track of
+   on a long data-entry form, so it is replaced with a visible one. */
+.form-control,
+.custom-select,
+select.form-control,
+.form-group input,
+.form-group select,
+.form-group textarea {
+  border-color: var(--light-gray);
+  border-radius: var(--brand-radius-md, 0.5rem);
+  color: var(--dark);
+  font-family: var(--font-family-sans-serif);
+}
+.form-control:focus,
+.custom-select:focus,
+select.form-control:focus,
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgb(79 70 229 / 0.35);
+  outline: none;
+}
+.form-control::placeholder,
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--dark-gray);
+}
+
+/* Tables. Amount columns are the reason this product exists, so they are
+   given tabular figures and a right alignment rather than inheriting
+   proportional digits. */
+.table td,
+.table th {
+  border-color: var(--light-gray);
+  color: var(--dark);
+  font-family: var(--font-family-sans-serif);
+}
+.table thead th {
+  background-color: #faf9f7;
+  color: var(--gray);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.table-hover tbody tr:hover {
+  background-color: #f5f2ef;
+}
+
+/* Sidebar */
+.sidenav {
+  background-color: #ffffff;
+  border-right: 1px solid var(--light-gray);
+}
+.sidenav .nav-link {
+  color: var(--gray);
+  border-radius: var(--brand-radius-md, 0.5rem);
+}
+.sidenav .nav-link:hover {
+  background-color: #f5f2ef;
+  color: var(--dark);
+}
+
+/* Navbar */
+.navbar-main {
+  border-bottom: none;
+}
+.page__sub-nav {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--light-gray);
+}
+.page__sub-nav .nav-link {
+  color: var(--dark) !important;
+  border-radius: var(--brand-radius-md, 0.5rem);
+  margin-right: 0.25rem;
+  transition: all 0.15s ease-in-out;
+}
+.page__sub-nav .nav-link:hover {
+  background-color: #f5f2ef;
+  color: var(--primary) !important;
+}
+.page__sub-nav .nav-link.active {
+  background-color: var(--primary) !important;
+  color: #ffffff !important;
+}
+
+/* Badges — MDK's pale fills are too close to white to read as status */
+.badge-primary { background-color: var(--primary); color: #fff; }
+.badge-success { background-color: var(--success); color: #fff; }
+.badge-info    { background-color: var(--info);    color: #fff; }
+.badge-warning { background-color: var(--warning); color: #fff; }
+.badge-danger  { background-color: var(--danger);  color: #fff; }
+
+/* Keyboard focus must stay visible after restyling the controls above. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
