@@ -65,6 +65,10 @@ if (!headers_sent()) {
 	header('Referrer-Policy: strict-origin-when-cross-origin');
 }
 
+// Activate Application Security Shield (WAF, Rate Limiting, IP Ban)
+require_once __DIR__ . '/application/libraries/Vireta_security_shield.php';
+Vireta_security_shield::protect();
+
 	if (empty($_SERVER['CI_ENV']) && file_exists(__DIR__ . '/.env')) {
 		$__env_txt = file_get_contents(__DIR__ . '/.env');
 		if (preg_match('/^\s*APP_ENV\s*=\s*([^\s#]+)/m', $__env_txt, $__m)) {
