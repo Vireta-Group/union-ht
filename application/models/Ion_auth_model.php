@@ -1009,8 +1009,9 @@ class Ion_auth_model extends CI_Model
 				// Rehash if needed
 				$this->rehash_password_if_needed($user->password, $identity, $password);
 
-				// Regenerate the session (for security purpose: to avoid session fixation)
-				$this->session->sess_regenerate(FALSE);
+				// Regenerate the session (for security purpose: to avoid session fixation and destroy old session file)
+				$this->session->sess_regenerate(TRUE);
+				$this->session->set_userdata('last_activity_time', time());
 
 				$this->trigger_events(['post_login', 'post_login_successful']);
 				$this->set_message('login_successful');
@@ -1023,6 +1024,14 @@ class Ion_auth_model extends CI_Model
 		$this->hash_password($password);
 
 		$this->increase_login_attempts($identity);
+
+		// Progressive exponential delay on repeated failed login attempts
+		$failed_attempts = $this->get_attempts_num($identity);
+		if ($failed_attempts >= 5) {
+			sleep(3);
+		} elseif ($failed_attempts >= 3) {
+			sleep(1);
+		}
 
 		$this->trigger_events('post_login_unsuccessful');
 		$this->set_error('login_unsuccessful');
@@ -1041,6 +1050,17 @@ class Ion_auth_model extends CI_Model
 		{
 			return FALSE;
 		}
+
+		// Inactivity Idle Session Timeout (45 minutes = 2700 seconds)
+		$last_activity = $this->session->userdata('last_activity_time');
+		$max_idle = 2700; // 45 minutes
+		$now = time();
+		if ($last_activity && ($now - $last_activity > $max_idle))
+		{
+			$this->session->sess_destroy();
+			return FALSE;
+		}
+		$this->session->set_userdata('last_activity_time', $now);
 
 		$recheck = (NULL !== $this->config->item('recheck_timer', 'ion_auth')) ? $this->config->item('recheck_timer', 'ion_auth') : 0;
 

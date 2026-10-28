@@ -63,6 +63,7 @@ if (!headers_sent()) {
 	header('X-Frame-Options: SAMEORIGIN');
 	header('X-XSS-Protection: 1; mode=block');
 	header('Referrer-Policy: strict-origin-when-cross-origin');
+	header("Content-Security-Policy: default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net https://unpkg.com; img-src 'self' data: blob: https:; connect-src 'self' https:; frame-ancestors 'self';");
 }
 
 // Activate Application Security Shield (WAF, Rate Limiting, IP Ban)

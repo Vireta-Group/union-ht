@@ -130,20 +130,27 @@ class Sadmin_sonod extends CI_Controller
 		];
 
 		// Handle custom pad design upload
-		if (!empty($_FILES['custom_pad_file']['tmp_name']) && is_uploaded_file($_FILES['custom_pad_file']['tmp_name'])) {
-			$upload_dir = FCPATH . 'uploads/tenant-' . $tenant_id . '/';
-			if (!is_dir($upload_dir)) {
-				@mkdir($upload_dir, 0755, true);
-			}
-			$ext = strtolower(pathinfo($_FILES['custom_pad_file']['name'], PATHINFO_EXTENSION));
-			if (!in_array($ext, ['png', 'jpg', 'jpeg', 'webp'])) {
+		if (!empty($_FILES['custom_pad_file']['tmp_name'])) {
+			$clean_bytes = function_exists('validate_secure_image_upload') ? validate_secure_image_upload($_FILES['custom_pad_file']) : @file_get_contents($_FILES['custom_pad_file']['tmp_name']);
+			if ($clean_bytes !== false) {
+				$upload_dir = FCPATH . 'uploads/tenant-' . $tenant_id . '/';
+				if (!is_dir($upload_dir)) {
+					@mkdir($upload_dir, 0755, true);
+				}
 				$ext = 'png';
-			}
-			$file_name = 'custom_pad_sadmin_' . time() . '.' . $ext;
-			$dest = $upload_dir . $file_name;
-			if (move_uploaded_file($_FILES['custom_pad_file']['tmp_name'], $dest)) {
-				$config['custom_pad_path'] = 'tenant-' . $tenant_id . '/' . $file_name;
-				$config['design_mode'] = 'custom_upload';
+				$finfo = finfo_open(FILEINFO_MIME_TYPE);
+				$mime = finfo_buffer($finfo, $clean_bytes);
+				finfo_close($finfo);
+				if ($mime === 'image/jpeg') $ext = 'jpg';
+				elseif ($mime === 'image/webp') $ext = 'webp';
+
+				$file_name = 'custom_pad_sadmin_' . bin2hex(random_bytes(8)) . '.' . $ext;
+				$dest = $upload_dir . $file_name;
+				if (@file_put_contents($dest, $clean_bytes) !== false) {
+					@chmod($dest, 0644);
+					$config['custom_pad_path'] = 'tenant-' . $tenant_id . '/' . $file_name;
+					$config['design_mode'] = 'custom_upload';
+				}
 			}
 		} elseif ($this->input->post('remove_custom_pad') === '1') {
 			$config['custom_pad_path'] = '';

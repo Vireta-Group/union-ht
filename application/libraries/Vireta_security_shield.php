@@ -26,8 +26,8 @@ class Vireta_security_shield
         // 3. Initialize cache directory for state tracking
         self::init_storage();
 
-        // 4. Check if IP is banned
-        if (self::is_ip_banned($ip)) {
+        // 4. Check if IP is banned (exempt loopback in development)
+        if (!$is_loopback && self::is_ip_banned($ip)) {
             self::deny(403, 'আপনার আইপি ঠিকানাটি সাময়িক বা স্থায়ীভাবে ব্লক করা হয়েছে। বিস্তারিত জানতে সাপোর্টে যোগাযোগ করুন।');
         }
 
@@ -134,6 +134,52 @@ class Vireta_security_shield
                 }
             }
         } catch (Throwable $e) {}
+
+        // Dispatch real-time security alert (Telegram / Log)
+        self::dispatch_security_alert($ip, $reason);
+    }
+
+    /**
+     * Dispatches real-time security notification to Super Admin via Telegram or system alert log.
+     */
+    public static function dispatch_security_alert($ip, $reason)
+    {
+        $log_dir = dirname(dirname(__DIR__)) . '/application/logs';
+        if (!is_dir($log_dir)) @mkdir($log_dir, 0755, true);
+        $alert_entry = sprintf("[%s] SECURITY ALERT: Banned IP %s | Reason: %s\n", date('Y-m-d H:i:s'), $ip, $reason);
+        @file_put_contents($log_dir . '/security_alerts.log', $alert_entry, FILE_APPEND | LOCK_EX);
+
+        // Telegram Bot Alert integration (if configured in .env)
+        $bot_token = getenv('TELEGRAM_BOT_TOKEN') ?: ($_ENV['TELEGRAM_BOT_TOKEN'] ?? '');
+        $chat_id   = getenv('TELEGRAM_CHAT_ID') ?: ($_ENV['TELEGRAM_CHAT_ID'] ?? '');
+
+        if (!empty($bot_token) && !empty($chat_id)) {
+            $msg = "🛡️ *ViretaDev Security Alert*\n\n"
+                 . "⚠️ *Threat Detected:* " . $reason . "\n"
+                 . "🌐 *Offending IP:* `" . $ip . "`\n"
+                 . "⏰ *Timestamp:* " . date('Y-m-d H:i:s') . "\n"
+                 . "🔒 *Action:* IP automatically banned for 24 hours.";
+
+            $url = "https://api.telegram.org/bot{$bot_token}/sendMessage";
+            $payload = json_encode(array(
+                'chat_id'    => $chat_id,
+                'text'       => $msg,
+                'parse_mode' => 'Markdown',
+            ));
+
+            if (function_exists('curl_init')) {
+                $ch = curl_init($url);
+                curl_setopt_array($ch, array(
+                    CURLOPT_POST           => true,
+                    CURLOPT_POSTFIELDS     => $payload,
+                    CURLOPT_HTTPHEADER     => array('Content-Type: application/json'),
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_TIMEOUT        => 3,
+                ));
+                @curl_exec($ch);
+                curl_close($ch);
+            }
+        }
     }
 
     /**

@@ -229,20 +229,27 @@ class Sonod extends CI_Controller {
 		$custom_pad_path = $this->input->post('custom_pad_path') ?: ($existing_config['custom_pad_path'] ?? '');
 		if ($this->input->post('remove_custom_pad') === '1') {
 			$custom_pad_path = '';
-		} elseif (!empty($_FILES['custom_pad_file']['tmp_name']) && is_uploaded_file($_FILES['custom_pad_file']['tmp_name'])) {
-			$tenant_dir = FCPATH . 'uploads/tenant-' . $tenant_id . '/';
-			if (!is_dir($tenant_dir)) {
-				@mkdir($tenant_dir, 0755, true);
-			}
-			$ext = strtolower(pathinfo($_FILES['custom_pad_file']['name'], PATHINFO_EXTENSION));
-			if (!in_array($ext, ['png', 'jpg', 'jpeg', 'webp'])) {
+		} elseif (!empty($_FILES['custom_pad_file']['tmp_name'])) {
+			$clean_bytes = function_exists('validate_secure_image_upload') ? validate_secure_image_upload($_FILES['custom_pad_file']) : @file_get_contents($_FILES['custom_pad_file']['tmp_name']);
+			if ($clean_bytes !== false) {
+				$tenant_dir = FCPATH . 'uploads/tenant-' . $tenant_id . '/';
+				if (!is_dir($tenant_dir)) {
+					@mkdir($tenant_dir, 0755, true);
+				}
 				$ext = 'png';
-			}
-			$file_name = 'custom_pad_design_' . time() . '.' . $ext;
-			$dest = $tenant_dir . $file_name;
-			if (move_uploaded_file($_FILES['custom_pad_file']['tmp_name'], $dest)) {
-				$custom_pad_path = 'tenant-' . $tenant_id . '/' . $file_name;
-				$design_mode = 'custom_upload';
+				$finfo = finfo_open(FILEINFO_MIME_TYPE);
+				$mime = finfo_buffer($finfo, $clean_bytes);
+				finfo_close($finfo);
+				if ($mime === 'image/jpeg') $ext = 'jpg';
+				elseif ($mime === 'image/webp') $ext = 'webp';
+
+				$file_name = 'custom_pad_design_' . bin2hex(random_bytes(8)) . '.' . $ext;
+				$dest = $tenant_dir . $file_name;
+				if (@file_put_contents($dest, $clean_bytes) !== false) {
+					@chmod($dest, 0644);
+					$custom_pad_path = 'tenant-' . $tenant_id . '/' . $file_name;
+					$design_mode = 'custom_upload';
+				}
 			}
 		}
 
@@ -1295,14 +1302,18 @@ class Sonod extends CI_Controller {
 			$this->sonodM->update_trade_license_data($sonod->sonod_uniqs, $trade_edit_payload);
 		}
 
-		// Process citizen photo file upload if provided
-		if (!empty($_FILES['citizen_photo_file']['tmp_name']) && is_uploaded_file($_FILES['citizen_photo_file']['tmp_name'])) {
-			$tenant_dir = FCPATH . 'uploads/tenant-' . $tenant_id . '/';
-			if (!is_dir($tenant_dir)) {
-				@mkdir($tenant_dir, 0755, true);
+		// Process citizen photo file upload if provided (with polyglot security inspection)
+		if (!empty($_FILES['citizen_photo_file']['tmp_name'])) {
+			$clean_photo = function_exists('validate_secure_image_upload') ? validate_secure_image_upload($_FILES['citizen_photo_file']) : @file_get_contents($_FILES['citizen_photo_file']['tmp_name']);
+			if ($clean_photo !== false) {
+				$tenant_dir = FCPATH . 'uploads/tenant-' . $tenant_id . '/';
+				if (!is_dir($tenant_dir)) {
+					@mkdir($tenant_dir, 0755, true);
+				}
+				$dest = $tenant_dir . 'citizen-' . $sonod->sonod_uniqs . '.png';
+				@file_put_contents($dest, $clean_photo);
+				@chmod($dest, 0644);
 			}
-			$dest = $tenant_dir . 'citizen-' . $sonod->sonod_uniqs . '.png';
-			move_uploaded_file($_FILES['citizen_photo_file']['tmp_name'], $dest);
 		}
 
 		if (function_exists('audit_log')) {

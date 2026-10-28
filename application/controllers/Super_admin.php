@@ -197,6 +197,11 @@ class Super_admin extends CI_Controller
 		// "the system is healthy".
 		$data['is_development'] = (bool) $this->config->item('is_development');
 
+		// Security Shield & WAF metrics
+		$data['waf_banned_count'] = (int) $this->db->count_all('banned_ips');
+		$waf_log = FCPATH . 'application/logs/security_waf.log';
+		$data['waf_attacks_blocked'] = file_exists($waf_log) ? max(0, count(file($waf_log))) : 0;
+
 		$data['sa_title'] = 'ওভারভিউ';
 		$data['sa_desc']  = 'সেন্ট্রাল প্ল্যাটফর্মের সার্বিক অবস্থা এক নজরে।';
 

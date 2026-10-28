@@ -98,8 +98,40 @@ $metrics = [
     <?php endforeach; ?>
 </div>
 
+<!-- ===================== Security Shield & Threat Intelligence ===================== -->
+<div class="mt-4 bg-linear-to-r from-neutral-900 via-indigo-950 to-neutral-900 text-white rounded-2xl p-4 sm:p-5 border border-indigo-900/60 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
+            <i class="ph-bold ph-shield-check text-xl"></i>
+        </div>
+        <div>
+            <div class="flex items-center gap-2">
+                <h3 class="text-sm font-bold text-white">ViretaDev সিকিউরিটি শিল্ড ও WAF</h3>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">সক্রিয় ও সুরক্ষিত</span>
+            </div>
+            <p class="text-xs text-neutral-400 mt-0.5">এসকিউএল ইনজেকশন, এক্সএসএস, ব্রুট-ফোর্স ও ক্ষতিকর বট আক্রমণ স্বয়ংক্রিয়ভাবে প্রতিহত হচ্ছে</p>
+        </div>
+    </div>
+    <div class="flex items-center gap-4 sm:gap-6 shrink-0 border-t md:border-t-0 border-indigo-900/40 pt-3 md:pt-0 w-full md:w-auto justify-between md:justify-end">
+        <div>
+            <span class="text-[11px] text-neutral-400 block">প্রতিহত আক্রমণ</span>
+            <span class="text-base sm:text-lg font-black text-amber-400"><?= bn_number($waf_attacks_blocked ?? 0); ?>টি</span>
+        </div>
+        <div class="h-8 w-px bg-indigo-900/60 hidden sm:block"></div>
+        <div>
+            <span class="text-[11px] text-neutral-400 block">ব্লকড আইপি</span>
+            <span class="text-base sm:text-lg font-black text-rose-400"><?= bn_number($waf_banned_count ?? 0); ?>টি</span>
+        </div>
+        <div class="h-8 w-px bg-indigo-900/60 hidden sm:block"></div>
+        <div>
+            <span class="text-[11px] text-neutral-400 block">রেট লিমিট ও প্রটেকশন</span>
+            <span class="text-base sm:text-lg font-black text-emerald-400">১০০% এন্টারপ্রাইজ</span>
+        </div>
+    </div>
+</div>
+
 <!-- ===================== Expiring + urgent ===================== -->
-<div class="grid lg:grid-cols-2 gap-4 sm:gap-6">
+<div class="mt-4 sm:mt-6 grid lg:grid-cols-2 gap-4 sm:gap-6">
 
     <!-- Expiring subscriptions -->
     <section class="bg-white border border-neutral-200 rounded-2xl shadow-xs overflow-hidden">

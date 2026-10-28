@@ -79,3 +79,68 @@ if ( ! function_exists('media_is_path'))
 		return isset($CI->tenant_media) ? $CI->tenant_media->is_path($value) : FALSE;
 	}
 }
+
+if ( ! function_exists('validate_secure_image_upload'))
+{
+	/**
+	 * Validates, cleanses and secures an uploaded image against polyglots & malware.
+	 * 
+	 * 1. Verifies is_uploaded_file and upload status.
+	 * 2. Enforces strict file size limits (default 2MB).
+	 * 3. Inspects binary magic-bytes via finfo_file.
+	 * 4. Scans binary payload for embedded PHP web-shells or script execution tags.
+	 * 5. Verifies image dimensions via getimagesizefromstring.
+	 * 
+	 * @param  array     $file       one $_FILES entry
+	 * @param  int       $max_bytes  maximum size allowed (default 2MB)
+	 * @return string|false          Sanitized image binary string on success, FALSE on violation.
+	 */
+	function validate_secure_image_upload($file, $max_bytes = 2097152)
+	{
+		if (empty($file) || !is_array($file) || empty($file['tmp_name'])) {
+			return false;
+		}
+		if (isset($file['error']) && $file['error'] !== UPLOAD_ERR_OK) {
+			return false;
+		}
+		if (!is_uploaded_file($file['tmp_name'])) {
+			return false;
+		}
+		if (!empty($file['size']) && $file['size'] > $max_bytes) {
+			return false;
+		}
+
+		$tmp_path = $file['tmp_name'];
+
+		// Inspect real binary MIME
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		$mime = finfo_file($finfo, $tmp_path);
+		finfo_close($finfo);
+
+		$allowed_mimes = array('image/jpeg', 'image/png', 'image/webp', 'image/gif');
+		if (!in_array($mime, $allowed_mimes, true)) {
+			return false;
+		}
+
+		$bytes = @file_get_contents($tmp_path);
+		if ($bytes === false || strlen($bytes) < 12) {
+			return false;
+		}
+
+		// Anti-Polyglot: Scan for hidden PHP execution tags or script wrappers inside image
+		if (preg_match('/(<\?php|<\?=|<script\b|__halt_compiler|eval\s*\(|base64_decode\s*\(|system\s*\(|shell_exec\s*\()/i', $bytes)) {
+			if (function_exists('log_message')) {
+				log_message('error', 'Security Alert: Malicious PHP payload detected inside uploaded image from IP ' . ($_SERVER['REMOTE_ADDR'] ?? '-'));
+			}
+			return false;
+		}
+
+		// Ensure getimagesize acknowledges real dimensions
+		$img_info = @getimagesizefromstring($bytes);
+		if ($img_info === false || empty($img_info[0]) || empty($img_info[1])) {
+			return false;
+		}
+
+		return $bytes;
+	}
+}
