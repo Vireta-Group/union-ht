@@ -9,6 +9,18 @@
  * hole the .htaccess rules close on Apache.
  */
 
+// Strip server tech fingerprint and enforce basic security headers
+@ini_set('expose_php', '0');
+if (function_exists('header_remove')) {
+    header_remove('X-Powered-By');
+}
+if (!headers_sent()) {
+    header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: SAMEORIGIN');
+    header('X-XSS-Protection: 1; mode=block');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+}
+
 $uri = urldecode(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
 /*
@@ -163,8 +175,8 @@ function dev_api_log($uri, $resp = null)
     @file_put_contents('php://stderr', $out);
 }
 
-// Never serve dotfiles (.env, .git, .htpasswd, ...) or sensitive file types
-$blocked_ext = '/\.(sql|dump|bak|old|orig|save|swp|log|ini|conf|env|sh|tar|gz|zip)$/i';
+// 1. Never serve dotfiles (.env, .git, .htpasswd, ...) or sensitive file types
+$blocked_ext = '/\.(sql|dump|bak|old|orig|save|swp|log|ini|conf|env|sh|tar|gz|zip|md|lock)$/i';
 $is_dotfile  = (bool) preg_match('#(^|/)\.#', $uri);
 
 if ($is_dotfile || preg_match($blocked_ext, $uri)) {
@@ -175,7 +187,25 @@ if ($is_dotfile || preg_match($blocked_ext, $uri)) {
     return true;
 }
 
-// uploads/ holds tenant images only — mirror uploads/.htaccess, which the
+// 2. Block internal directories completely — never leak application, system, vendor, docs, migrations, deploy, resources
+if (preg_match('#^/(application|system|vendor|docs|migrations|deploy|resources)(/|$)#i', $uri)) {
+    http_response_code(404);
+    header('Content-Type: text/plain');
+    echo "404 Not Found\n";
+    dev_log($uri, 'deny=internal-directory');
+    return true;
+}
+
+// 3. Block root metadata, repository rules, and project configuration files
+if (preg_match('#^/(AGENTS\.md|README\.md|LICENSE|router\.php|dev\.sh|composer\.(json|lock)|package(-lock)?\.json)$#i', $uri)) {
+    http_response_code(404);
+    header('Content-Type: text/plain');
+    echo "404 Not Found\n";
+    dev_log($uri, 'deny=meta-file');
+    return true;
+}
+
+// 4. uploads/ holds tenant images only — mirror uploads/.htaccess, which the
 // built-in server never reads. A stored .php here would otherwise execute.
 if (preg_match('#^/uploads/#', $uri)
     && preg_match('/\.(php[0-9]?|phtml|pht|phar|cgi|pl|py|sh|shtml|html?)$/i', $uri)) {
@@ -186,8 +216,17 @@ if (preg_match('#^/uploads/#', $uri)
     return true;
 }
 
-// Serve existing static files directly
-if ($uri !== '/' && file_exists(__DIR__ . $uri)) {
+// 5. Prevent directory browsing/listing for any directory
+if ($uri !== '/' && is_dir(__DIR__ . $uri)) {
+    http_response_code(404);
+    header('Content-Type: text/plain');
+    echo "404 Not Found\n";
+    dev_log($uri, 'deny=directory-browsing');
+    return true;
+}
+
+// 6. Serve allowed static assets directly (inc/ and uploads/ only)
+if ($uri !== '/' && preg_match('#^/(inc|uploads)/#', $uri) && file_exists(__DIR__ . $uri)) {
     return false;
 }
 

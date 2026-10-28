@@ -53,6 +53,18 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
+// Conceal server technology fingerprint and apply security headers
+@ini_set('expose_php', '0');
+if (function_exists('header_remove')) {
+	header_remove('X-Powered-By');
+}
+if (!headers_sent()) {
+	header('X-Content-Type-Options: nosniff');
+	header('X-Frame-Options: SAMEORIGIN');
+	header('X-XSS-Protection: 1; mode=block');
+	header('Referrer-Policy: strict-origin-when-cross-origin');
+}
+
 	if (empty($_SERVER['CI_ENV']) && file_exists(__DIR__ . '/.env')) {
 		$__env_txt = file_get_contents(__DIR__ . '/.env');
 		if (preg_match('/^\s*APP_ENV\s*=\s*([^\s#]+)/m', $__env_txt, $__m)) {

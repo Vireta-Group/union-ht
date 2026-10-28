@@ -39,6 +39,15 @@ defined('BASEPATH') OR exit('No direct script access needed');
 $heading = isset($heading) ? $heading : '';
 $message = isset($message) ? $message : '';
 
+if (!empty($message) && is_string($message)) {
+    // Strip absolute server paths so internal directory structure is never leaked
+    if (defined('FCPATH')) {
+        $clean_fc = rtrim(str_replace('\\', '/', realpath(FCPATH) ?: FCPATH), '/');
+        $message = str_replace(array($clean_fc, str_replace('/', '\\', $clean_fc)), '', $message);
+    }
+    $message = preg_replace('#(/home|/var/www|/usr|/etc)/[a-zA-Z0-9_\-\./]+#', '', $message);
+}
+
 $code = 0;
 if (function_exists('http_response_code')) {
     $code = (int) http_response_code();
