@@ -1,0 +1,31 @@
+[30-Oct-2026 00:24:28 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated since 8.4, the error level was removed in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:24:28 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:28:36 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated since 8.4, the error level was removed in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:39:09 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated since 8.4, the error level was removed in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:39:09 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:41:41 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated since 8.4, the error level was removed in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:41:41 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:43:33 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated since 8.4, the error level was removed in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:43:34 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated since 8.4, the error level was removed in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:43:35 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated since 8.4, the error level was removed in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:43:35 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:46:26 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:46:53 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:46:53 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:49:28 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:49:28 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:50:04 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:50:04 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:50:11 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:50:11 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:50:43 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:50:43 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:53:55 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:53:55 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:54:32 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 00:54:32 Asia/Dhaka] PHP Deprecated:  Creation of dynamic property Front::$tenant_resolver is deprecated in /home/szfjjtji/public_html/system/core/Loader.php on line 1284
+[30-Oct-2026 00:57:15 Asia/Dhaka] PHP Deprecated:  Constant E_STRICT is deprecated in /home/szfjjtji/public_html/system/core/Exceptions.php on line 76
+[30-Oct-2026 01:22:40 Asia/Dhaka] PHP Fatal error:  Uncaught Error: Class 'PDO' not found in /home/szfjjtji/public_html/pdo-check.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/szfjjtji/public_html/pdo-check.php on line 8
