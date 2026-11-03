@@ -101,7 +101,11 @@ class Dashboard extends CI_Controller {
 		$user_tenant_id = (int)($current_user->ins_pr_id_s ?? 0);
 		if (tenant_code() === 0) {
 			if ($user_tenant_id > 0) {
-				redirect('dashboard?tenant=' . $user_tenant_id, 'refresh');
+				$uri = $this->uri->uri_string();
+				$target = !empty($uri) ? $uri : 'dashboard';
+				$qs = $this->input->server('QUERY_STRING');
+				$url = $target . '?tenant=' . $user_tenant_id . ($qs ? '&' . $qs : '');
+				redirect($url, 'refresh');
 			}
 		}
 

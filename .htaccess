@@ -1,4 +1,4 @@
-# -------------------------------------------------------------------
+﻿# -------------------------------------------------------------------
 # SECURITY & DIRECTORY OBFUSCATION
 # Prevents discovery of internal directory structures, framework files,
 # migration schemas, internal documentation, and sensitive assets.
@@ -58,9 +58,10 @@ order allow,deny
 allow from all
 </Files>
 
-# php -- BEGIN cPanel-generated handler, do not edit
-# Set the “ea-php84” package as the default “PHP” programming language.
-<IfModule mime_module>
-  AddHandler application/x-httpd-ea-php84___lsphp .php .php8 .phtml
-</IfModule>
+# php -- BEGIN cPanel-generated handler (cPanel/production only)
+# Commented out for local Windows Apache development.
+# Uncomment on cPanel/production server only.
+# <IfModule mime_module>
+#   AddHandler application/x-httpd-ea-php84___lsphp .php .php8 .phtml
+# </IfModule>
 # php -- END cPanel-generated handler, do not edit
