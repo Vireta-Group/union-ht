@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.FTP_PASS }}
           protocol: ftps # Use ftps for security, fallback to ftp if needed
           local-dir: ./
-          server-dir: /public_html/ # Change this to /public_html/ht/ if your app is in a subfolder
+          server-dir: ./
           dangerous-clean-slate: false
           exclude: |
             **/.git/**
