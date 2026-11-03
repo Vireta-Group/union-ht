@@ -1,9 +1,9 @@
-<?php
+﻿<?php
 $CI =& get_instance();
 $seg1 = (string) $CI->uri->segment(1);
 $is_home    = in_array($seg1, array('', 'home', 'up'), true);
 $is_holding = in_array($seg1, array('search_hold', 'src_holding', 'holding_tax', 'single_holding_person_methods'), true);
-$is_entry   = in_array($seg1, array('add'), true);
+$is_entry   = false; // /add route disabled
 $is_reps    = in_array($seg1, array('singleUser', 'singleEmp'), true);
 
 $cls_active = 'px-3 py-2 rounded-xl text-sm font-semibold text-indigo-600 bg-indigo-50 transition-colors';
@@ -97,9 +97,6 @@ $panel_icon   = $is_sadmin ? 'ph-shield-check' : 'ph-gauge';
                 <a href="search_hold" class="<?= $is_holding ? $cls_active : $cls_idle ?>">
                     হোল্ডিং ট্যাক্স
                 </a>
-                <a href="add" class="<?= $is_entry ? $cls_active : $cls_idle ?>">
-                    তথ্য এন্ট্রি
-                </a>
                 <a href="<?= $is_home ? '#leaders' : base_url('#leaders'); ?>" class="<?= $is_reps ? $cls_active : $cls_idle ?>">
                     জনপ্রতিনিধি
                 </a>
@@ -143,7 +140,6 @@ $panel_icon   = $is_sadmin ? 'ph-shield-check' : 'ph-gauge';
         <a href="<?= base_url(); ?>" class="<?= $is_home ? $mcls_active : $mcls_idle ?>">হোম</a>
         <a href="<?= $is_home ? '#services' : base_url('#services'); ?>" class="<?= $mcls_idle ?>">নাগরিক সেবা</a>
         <a href="search_hold" class="<?= $is_holding ? $mcls_active : $mcls_idle ?>">হোল্ডিং ট্যাক্স</a>
-        <a href="add" class="<?= $is_entry ? $mcls_active : $mcls_idle ?>">তথ্য এন্ট্রি</a>
         <a href="<?= $is_home ? '#leaders' : base_url('#leaders'); ?>" class="<?= $is_reps ? $mcls_active : $mcls_idle ?>">জনপ্রতিনিধি</a>
         <a href="<?= $is_home ? '#contact' : base_url('#contact'); ?>" class="<?= $mcls_idle ?>">যোগাযোগ</a>
         <div class="pt-3 border-t border-neutral-100">

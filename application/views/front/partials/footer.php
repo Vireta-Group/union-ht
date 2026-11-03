@@ -1,4 +1,4 @@
-<!-- Modern Dynamic Footer -->
+﻿<!-- Modern Dynamic Footer -->
 <footer class="bg-neutral-900 text-neutral-300 mt-auto border-t border-neutral-800" id="contact">
     
     <!-- Top Contact Cards Bar -->
@@ -101,7 +101,6 @@
                 <ul class="space-y-2 text-xs">
                     <li><a href="<?= base_url(); ?>" class="text-neutral-400 hover:text-white transition-colors">হোম পেজ</a></li>
                     <li><a href="search_hold" class="text-neutral-400 hover:text-white transition-colors">হোল্ডিং ট্যাক্স যাচাই</a></li>
-                    <li><a href="add" class="text-neutral-400 hover:text-white transition-colors">পারিবারিক ডাটা এন্ট্রি</a></li>
                     <li><a href="login" class="text-neutral-400 hover:text-white transition-colors">অ্যাডমিন / স্টাফ লগইন</a></li>
                 </ul>
             </div>

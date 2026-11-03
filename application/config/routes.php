@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['default_controller'] = 'front';
@@ -119,7 +119,7 @@ $route['api_login'] 				= 'front/api_login';
 $route['login'] 					= 'front/login';
 $route['forgot_password']           = 'auth/forgot_password';
 $route['reset_password/(:any)']     = 'auth/reset_password/$1';
-$route['add'] 					    = 'front/adds';
+// $route['add'] = 'front/adds';  // disabled — public data-entry route removed
 $route['search_hold'] 				= 'front/search_holding_front_page';
 $route['src_holding'] 				= 'front/search_holding_for_page_api';
 $route['insrt'] 					= 'front/insert_data';

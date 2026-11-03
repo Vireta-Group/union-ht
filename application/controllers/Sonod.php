@@ -79,6 +79,19 @@ class Sonod extends CI_Controller {
 			redirect('super_admin', 'refresh');
 		}
 
+
+		// Ensure tenant is resolved for logged-in user if accessed on platform host (e.g. bare localhost)
+		$current_u = $this->ion_auth->user()->row();
+		$user_tenant_id = (int)($current_u->ins_pr_id_s ?? 0);
+		if (tenant_code() === 0) {
+			if ($user_tenant_id > 0) {
+				$uri = $this->uri->uri_string();
+				$target = !empty($uri) ? $uri : 'dashboard';
+				$qs = $this->input->server('QUERY_STRING');
+				$url = $target . '?tenant=' . $user_tenant_id . ($qs ? '&' . $qs : '');
+				redirect($url, 'refresh');
+			}
+		}
 	} 
 
 	public function index()

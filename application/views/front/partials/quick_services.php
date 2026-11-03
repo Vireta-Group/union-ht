@@ -1,4 +1,4 @@
-<section id="services" class="py-8 bg-neutral-100/60 border-y border-neutral-200/70">
+﻿<section id="services" class="py-8 bg-neutral-100/60 border-y border-neutral-200/70">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Section Header -->
@@ -36,24 +36,7 @@
                 </div>
             </a>
 
-            <!-- Service 2: Citizen Data Entry -->
-            <a href="add" class="ht-card p-6 bg-white hover:-translate-y-1 hover:shadow-lg transition-all duration-200 border border-neutral-200 group flex flex-col justify-between">
-                <div>
-                    <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 text-2xl mb-4 group-hover:bg-amber-600 group-hover:text-white transition-colors duration-200 shadow-xs">
-                        <i class="ph ph-identification-card"></i>
-                    </div>
-                    <h3 class="text-base font-bold text-neutral-900 group-hover:text-amber-600 transition-colors">
-                        পারিবারিক তথ্য এন্ট্রি
-                    </h3>
-                    <p class="text-xs text-neutral-500 mt-1.5 leading-relaxed">
-                        হোল্ডিং ভিত্তিক নাগরিক ও পারিবারিক ডাটাশিটের নতুন তথ্য ডিজিটাল পদ্ধতিতে অন্তর্ভুক্ত করুন।
-                    </p>
-                </div>
-                <div class="mt-5 pt-3 border-t border-neutral-100 flex items-center justify-between text-xs font-semibold text-amber-700 group-hover:translate-x-1 transition-transform">
-                    <span>ফর্ম পূরণ করুন</span>
-                    <i class="ph ph-arrow-right text-xs"></i>
-                </div>
-            </a>
+            <!-- Service 2: Citizen Data Entry — disabled -->
 
             <!-- Service 3: Certificate Verification -->
             <div class="ht-card p-6 bg-white hover:-translate-y-1 hover:shadow-lg transition-all duration-200 border border-neutral-200 group flex flex-col justify-between">
