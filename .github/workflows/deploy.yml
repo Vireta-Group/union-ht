@@ -1,4 +1,4 @@
-name: Deploy to cPanel
+name: Deploy to cPanel (FTP)
 
 on:
   push:
@@ -17,36 +17,28 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Debug Secrets Presence
-        run: |
-          if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then echo "SSH_PRIVATE_KEY is missing"; exit 1; fi
-          if [ -z "${{ secrets.SSH_USER }}" ]; then echo "SSH_USER is missing"; exit 1; fi
-          if [ -z "${{ secrets.SSH_HOST }}" ]; then echo "SSH_HOST is missing"; exit 1; fi
-
-      - name: Install SSH Key
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          # Using ssh-keyscan to avoid interactive prompts
-          ssh-keyscan -p ${{ secrets.SSH_PORT || vars.SSH_PORT }} -H ${{ secrets.SSH_HOST || vars.SSH_HOST }} >> ~/.ssh/known_hosts || echo "Keyscan failed but continuing..."
-
-      - name: Deploy via Rsync
-        run: |
-          rsync -avz --delete \
-            --exclude='.git/' \
-            --exclude='.github/' \
-            --exclude='.env' \
-            --exclude='.env.*' \
-            --exclude='docs/' \
-            --exclude='deploy/' \
-            --exclude='application/logs/' \
-            --exclude='application/cache/' \
-            --exclude='uploads/tenant-*/' \
-            -e "ssh -p ${{ secrets.SSH_PORT || vars.SSH_PORT }} -o StrictHostKeyChecking=no" \
-            ./ "${{ secrets.SSH_USER || vars.SSH_USER }}@${{ secrets.SSH_HOST || vars.SSH_HOST }}:${{ secrets.DEPLOY_PATH || vars.DEPLOY_PATH }}/"
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          protocol: ftps # Use ftps for security, fallback to ftp if needed
+          local-dir: ./
+          server-dir: /public_html/ # Change this to /public_html/ht/ if your app is in a subfolder
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git/**
+            **/.github/**
+            **/.env
+            **/.env.*
+            **/docs/**
+            **/deploy/**
+            **/application/logs/**
+            **/application/cache/**
+            **/uploads/tenant-*/**
 
       - name: Verify Deployment
         run: |
+          echo "FTP Deployment complete. Verifying site health..."
           curl -sS -o /dev/null -w "Response Code: %{http_code}\n" https://dhumup.com/
