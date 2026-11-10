@@ -17,13 +17,22 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # স্তর ১: আগের আপলোডের state ফাইল ক্যাশ থেকে ফিরিয়ে আনা
+      - name: Restore FTP sync state
+        uses: actions/cache@v4
+        with:
+          path: .ftp-deploy-sync-state.json
+          key: ftp-sync-${{ github.run_id }}
+          restore-keys: ftp-sync-
+
+      # স্তর ২: শুধু পরিবর্তিত ফাইল আপলোড
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          protocol: ftps # Use ftps for security, fallback to ftp if needed
+          protocol: ftps
           local-dir: ./
           server-dir: ./
           dangerous-clean-slate: false
@@ -37,6 +46,8 @@ jobs:
             **/application/logs/**
             **/application/cache/**
             **/uploads/tenant-*/**
+            **/vendor/**
+            **/inc/assets/vendor/**
 
       - name: Verify Deployment
         run: |
